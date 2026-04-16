@@ -7,6 +7,34 @@ import Footer from '../components/layout/Footer'
 import { Stars, PostCard, Pagination } from '../components/ui'
 import { IcoSearch } from '../components/icons'
 
+// Rotates "Personal Blog" → "Visit my portfolio" (blinking) for ~60s → back permanently
+function HeaderBadge() {
+  const [phase, setPhase] = useState<'blog' | 'portfolio' | 'done'>('blog')
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setPhase('portfolio'), 5_000)
+    const t2 = setTimeout(() => setPhase('done'), 65_000)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, [])
+
+  if (phase === 'portfolio') {
+    return (
+      <a
+        href={SITE.portfolio}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-violet-400 text-xs tracking-[0.3em] uppercase mb-3 inline-block animate-pulse hover:text-violet-300 transition-colors"
+      >
+        Visit my portfolio →
+      </a>
+    )
+  }
+
+  return (
+    <p className="text-violet-400 text-xs tracking-[0.3em] uppercase mb-3">Personal Blog</p>
+  )
+}
+
 export default function Home() {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
@@ -51,8 +79,8 @@ export default function Home() {
 
         {/* ── Blog header ─────────────────────────────────────── */}
         <header className="text-center mb-10">
-          <p className="text-indigo-400 text-xs tracking-[0.3em] uppercase mb-3">Personal Blog</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3 font-anta">
+          <HeaderBadge />
+          <h1 className="text-5xl sm:text-6xl text-white mb-3 font-caveat leading-none">
             {SITE.name}
           </h1>
           <p className="text-slate-500 text-sm">{SITE.tagline}</p>
@@ -60,20 +88,20 @@ export default function Home() {
 
         {/* ── Search bar ──────────────────────────────────────── */}
         <form onSubmit={handleSearch} className="relative mb-10 group">
-          <span className="absolute left-4 inset-y-0 flex items-center pointer-events-none text-slate-500 group-focus-within:text-indigo-400 transition-colors">
+          <span className="absolute left-4 inset-y-0 flex items-center pointer-events-none text-slate-500 group-focus-within:text-violet-400 transition-colors">
             <IcoSearch />
           </span>
           <input
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search posts by title, topic, or keyword…"
-            className="w-full pl-11 pr-20 py-3.5 bg-slate-900/60 border border-white/10 rounded-xl text-white text-sm placeholder:text-slate-600 outline-none focus:border-indigo-500/70 focus:bg-slate-900/90 transition-colors"
+            className="w-full pl-11 pr-20 py-3.5 bg-slate-900/60 border border-white/10 rounded-xl text-white text-sm placeholder:text-slate-600 outline-none focus:border-violet-500/70 focus:bg-slate-900/90 transition-colors"
           />
           <button
             type="submit"
             className={`absolute right-2.5 inset-y-0 my-auto h-8 px-3.5 rounded-lg text-xs font-medium transition-all ${
               searchQuery.trim()
-                ? 'bg-indigo-600 hover:bg-indigo-500 text-white opacity-100'
+                ? 'bg-violet-600 hover:bg-violet-500 text-white opacity-100'
                 : 'bg-slate-800 text-slate-600 opacity-0 pointer-events-none'
             }`}
           >
@@ -88,7 +116,7 @@ export default function Home() {
               onClick={() => handleCategoryChange(null)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                 activeCategory === null
-                  ? 'bg-indigo-600 border-indigo-500 text-white'
+                  ? 'bg-violet-600 border-violet-500 text-white'
                   : 'border-white/10 text-slate-400 hover:text-white hover:border-white/25 bg-transparent'
               }`}
             >
@@ -100,12 +128,12 @@ export default function Home() {
                 onClick={() => handleCategoryChange(c.slug)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                   activeCategory === c.slug
-                    ? 'bg-indigo-600 border-indigo-500 text-white'
+                    ? 'bg-violet-600 border-violet-500 text-white'
                     : 'border-white/10 text-slate-400 hover:text-white hover:border-white/25 bg-transparent'
                 }`}
               >
                 {c.name}
-                <span className={`ml-1.5 text-[11px] ${activeCategory === c.slug ? 'text-indigo-300' : 'text-slate-600'}`}>
+                <span className={`ml-1.5 text-[11px] ${activeCategory === c.slug ? 'text-violet-300' : 'text-slate-600'}`}>
                   {c.postCount}
                 </span>
               </button>

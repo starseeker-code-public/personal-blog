@@ -1,9 +1,57 @@
-import { Link } from 'react-router-dom'
 import { SITE } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-import { Stars, Section, SectionHeading, Divider } from '../components/ui'
-import { IcoGithub, IcoLinkedin, IcoMail } from '../components/icons'
+import { Stars } from '../components/ui'
+import {
+  IcoGithub, IcoLinkedin, IcoMail,
+  IcoInstagram, IcoDevTo, IcoCodewars, IcoGlobe, IcoMapPin,
+} from '../components/icons'
+
+const SOCIALS = [
+  { key: 'portfolio', label: 'Portfolio',  icon: <IcoGlobe />,     href: SITE.portfolio },
+  { key: 'github',    label: 'GitHub',     icon: <IcoGithub />,    href: SITE.social.github },
+  { key: 'linkedin',  label: 'LinkedIn',   icon: <IcoLinkedin />,  href: SITE.social.linkedin },
+  { key: 'devto',     label: 'Dev.to',     icon: <IcoDevTo />,     href: SITE.social.devto },
+  { key: 'codewars',  label: 'Codewars',   icon: <IcoCodewars />,  href: SITE.social.codewars },
+  { key: 'instagram', label: 'Instagram',  icon: <IcoInstagram />, href: SITE.social.instagram },
+  { key: 'email',     label: 'Email',      icon: <IcoMail />,      href: `mailto:${SITE.author.email}` },
+]
+
+const AREAS = [
+  {
+    emoji: '⚙️',
+    title: 'Engineering',
+    desc: 'The craft I do for a living. Distributed systems, APIs, databases, the hard lessons production teaches you. Honest write-ups — including the mistakes.',
+  },
+  {
+    emoji: '🔭',
+    title: 'Hobbies',
+    desc: 'Pointing telescopes at the night sky. Competitive coding. Learning languages. Whatever I\'m obsessing over this month.',
+  },
+  {
+    emoji: '🌿',
+    title: 'Personal Life',
+    desc: 'Living and working remotely from Albacete, Spain. Opinions formed over years. Things I wish I\'d known sooner.',
+  },
+]
+
+const GALLERY = [
+  { url: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&q=80', caption: 'The night sky' },
+  { url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80', caption: 'Building things' },
+  { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', caption: 'Spain' },
+  { url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80', caption: 'Teaching' },
+  { url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80', caption: 'Late nights' },
+  { url: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80', caption: 'Traveling' },
+]
+
+const HOBBIES = [
+  { icon: '🔭', title: 'Amateur Astronomy',    desc: 'Deep-sky objects, planetary observing, the occasional failed astrophoto. Currently working through the Messier catalogue.' },
+  { icon: '🎯', title: 'Competitive Coding',   desc: 'Codewars 3 kyu. Algorithmic problems are how I keep the problem-solving instinct sharp between projects.' },
+  { icon: '🧑‍🏫', title: 'Teaching Python',    desc: 'Instructor at Tajamar, mentor at PyLadies Madrid. Explaining things clearly is one of the best ways I know to actually understand them.' },
+  { icon: '🤖', title: 'AI & LLMs',            desc: 'Daily Claude Code user. Deeply curious about how these tools are changing what it means to be an engineer.' },
+  { icon: '🌍', title: 'Languages',            desc: 'Native Spanish, C2 English. Currently learning German — slowly, stubbornly, with great enjoyment.' },
+  { icon: '✍️', title: 'Writing',              desc: 'This blog, Dev.to, the occasional long-form post. Writing forces clarity. Clarity forces understanding.' },
+]
 
 export default function About() {
   return (
@@ -11,91 +59,151 @@ export default function About() {
       <Stars />
       <Navbar />
 
-      <Section id="about">
-        <div className="pt-8">
-          <SectionHeading>About</SectionHeading>
+      <div className="relative z-10 max-w-2xl mx-auto px-4 pt-28 pb-20 space-y-16">
 
-          <div className="space-y-6 text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl">
+        {/* ── Intro ─────────────────────────────────────────────── */}
+        <section>
+          <h1
+            className="text-5xl sm:text-6xl text-white mb-2 leading-none"
+            style={{ fontFamily: 'Caveat' }}
+          >
+            Hey, I'm Joaquín.
+          </h1>
+          <p className="text-slate-500 text-sm flex items-center gap-1.5 mb-7">
+            <IcoMapPin />
+            Albacete, Spain
+          </p>
+
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
             <p>
-              I'm{' '}
-              <span className="keyword-glow">{SITE.author.name}</span> — a
-              Python backend engineer who writes about what I build and the lessons I learn along the way.
+              By day I'm a senior backend engineer at{' '}
+              <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">Allot</a>
+              , building cybersecurity infrastructure that processes ISP traffic at scale.
+              Seven years of distributed systems, Python, and the particular education you only get from production failures.
             </p>
-
             <p>
-              Most of my work lives at the intersection of{' '}
-              <span className="keyword-glow">FastAPI</span>,{' '}
-              <span className="keyword-glow">PostgreSQL</span>, and{' '}
-              <span className="keyword-glow">distributed systems</span>. I care about correctness,
-              observability, and shipping software that actually works in production.
+              By night I point a telescope at the sky and wonder what's out there.
             </p>
-
             <p>
-              This blog is where I document patterns I've found useful, mistakes worth avoiding,
-              and the occasional deep-dive into a library or concept that deserves more attention.
-            </p>
-
-            <p>
-              {SITE.tagline}
+              This is my personal corner of the internet. Not a portfolio, not a CV — just a place to write honestly
+              about engineering, hobbies, and life in a mid-sized Spanish city.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-4 mt-10">
-            <a
-              href={SITE.social.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-slate-300 hover:border-indigo-500 hover:text-white text-sm transition-colors"
-            >
-              <IcoGithub />
-              GitHub
-            </a>
-            <a
-              href={SITE.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-slate-300 hover:border-indigo-500 hover:text-white text-sm transition-colors"
-            >
-              <IcoLinkedin />
-              LinkedIn
-            </a>
-            <a
-              href={`mailto:${SITE.author.email}`}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-slate-300 hover:border-indigo-500 hover:text-white text-sm transition-colors"
-            >
-              <IcoMail />
-              Email
-            </a>
+          <div className="flex flex-wrap gap-2 mt-8">
+            {SOCIALS.map(s => (
+              <a
+                key={s.key}
+                href={s.href}
+                target={s.key === 'email' ? undefined : '_blank'}
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-white/10 text-slate-400 hover:border-violet-500/60 hover:text-violet-300 text-xs transition-colors"
+              >
+                {s.icon}
+                <span>{s.label}</span>
+              </a>
+            ))}
           </div>
+        </section>
 
-          <Divider />
+        {/* ── What I write about ────────────────────────────────── */}
+        <section>
+          <h2 className="text-white font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
+            What I write about
+          </h2>
+          <div className="space-y-4">
+            {AREAS.map(a => (
+              <div key={a.title} className="flex gap-4 p-4 rounded-xl border border-white/8 bg-slate-900/30 hover:border-white/15 transition-colors">
+                <span className="text-xl shrink-0 mt-0.5">{a.emoji}</span>
+                <div>
+                  <p className="text-white text-sm font-medium mb-1">{a.title}</p>
+                  <p className="text-slate-500 text-sm leading-relaxed">{a.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-          <div className="mt-10">
-            <h3 className="text-white font-medium text-sm mb-4" style={{ fontFamily: 'Exo 2' }}>
-              ◈ Tech I write about
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {['Python', 'FastAPI', 'PostgreSQL', 'Redis', 'Docker', 'asyncio', 'SQLAlchemy', 'React', 'TypeScript'].map(t => (
-                <span
-                  key={t}
-                  className="text-xs px-2 py-1 rounded-full bg-indigo-900/60 text-indigo-300 border border-indigo-700/50"
-                >
-                  {t}
-                </span>
-              ))}
+        {/* ── Currently ─────────────────────────────────────────── */}
+        <section>
+          <h2 className="text-white font-semibold text-base mb-4" style={{ fontFamily: 'Capriola' }}>
+            Currently
+          </h2>
+          <div className="rounded-xl border border-violet-500/30 bg-violet-950/20 p-5">
+            <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+              <div>
+                <span className="text-white text-sm font-medium">Senior Python Backend Developer</span>
+                <span className="text-slate-500 text-sm"> at </span>
+                <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-violet-400 text-sm hover:underline">
+                  Allot
+                </a>
+              </div>
+              <span className="text-violet-400 text-xs flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-violet-400" />
+                May 2025 – Present
+              </span>
             </div>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Part of the ASM team — a cybersecurity SaaS platform sold to ISPs worldwide.
+              Microservices in Python, Kafka, Redis, MongoDB. Processing millions of security events per second.
+            </p>
           </div>
+          <p className="text-slate-600 text-xs mt-3 pl-1">
+            Also teach advanced Python at{' '}
+            <a href="https://www.tajamar.es" target="_blank" rel="noopener noreferrer" className="hover:text-slate-400 transition-colors">Tajamar</a>
+            {' '}and mentor at PyLadies Madrid.
+          </p>
+        </section>
 
-          <div className="mt-10">
-            <Link
-              to="/"
-              className="text-indigo-400 text-sm hover:text-indigo-300 transition-colors"
-            >
-              ← Read the blog
-            </Link>
+        {/* ── Gallery ───────────────────────────────────────────── */}
+        <section>
+          <h2 className="text-white font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
+            Gallery
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {GALLERY.map((g, i) => (
+              <div key={i} className="group relative aspect-square overflow-hidden rounded-xl cursor-pointer">
+                <img
+                  src={g.url}
+                  alt={g.caption}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <p className="absolute bottom-0 left-0 right-0 px-3 py-2.5 text-white text-xs font-medium translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                  {g.caption}
+                </p>
+              </div>
+            ))}
           </div>
+        </section>
+
+        {/* ── Hobbies ───────────────────────────────────────────── */}
+        <section>
+          <h2 className="text-white font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
+            Outside the terminal
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {HOBBIES.map((h, i) => (
+              <div
+                key={i}
+                className="rounded-xl border border-white/8 bg-slate-900/40 p-4 hover:border-white/18 hover:bg-slate-900/60 transition-colors"
+              >
+                <div className="text-xl mb-2">{h.icon}</div>
+                <p className="text-white text-sm font-medium mb-1">{h.title}</p>
+                <p className="text-slate-500 text-xs leading-relaxed">{h.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div>
+          <a href="/" className="text-violet-400 text-sm hover:text-violet-300 transition-colors">
+            ← Read the blog
+          </a>
         </div>
-      </Section>
+
+      </div>
 
       <Footer />
     </div>

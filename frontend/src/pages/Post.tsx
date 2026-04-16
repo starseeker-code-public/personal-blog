@@ -66,7 +66,7 @@ export default function Post() {
           <div className="text-center py-20">
             <p className="text-slate-400 text-lg mb-2">Post not found</p>
             <p className="text-slate-600 text-sm mb-6">{error}</p>
-            <Link to="/" className="text-indigo-400 hover:text-indigo-300 text-sm">
+            <Link to="/" className="text-violet-400 hover:text-violet-300 text-sm">
               ← Back to blog
             </Link>
           </div>
@@ -85,7 +85,7 @@ export default function Post() {
 
             {/* Category */}
             {post.category && (
-              <p className="text-indigo-400 text-xs tracking-widest uppercase mb-3">
+              <p className="text-violet-400 text-xs tracking-widest uppercase mb-3">
                 {post.category}
               </p>
             )}
@@ -93,7 +93,7 @@ export default function Post() {
             {/* Title */}
             <h1
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6"
-              style={{ fontFamily: 'Exo 2' }}
+              style={{ fontFamily: 'Capriola' }}
             >
               {post.title}
             </h1>
@@ -147,7 +147,7 @@ export default function Post() {
                       href={post.author.socials.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-indigo-400 text-xs hover:underline mt-2 inline-block"
+                      className="text-violet-400 text-xs hover:underline mt-2 inline-block"
                     >
                       GitHub →
                     </a>

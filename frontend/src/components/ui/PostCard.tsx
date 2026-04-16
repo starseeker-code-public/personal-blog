@@ -16,7 +16,7 @@ export function PostCard({ post }: PostCardProps) {
       {/* Meta line */}
       <div className="flex flex-wrap items-center gap-2 text-xs mb-3">
         {post.category && (
-          <span className="text-indigo-400 font-medium tracking-widest uppercase">
+          <span className="text-violet-400 font-medium tracking-widest uppercase">
             {post.category}
           </span>
         )}
@@ -30,8 +30,8 @@ export function PostCard({ post }: PostCardProps) {
 
       {/* Title */}
       <h2
-        className="text-white text-xl sm:text-2xl font-bold leading-snug mb-3 group-hover:text-indigo-300 transition-colors"
-        style={{ fontFamily: 'Exo 2' }}
+        className="text-white text-xl sm:text-2xl font-bold leading-snug mb-3 group-hover:text-violet-300 transition-colors"
+        style={{ fontFamily: 'Capriola' }}
       >
         {post.title}
       </h2>
@@ -48,7 +48,7 @@ export function PostCard({ post }: PostCardProps) {
             <Tag key={t} label={t} linkable />
           ))}
         </div>
-        <span className="text-slate-700 group-hover:text-indigo-400 transition-colors text-base shrink-0">
+        <span className="text-slate-700 group-hover:text-violet-400 transition-colors text-base shrink-0">
           →
         </span>
       </div>

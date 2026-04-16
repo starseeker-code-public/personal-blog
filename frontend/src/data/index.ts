@@ -33,13 +33,19 @@ export const api = {
 export const SITE = {
   name: 'Joaquín · Blog',
   tagline: 'Python, backends, and things worth writing down.',
+  portfolio: 'https://joaquin-hm.com',
   author: {
     name: 'Joaquín Hernández Martínez',
     email: 'proyecto_noether@outlook.com',
+    location: 'Albacete, Spain',
+    bio: 'Senior Python engineer with 7+ years specializing in backend development, distributed systems, and AI-integrated workflows. Currently at Allot building cybersecurity SaaS for ISPs. Recommended by both Allot and Mercedes-Benz for professionalism and delivery. Bilingual (C2 English certified).',
   },
   social: {
-    github: 'https://github.com/starseeker-code-public',
-    linkedin: 'https://www.linkedin.com/in/joaquin-hernandez',
+    github:    'https://github.com/starseeker-code-public',
+    linkedin:  'https://www.linkedin.com/in/joaquin-hernandez-martinez-91a57221a/',
+    instagram: 'https://www.instagram.com/starseeker-code/',
+    codewars:  'https://www.codewars.com/users/Starseeker1414',
+    devto:     'https://dev.to/starseeker-code',
   },
-  roles: ['Python Engineer', 'Backend Developer', 'Open Source Enthusiast', 'Technical Writer'],
+  roles: ['Senior Backend Engineer', 'Leader and Architect', 'Fullstack Developer'],
 }

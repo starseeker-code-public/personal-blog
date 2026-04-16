@@ -5,7 +5,6 @@ import Category from './pages/Category'
 import About from './pages/About'
 import Search from './pages/Search'
 import NotFound from './pages/NotFound'
-
 export default function App() {
   return (
     <Routes>
