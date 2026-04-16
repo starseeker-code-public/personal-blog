@@ -4,7 +4,7 @@ import type { Category as CategoryType, Post, PaginatedResponse } from '../types
 import { api } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-import { Stars, Section, SectionHeading, PostCard, Pagination } from '../components/ui'
+import { Section, SectionHeading, PostCard, Pagination } from '../components/ui'
 import { IcoArrowLeft } from '../components/icons'
 
 export default function Category() {
@@ -32,14 +32,13 @@ export default function Category() {
   }, [slug, page])
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans">
-      <Stars />
+    <div className="min-h-screen bg-[#f5ede0] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <Navbar />
 
       <Section id="category-posts">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-300 text-sm mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-stone-500 dark:text-[#8b7db8] hover:text-stone-700 dark:hover:text-[#c9beed] text-sm mb-8 transition-colors"
         >
           <IcoArrowLeft />
           All posts
@@ -49,7 +48,7 @@ export default function Category() {
           <>
             <SectionHeading>{category.name}</SectionHeading>
             {category.description && (
-              <p className="text-slate-400 text-sm mb-8 -mt-6">{category.description}</p>
+              <p className="text-stone-600 dark:text-[#c9beed] text-sm mb-8 -mt-6">{category.description}</p>
             )}
           </>
         ) : (
@@ -59,17 +58,17 @@ export default function Category() {
         {loading && (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
-              <div key={i} className="rounded-xl border border-white/10 bg-slate-900/50 p-5 animate-pulse h-36" />
+              <div key={i} className="rounded-xl border border-stone-200 dark:border-[#322d5a] bg-[#ede0cc]/60 dark:bg-[#1a1735]/60 p-5 animate-pulse h-36" />
             ))}
           </div>
         )}
 
-        {error && <p className="text-slate-500 text-sm">{error}</p>}
+        {error && <p className="text-stone-500 dark:text-[#8b7db8] text-sm">{error}</p>}
 
         {!loading && data && (
           <>
             {data.items.length === 0 ? (
-              <p className="text-slate-500 text-sm">No posts in this category yet.</p>
+              <p className="text-stone-500 dark:text-[#8b7db8] text-sm">No posts in this category yet.</p>
             ) : (
               <div className="grid gap-5 sm:grid-cols-2">
                 {data.items.map(p => <PostCard key={p.slug} post={p} />)}

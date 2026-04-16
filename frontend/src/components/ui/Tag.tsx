@@ -3,13 +3,12 @@ import { slugify } from '../../utils/slugify'
 
 interface TagProps {
   label: string
-  /** When true, wraps the tag in a link to /categories/<slug> */
   linkable?: boolean
 }
 
 export function Tag({ label, linkable = false }: TagProps) {
   const pill = (
-    <span className="text-xs px-2 py-1 rounded-full bg-violet-900/60 text-violet-300 border border-violet-700/50 whitespace-nowrap">
+    <span className="text-xs px-2 py-1 rounded-full bg-purple-100 dark:bg-[#2d1f4e] text-purple-700 dark:text-[#a78bfa] border border-purple-200 dark:border-[#4a3580] whitespace-nowrap">
       {label}
     </span>
   )

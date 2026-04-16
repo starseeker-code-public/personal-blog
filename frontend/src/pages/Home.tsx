@@ -4,7 +4,7 @@ import type { Category, PaginatedResponse, Post } from '../types'
 import { api, SITE } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-import { Stars, PostCard, Pagination } from '../components/ui'
+import { PostCard, Pagination } from '../components/ui'
 import { IcoSearch } from '../components/icons'
 
 // Rotates "Personal Blog" → "Visit my portfolio" (blinking) for ~60s → back permanently
@@ -23,7 +23,7 @@ function HeaderBadge() {
         href={SITE.portfolio}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-violet-400 text-xs tracking-[0.3em] uppercase mb-3 inline-block animate-pulse hover:text-violet-300 transition-colors"
+        className="text-amber-700 dark:text-amber-400 text-xs tracking-[0.3em] uppercase mb-3 inline-block animate-pulse hover:text-amber-600 dark:hover:text-amber-300 transition-colors"
       >
         Visit my portfolio →
       </a>
@@ -31,7 +31,7 @@ function HeaderBadge() {
   }
 
   return (
-    <p className="text-violet-400 text-xs tracking-[0.3em] uppercase mb-3">Personal Blog</p>
+    <p className="text-amber-700 dark:text-amber-400 text-xs tracking-[0.3em] uppercase mb-3">Personal Blog</p>
   )
 }
 
@@ -71,8 +71,7 @@ export default function Home() {
   const activeCategoryName = categories.find(c => c.slug === activeCategory)?.name
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans">
-      <Stars />
+    <div className="min-h-screen bg-[#f5ede0] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <Navbar />
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 pt-28 pb-16">
@@ -80,29 +79,29 @@ export default function Home() {
         {/* ── Blog header ─────────────────────────────────────── */}
         <header className="text-center mb-10">
           <HeaderBadge />
-          <h1 className="text-5xl sm:text-6xl text-white mb-3 font-caveat leading-none">
+          <h1 className="text-5xl sm:text-6xl text-stone-900 dark:text-[#f0ecfd] mb-3 font-caveat leading-none">
             {SITE.name}
           </h1>
-          <p className="text-slate-500 text-sm">{SITE.tagline}</p>
+          <p className="text-stone-500 dark:text-[#8b7db8] text-sm">{SITE.tagline}</p>
         </header>
 
         {/* ── Search bar ──────────────────────────────────────── */}
         <form onSubmit={handleSearch} className="relative mb-10 group">
-          <span className="absolute left-4 inset-y-0 flex items-center pointer-events-none text-slate-500 group-focus-within:text-violet-400 transition-colors">
+          <span className="absolute left-4 inset-y-0 flex items-center pointer-events-none text-stone-500 dark:text-[#8b7db8] group-focus-within:text-amber-700 dark:group-focus-within:text-amber-400 transition-colors">
             <IcoSearch />
           </span>
           <input
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search posts by title, topic, or keyword…"
-            className="w-full pl-11 pr-20 py-3.5 bg-slate-900/60 border border-white/10 rounded-xl text-white text-sm placeholder:text-slate-600 outline-none focus:border-violet-500/70 focus:bg-slate-900/90 transition-colors"
+            className="w-full pl-11 pr-20 py-3.5 bg-[#ede0cc]/70 dark:bg-[#1a1735]/70 border border-stone-300 dark:border-[#322d5a] rounded-xl text-stone-900 dark:text-[#f0ecfd] text-sm placeholder:text-stone-500 dark:placeholder:text-[#8b7db8] outline-none focus:border-amber-600 dark:focus:border-amber-500 focus:bg-[#ede0cc]/90 dark:focus:bg-[#1a1735]/90 transition-colors"
           />
           <button
             type="submit"
             className={`absolute right-2.5 inset-y-0 my-auto h-8 px-3.5 rounded-lg text-xs font-medium transition-all ${
               searchQuery.trim()
-                ? 'bg-violet-600 hover:bg-violet-500 text-white opacity-100'
-                : 'bg-slate-800 text-slate-600 opacity-0 pointer-events-none'
+                ? 'bg-amber-600 hover:bg-amber-500 dark:bg-amber-500 dark:hover:bg-amber-400 text-stone-900 opacity-100'
+                : 'bg-stone-300 dark:bg-[#231f42] text-stone-400 opacity-0 pointer-events-none'
             }`}
           >
             Search
@@ -116,8 +115,8 @@ export default function Home() {
               onClick={() => handleCategoryChange(null)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                 activeCategory === null
-                  ? 'bg-violet-600 border-violet-500 text-white'
-                  : 'border-white/10 text-slate-400 hover:text-white hover:border-white/25 bg-transparent'
+                  ? 'bg-amber-600 dark:bg-amber-500 border-amber-500 dark:border-amber-400 text-stone-900 dark:text-[#0f0d24]'
+                  : 'border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#8b7db8] hover:text-stone-900 dark:hover:text-[#f0ecfd] hover:border-stone-500 dark:hover:border-[#4a4480] bg-transparent'
               }`}
             >
               All posts
@@ -128,12 +127,12 @@ export default function Home() {
                 onClick={() => handleCategoryChange(c.slug)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                   activeCategory === c.slug
-                    ? 'bg-violet-600 border-violet-500 text-white'
-                    : 'border-white/10 text-slate-400 hover:text-white hover:border-white/25 bg-transparent'
+                    ? 'bg-amber-600 dark:bg-amber-500 border-amber-500 dark:border-amber-400 text-stone-900 dark:text-[#0f0d24]'
+                    : 'border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#8b7db8] hover:text-stone-900 dark:hover:text-[#f0ecfd] hover:border-stone-500 dark:hover:border-[#4a4480] bg-transparent'
                 }`}
               >
                 {c.name}
-                <span className={`ml-1.5 text-[11px] ${activeCategory === c.slug ? 'text-violet-300' : 'text-slate-600'}`}>
+                <span className={`ml-1.5 text-[11px] ${activeCategory === c.slug ? 'text-amber-800 dark:text-amber-900' : 'text-stone-500 dark:text-[#8b7db8]'}`}>
                   {c.postCount}
                 </span>
               </button>
@@ -143,7 +142,7 @@ export default function Home() {
 
         {/* ── Post count ──────────────────────────────────────── */}
         {!loading && data && (
-          <p className="text-slate-600 text-xs mb-2">
+          <p className="text-stone-500 dark:text-[#8b7db8] text-xs mb-2">
             {data.total} {data.total === 1 ? 'post' : 'posts'}
             {activeCategoryName ? ` in ${activeCategoryName}` : ''}
           </p>
@@ -151,24 +150,24 @@ export default function Home() {
 
         {/* ── Post list ───────────────────────────────────────── */}
         {loading ? (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-stone-200 dark:divide-[#2d2855]">
             {[1, 2, 3, 4].map(i => (
               <div key={i} className="py-8 space-y-3 animate-pulse">
-                <div className="h-3 bg-slate-800/60 rounded w-1/4" />
-                <div className="h-6 bg-slate-800/60 rounded w-3/4" />
-                <div className="h-4 bg-slate-800/60 rounded w-full" />
-                <div className="h-4 bg-slate-800/60 rounded w-2/3" />
+                <div className="h-3 bg-[#ddd0b5]/70 dark:bg-[#231f42]/80 rounded w-1/4" />
+                <div className="h-6 bg-[#ddd0b5]/70 dark:bg-[#231f42]/80 rounded w-3/4" />
+                <div className="h-4 bg-[#ddd0b5]/70 dark:bg-[#231f42]/80 rounded w-full" />
+                <div className="h-4 bg-[#ddd0b5]/70 dark:bg-[#231f42]/80 rounded w-2/3" />
               </div>
             ))}
           </div>
         ) : data?.items.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-slate-500 text-sm">
+            <p className="text-stone-500 dark:text-[#8b7db8] text-sm">
               {activeCategory ? `No posts in this category yet.` : `No posts yet.`}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-stone-200 dark:divide-[#2d2855]">
             {data?.items.map(p => <PostCard key={p.slug} post={p} />)}
           </div>
         )}

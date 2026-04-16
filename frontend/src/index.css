@@ -5,6 +5,18 @@
 @tailwind utilities;
 
 /* ──────────────────────────────────────────
+   Theme CSS variables — applied via JS class
+────────────────────────────────────────── */
+:root {
+  --nav-bg: rgba(245, 237, 224, 0.95);
+  --nav-mobile-bg: rgb(245, 237, 224);
+}
+.dark {
+  --nav-bg: rgba(15, 13, 36, 0.97);
+  --nav-mobile-bg: rgb(15, 13, 36);
+}
+
+/* ──────────────────────────────────────────
    Typewriter cursor blink
 ────────────────────────────────────────── */
 @keyframes blink {
@@ -22,23 +34,16 @@
 }
 
 /* ──────────────────────────────────────────
-   Slow star drift (atmospheric background)
-────────────────────────────────────────── */
-@keyframes star-drift {
-  from { transform: translate(0, 0); }
-  to   { transform: translate(-60px, -40px); }
-}
-.stars-layer {
-  animation: star-drift 60s linear infinite alternate;
-}
-
-/* ──────────────────────────────────────────
    Keyword glow (inline highlighted words)
 ────────────────────────────────────────── */
 .keyword-glow {
-  color: #a5b4fc;
+  color: #b45309;
   font-weight: 500;
-  text-shadow: 0 0 12px rgba(129, 140, 248, 0.35);
+  text-shadow: 0 0 12px rgba(180, 83, 9, 0.25);
+}
+.dark .keyword-glow {
+  color: #fbbf24;
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
 }
 
 /* ──────────────────────────────────────────
@@ -50,27 +55,19 @@ html, body {
 
 /* ──────────────────────────────────────────
    Reading progress bar (top of post pages)
+   Light: gold → orange | Dark: gold → violet
 ────────────────────────────────────────── */
 .reading-progress {
   position: fixed;
   top: 0;
   left: 0;
   height: 2px;
-  background: linear-gradient(to right, #818cf8, #a78bfa);
+  background: linear-gradient(to right, #d97706, #ea580c);
   z-index: 100;
   transition: width 0.1s linear;
 }
-
-/* ──────────────────────────────────────────
-   Post card hover glow
-────────────────────────────────────────── */
-@keyframes card-glow {
-  0%, 100% {
-    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.12);
-  }
-  50% {
-    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3), 0 0 24px rgba(99, 102, 241, 0.08);
-  }
+.dark .reading-progress {
+  background: linear-gradient(to right, #f59e0b, #7c3aed);
 }
 
 /* ──────────────────────────────────────────
@@ -85,10 +82,32 @@ html, body {
 }
 
 /* ──────────────────────────────────────────
-   Highlight.js theme overrides (dark blog)
+   Highlight.js — light mode (parchment)
 ────────────────────────────────────────── */
 .hljs {
-  background: rgba(15, 23, 42, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #e8d9c0 !important;
+  border: 1px solid rgba(120, 80, 30, 0.18);
   border-radius: 0.5rem;
+  color: #2c1a0e;
 }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #7c2d12; font-weight: 600; }
+.hljs-string, .hljs-attr                          { color: #92400e; }
+.hljs-comment                                     { color: #a8957a; font-style: italic; }
+.hljs-number, .hljs-literal                       { color: #c2410c; }
+.hljs-function, .hljs-title                       { color: #1d4ed8; }
+.hljs-variable, .hljs-params                      { color: #374151; }
+
+/* ──────────────────────────────────────────
+   Highlight.js — dark mode (midnight)
+────────────────────────────────────────── */
+.dark .hljs {
+  background: #1a1735 !important;
+  border: 1px solid rgba(100, 90, 160, 0.25);
+  color: #e8e0f8;
+}
+.dark .hljs-keyword, .dark .hljs-selector-tag, .dark .hljs-built_in { color: #a78bfa; font-weight: 600; }
+.dark .hljs-string, .dark .hljs-attr                                { color: #fbbf24; }
+.dark .hljs-comment                                                 { color: #6b60a0; font-style: italic; }
+.dark .hljs-number, .dark .hljs-literal                             { color: #f97316; }
+.dark .hljs-function, .dark .hljs-title                             { color: #60a5fa; }
+.dark .hljs-variable, .dark .hljs-params                            { color: #c9beed; }

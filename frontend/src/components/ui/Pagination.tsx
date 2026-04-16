@@ -16,8 +16,8 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
-        className="px-3 py-1.5 rounded-lg border border-white/10 text-slate-400 text-sm
-          hover:border-violet-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        className="px-3 py-1.5 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] text-sm
+          hover:border-amber-600 hover:text-stone-900 dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         ←
       </button>
@@ -28,8 +28,8 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
           onClick={() => onPageChange(p)}
           className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
             p === page
-              ? 'bg-violet-600 text-white border border-violet-500'
-              : 'border border-white/10 text-slate-400 hover:border-violet-500 hover:text-white'
+              ? 'bg-amber-600 dark:bg-amber-500 text-stone-900 dark:text-[#0f0d24] border border-amber-500 dark:border-amber-400'
+              : 'border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] hover:border-amber-600 hover:text-stone-900 dark:hover:border-amber-500 dark:hover:text-[#f0ecfd]'
           }`}
         >
           {p}
@@ -39,8 +39,8 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === totalPages}
-        className="px-3 py-1.5 rounded-lg border border-white/10 text-slate-400 text-sm
-          hover:border-violet-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        className="px-3 py-1.5 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] text-sm
+          hover:border-amber-600 hover:text-stone-900 dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         →
       </button>

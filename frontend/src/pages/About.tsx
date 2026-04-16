@@ -1,7 +1,6 @@
 import { SITE } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-import { Stars } from '../components/ui'
 import {
   IcoGithub, IcoLinkedin, IcoMail,
   IcoInstagram, IcoDevTo, IcoCodewars, IcoGlobe, IcoMapPin,
@@ -55,8 +54,7 @@ const HOBBIES = [
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-slate-950 font-sans">
-      <Stars />
+    <div className="min-h-screen bg-[#f5ede0] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <Navbar />
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 pt-28 pb-20 space-y-16">
@@ -64,20 +62,20 @@ export default function About() {
         {/* ── Intro ─────────────────────────────────────────────── */}
         <section>
           <h1
-            className="text-5xl sm:text-6xl text-white mb-2 leading-none"
+            className="text-5xl sm:text-6xl text-stone-900 dark:text-[#f0ecfd] mb-2 leading-none"
             style={{ fontFamily: 'Caveat' }}
           >
             Hey, I'm Joaquín.
           </h1>
-          <p className="text-slate-500 text-sm flex items-center gap-1.5 mb-7">
+          <p className="text-stone-500 dark:text-[#8b7db8] text-sm flex items-center gap-1.5 mb-7">
             <IcoMapPin />
             Albacete, Spain
           </p>
 
-          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          <div className="space-y-4 text-stone-700 dark:text-[#c9beed] text-sm sm:text-base leading-relaxed">
             <p>
               By day I'm a senior backend engineer at{' '}
-              <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">Allot</a>
+              <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-amber-700 dark:text-amber-400 hover:underline">Allot</a>
               , building cybersecurity infrastructure that processes ISP traffic at scale.
               Seven years of distributed systems, Python, and the particular education you only get from production failures.
             </p>
@@ -97,7 +95,7 @@ export default function About() {
                 href={s.href}
                 target={s.key === 'email' ? undefined : '_blank'}
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-white/10 text-slate-400 hover:border-violet-500/60 hover:text-violet-300 text-xs transition-colors"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#8b7db8] hover:border-amber-500/70 dark:hover:border-amber-500/70 hover:text-amber-700 dark:hover:text-amber-400 text-xs transition-colors"
               >
                 {s.icon}
                 <span>{s.label}</span>
@@ -108,16 +106,16 @@ export default function About() {
 
         {/* ── What I write about ────────────────────────────────── */}
         <section>
-          <h2 className="text-white font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
+          <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
             What I write about
           </h2>
           <div className="space-y-4">
             {AREAS.map(a => (
-              <div key={a.title} className="flex gap-4 p-4 rounded-xl border border-white/8 bg-slate-900/30 hover:border-white/15 transition-colors">
+              <div key={a.title} className="flex gap-4 p-4 rounded-xl border border-stone-300 dark:border-[#322d5a] bg-[#ede0cc]/40 dark:bg-[#1a1735]/60 hover:border-stone-400 dark:hover:border-[#4a4480] transition-colors">
                 <span className="text-xl shrink-0 mt-0.5">{a.emoji}</span>
                 <div>
-                  <p className="text-white text-sm font-medium mb-1">{a.title}</p>
-                  <p className="text-slate-500 text-sm leading-relaxed">{a.desc}</p>
+                  <p className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium mb-1">{a.title}</p>
+                  <p className="text-stone-500 dark:text-[#8b7db8] text-sm leading-relaxed">{a.desc}</p>
                 </div>
               </div>
             ))}
@@ -126,38 +124,38 @@ export default function About() {
 
         {/* ── Currently ─────────────────────────────────────────── */}
         <section>
-          <h2 className="text-white font-semibold text-base mb-4" style={{ fontFamily: 'Capriola' }}>
+          <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-4" style={{ fontFamily: 'Capriola' }}>
             Currently
           </h2>
-          <div className="rounded-xl border border-violet-500/30 bg-violet-950/20 p-5">
+          <div className="rounded-xl border border-amber-400/50 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 p-5">
             <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
               <div>
-                <span className="text-white text-sm font-medium">Senior Python Backend Developer</span>
-                <span className="text-slate-500 text-sm"> at </span>
-                <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-violet-400 text-sm hover:underline">
+                <span className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium">Senior Python Backend Developer</span>
+                <span className="text-stone-500 dark:text-[#8b7db8] text-sm"> at </span>
+                <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-amber-700 dark:text-amber-400 text-sm hover:underline">
                   Allot
                 </a>
               </div>
-              <span className="text-violet-400 text-xs flex items-center gap-1.5">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-violet-400" />
+              <span className="text-amber-700 dark:text-amber-400 text-xs flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400" />
                 May 2025 – Present
               </span>
             </div>
-            <p className="text-slate-400 text-xs leading-relaxed">
+            <p className="text-stone-600 dark:text-[#c9beed] text-xs leading-relaxed">
               Part of the ASM team — a cybersecurity SaaS platform sold to ISPs worldwide.
               Microservices in Python, Kafka, Redis, MongoDB. Processing millions of security events per second.
             </p>
           </div>
-          <p className="text-slate-600 text-xs mt-3 pl-1">
+          <p className="text-stone-500 dark:text-[#8b7db8] text-xs mt-3 pl-1">
             Also teach advanced Python at{' '}
-            <a href="https://www.tajamar.es" target="_blank" rel="noopener noreferrer" className="hover:text-slate-400 transition-colors">Tajamar</a>
+            <a href="https://www.tajamar.es" target="_blank" rel="noopener noreferrer" className="hover:text-stone-700 dark:hover:text-[#c9beed] transition-colors">Tajamar</a>
             {' '}and mentor at PyLadies Madrid.
           </p>
         </section>
 
         {/* ── Gallery ───────────────────────────────────────────── */}
         <section>
-          <h2 className="text-white font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
+          <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
             Gallery
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -169,8 +167,8 @@ export default function About() {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <p className="absolute bottom-0 left-0 right-0 px-3 py-2.5 text-white text-xs font-medium translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <p className="absolute bottom-0 left-0 right-0 px-3 py-2.5 text-stone-100 text-xs font-medium translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                   {g.caption}
                 </p>
               </div>
@@ -180,25 +178,25 @@ export default function About() {
 
         {/* ── Hobbies ───────────────────────────────────────────── */}
         <section>
-          <h2 className="text-white font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
+          <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
             Outside the terminal
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {HOBBIES.map((h, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-white/8 bg-slate-900/40 p-4 hover:border-white/18 hover:bg-slate-900/60 transition-colors"
+                className="rounded-xl border border-stone-300 dark:border-[#322d5a] bg-[#ede0cc]/50 dark:bg-[#1a1735]/50 p-4 hover:border-stone-400 dark:hover:border-[#4a4480] hover:bg-[#ede0cc]/70 dark:hover:bg-[#1a1735]/80 transition-colors"
               >
                 <div className="text-xl mb-2">{h.icon}</div>
-                <p className="text-white text-sm font-medium mb-1">{h.title}</p>
-                <p className="text-slate-500 text-xs leading-relaxed">{h.desc}</p>
+                <p className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium mb-1">{h.title}</p>
+                <p className="text-stone-500 dark:text-[#8b7db8] text-xs leading-relaxed">{h.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         <div>
-          <a href="/" className="text-violet-400 text-sm hover:text-violet-300 transition-colors">
+          <a href="/" className="text-amber-700 dark:text-amber-400 text-sm hover:text-amber-600 dark:hover:text-amber-300 transition-colors">
             ← Read the blog
           </a>
         </div>

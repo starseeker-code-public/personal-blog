@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Joaquín · Blog</title>
     <meta name="description" content="Python, backends, and things worth writing down." />
+    <script>
+      (function () {
+        var s = localStorage.getItem('theme');
+        var h = new Date().getHours();
+        if (s === 'dark' || (!s && (h < 8 || h >= 19))) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

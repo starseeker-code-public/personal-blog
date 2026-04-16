@@ -9,8 +9,8 @@ interface PostMetaProps {
 
 export function PostMeta({ publishedAt, updatedAt, readTimeMinutes, author }: PostMetaProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3 text-slate-500 text-xs">
-      {author && <span className="text-slate-400">{author}</span>}
+    <div className="flex flex-wrap items-center gap-3 text-stone-500 dark:text-[#8b7db8] text-xs">
+      {author && <span className="text-stone-700 dark:text-[#c9beed]">{author}</span>}
       {author && <span>·</span>}
       <time dateTime={publishedAt}>{format(new Date(publishedAt), 'MMMM d, yyyy')}</time>
       {updatedAt && (

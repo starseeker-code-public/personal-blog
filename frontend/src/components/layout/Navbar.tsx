@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { SITE } from '../../data'
-import { IcoGithub, IcoLinkedin, IcoMail, IcoMenu, IcoClose } from '../icons'
+import { IcoGithub, IcoLinkedin, IcoMail, IcoMenu, IcoClose, IcoSun, IcoMoon } from '../icons'
+import { useTheme } from '../../context/ThemeContext'
 
 const NAV_LINKS = [
   { label: 'Blog', href: '/' },
@@ -17,33 +18,35 @@ const SOCIAL = [
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const location = useLocation()
+  const { theme, toggle } = useTheme()
+
+  // Only show the link to the *other* page (not the one you're on)
+  const visibleLinks = NAV_LINKS.filter(l => l.href !== location.pathname)
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur border-b border-white/5"
-      style={{ background: 'rgba(6, 5, 22, 0.9)' }}
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur border-b border-stone-300/50 dark:border-[#2d2855]/70"
+      style={{ background: 'var(--nav-bg)' }}
     >
       <div className="max-w-3xl mx-auto px-4 h-14 flex items-center gap-6">
 
-        {/* Logo — links to personal portfolio */}
+        {/* Logo */}
         <a
           href={SITE.portfolio}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-violet-400 font-bold tracking-widest text-sm shrink-0 font-caveat hover:text-violet-300 transition-colors"
+          className="text-amber-700 dark:text-amber-400 font-bold tracking-widest text-sm shrink-0 font-caveat hover:text-amber-600 dark:hover:text-amber-300 transition-colors"
         >
           JHM
         </a>
 
         {/* Nav links */}
         <ul className="hidden sm:flex gap-6 flex-1">
-          {NAV_LINKS.map(l => (
+          {visibleLinks.map(l => (
             <li key={l.label}>
               <Link
                 to={l.href}
-                className={`text-sm transition-colors ${
-                  location.pathname === l.href ? 'text-white' : 'text-slate-400 hover:text-white'
-                }`}
+                className="text-sm text-stone-600 dark:text-[#c9beed] hover:text-stone-900 dark:hover:text-[#f0ecfd] transition-colors"
               >
                 {l.label}
               </Link>
@@ -51,7 +54,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Social icons */}
+        {/* Right side: social icons + theme toggle */}
         <div className="hidden sm:flex items-center gap-3 ml-auto shrink-0">
           {SOCIAL.map(s => (
             <a
@@ -59,35 +62,51 @@ export default function Navbar() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-violet-400 transition-colors"
+              className="text-stone-500 dark:text-[#8b7db8] hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
             >
               {s.icon}
             </a>
           ))}
+          <button
+            onClick={toggle}
+            className="ml-1 p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-amber-700 dark:hover:text-amber-400 hover:bg-stone-200/50 dark:hover:bg-[#2d2855]/60 transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <IcoSun /> : <IcoMoon />}
+          </button>
         </div>
 
         {/* Mobile toggle */}
-        <button
-          className="sm:hidden text-slate-400 ml-auto"
-          onClick={() => setOpen(o => !o)}
-          aria-label="Toggle menu"
-        >
-          {open ? <IcoClose /> : <IcoMenu />}
-        </button>
+        <div className="sm:hidden flex items-center gap-2 ml-auto">
+          <button
+            onClick={toggle}
+            className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <IcoSun /> : <IcoMoon />}
+          </button>
+          <button
+            className="text-stone-600 dark:text-[#c9beed]"
+            onClick={() => setOpen(o => !o)}
+            aria-label="Toggle menu"
+          >
+            {open ? <IcoClose /> : <IcoMenu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile drawer */}
       {open && (
         <div
-          className="sm:hidden border-t border-white/5 px-4 pb-6"
-          style={{ background: 'rgb(6, 5, 22)' }}
+          className="sm:hidden border-t border-stone-200/70 dark:border-[#2d2855]/70 px-4 pb-6"
+          style={{ background: 'var(--nav-mobile-bg)' }}
         >
-          {NAV_LINKS.map(l => (
+          {visibleLinks.map(l => (
             <Link
               key={l.label}
               to={l.href}
               onClick={() => setOpen(false)}
-              className="block py-3 text-slate-300 hover:text-white text-sm border-b border-white/5 transition-colors"
+              className="block py-3 text-stone-700 dark:text-[#c9beed] hover:text-stone-900 dark:hover:text-[#f0ecfd] text-sm border-b border-stone-200/70 dark:border-[#2d2855]/70 transition-colors"
             >
               {l.label}
             </Link>
@@ -100,7 +119,7 @@ export default function Navbar() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-500 hover:text-violet-400 transition-colors"
+                className="text-stone-500 dark:text-[#8b7db8] hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
               >
                 {s.icon}
               </a>
