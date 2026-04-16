@@ -1,0 +1,77 @@
+# ── Environment & secrets ───────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Claude ──────────────────────────────────────────────────────────────────
+.claude/
+*.jsonl
+CLAUDE.md
+
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+*.so
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# ── Rust ────────────────────────────────────────────────────────────────────
+target/
+*.rs.bk
+# Cargo.lock is committed for binaries (reproducible builds)
+
+# ── Go ──────────────────────────────────────────────────────────────────────
+*.exe
+*.test
+*.out
+vendor/
+go.sum
+
+# ── Node / Frontend ─────────────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+*.tsbuildinfo
+
+# ── Docker ──────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ── OS ──────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editors ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Markdown ────────────────────────────────────────────────────────────────
+*.md
+!README.md
+
+# ── Logs & temp ─────────────────────────────────────────────────────────────
+*.log
+logs/
+tmp/
+temp/
+
+# ── Generated / runtime ─────────────────────────────────────────────────────
+backend/python/feed.xml
+backend/python/sitemap.xml

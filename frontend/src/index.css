@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Anta&family=Audiowide&family=Baumans&family=Megrim&family=Nova+Flat&family=Exo+2&family=Nova+Round&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&family=Press+Start+2P&family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────
+   Typewriter cursor blink
+────────────────────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+/* ──────────────────────────────────────────
+   Slow star drift (atmospheric background)
+────────────────────────────────────────── */
+@keyframes star-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-60px, -40px); }
+}
+.stars-layer {
+  animation: star-drift 60s linear infinite alternate;
+}
+
+/* ──────────────────────────────────────────
+   Keyword glow (inline highlighted words)
+────────────────────────────────────────── */
+.keyword-glow {
+  color: #a5b4fc;
+  font-weight: 500;
+  text-shadow: 0 0 12px rgba(129, 140, 248, 0.35);
+}
+
+/* ──────────────────────────────────────────
+   Prevent horizontal overflow
+────────────────────────────────────────── */
+html, body {
+  overflow-x: hidden;
+}
+
+/* ──────────────────────────────────────────
+   Reading progress bar (top of post pages)
+────────────────────────────────────────── */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(to right, #818cf8, #a78bfa);
+  z-index: 100;
+  transition: width 0.1s linear;
+}
+
+/* ──────────────────────────────────────────
+   Post card hover glow
+────────────────────────────────────────── */
+@keyframes card-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3), 0 0 24px rgba(99, 102, 241, 0.08);
+  }
+}
+
+/* ──────────────────────────────────────────
+   Gentle flash utility
+────────────────────────────────────────── */
+@keyframes gentle-flash {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 1; }
+}
+.gentle-flash {
+  animation: gentle-flash 3s ease-in-out infinite;
+}
+
+/* ──────────────────────────────────────────
+   Highlight.js theme overrides (dark blog)
+────────────────────────────────────────── */
+.hljs {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.5rem;
+}
