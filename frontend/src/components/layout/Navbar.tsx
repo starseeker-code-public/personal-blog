@@ -35,7 +35,7 @@ export default function Navbar() {
           href={SITE.portfolio}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-amber-700 dark:text-amber-400 font-bold tracking-widest text-sm shrink-0 font-caveat hover:text-amber-600 dark:hover:text-amber-300 transition-colors"
+          className="text-[#4e6c50] dark:text-amber-400 font-bold tracking-widest text-sm shrink-0 font-caveat hover:text-[#395144] dark:hover:text-amber-300 transition-colors"
         >
           JHM
         </a>
@@ -46,7 +46,7 @@ export default function Navbar() {
             <li key={l.label}>
               <Link
                 to={l.href}
-                className="text-sm text-stone-600 dark:text-[#c9beed] hover:text-[#1a5c38] dark:hover:text-[#f0ecfd] transition-colors"
+                className="text-sm text-stone-600 dark:text-[#c9beed] hover:text-[#4e6c50] dark:hover:text-[#f0ecfd] transition-colors"
               >
                 {l.label}
               </Link>
@@ -62,14 +62,14 @@ export default function Navbar() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-stone-500 dark:text-[#8b7db8] hover:text-[#1a5c38] dark:hover:text-amber-400 transition-colors"
+              className="text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
             >
               {s.icon}
             </a>
           ))}
           <button
             onClick={toggle}
-            className="ml-1 p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#1a5c38] dark:hover:text-amber-400 hover:bg-[#d8f0e4]/50 dark:hover:bg-[#2d2855]/60 transition-colors"
+            className="ml-1 p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <IcoSun /> : <IcoMoon />}
@@ -80,7 +80,7 @@ export default function Navbar() {
         <div className="sm:hidden flex items-center gap-2 ml-auto">
           <button
             onClick={toggle}
-            className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#1a5c38] dark:hover:text-amber-400 transition-colors"
+            className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <IcoSun /> : <IcoMoon />}
@@ -106,7 +106,7 @@ export default function Navbar() {
               key={l.label}
               to={l.href}
               onClick={() => setOpen(false)}
-              className="block py-3 text-stone-700 dark:text-[#c9beed] hover:text-[#1a5c38] dark:hover:text-[#f0ecfd] text-sm border-b border-stone-200/70 dark:border-[#2d2855]/70 transition-colors"
+              className="block py-3 text-stone-700 dark:text-[#c9beed] hover:text-[#4e6c50] dark:hover:text-[#f0ecfd] text-sm border-b border-stone-200/70 dark:border-[#2d2855]/70 transition-colors"
             >
               {l.label}
             </Link>
@@ -119,7 +119,7 @@ export default function Navbar() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-stone-500 dark:text-[#8b7db8] hover:text-[#1a5c38] dark:hover:text-amber-400 transition-colors"
+                className="text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
               >
                 {s.icon}
               </a>

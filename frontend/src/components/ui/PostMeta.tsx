@@ -20,7 +20,7 @@ export function PostMeta({ publishedAt, updatedAt, readTimeMinutes, author }: Po
         </>
       )}
       <span>·</span>
-      <span>{readTimeMinutes} min read</span>
+      <span className="text-[#b81818] dark:text-orange-400">{readTimeMinutes} min read</span>
     </div>
   )
 }

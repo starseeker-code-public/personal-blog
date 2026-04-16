@@ -17,7 +17,7 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
         className="px-3 py-1.5 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] text-sm
-          hover:border-[#1a5c38] hover:text-[#1a5c38] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          hover:border-[#2a3428] hover:text-[#2a3428] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         ←
       </button>
@@ -28,8 +28,8 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
           onClick={() => onPageChange(p)}
           className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
             p === page
-              ? 'bg-[#1a5c38] dark:bg-amber-500 text-[#f0f7f2] dark:text-[#0f0d24] border border-[#1a5c38] dark:border-amber-400'
-              : 'border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] hover:border-[#1a5c38] hover:text-[#1a5c38] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd]'
+              ? 'bg-[#2a3428] dark:bg-amber-500 text-[#f0ead8] dark:text-[#0f0d24] border border-[#2a3428] dark:border-amber-400'
+              : 'border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] hover:border-[#2a3428] hover:text-[#2a3428] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd]'
           }`}
         >
           {p}
@@ -40,7 +40,7 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
         onClick={() => onPageChange(page + 1)}
         disabled={page === totalPages}
         className="px-3 py-1.5 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] text-sm
-          hover:border-[#1a5c38] hover:text-[#1a5c38] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          hover:border-[#2a3428] hover:text-[#2a3428] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         →
       </button>

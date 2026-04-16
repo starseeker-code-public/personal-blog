@@ -8,8 +8,8 @@
    Theme CSS variables — set via JS class
 ────────────────────────────────────────── */
 :root {
-  --nav-bg: rgba(240, 232, 213, 0.97);
-  --nav-mobile-bg: rgb(240, 232, 213);
+  --nav-bg: rgba(239, 234, 216, 0.97);
+  --nav-mobile-bg: rgb(239, 234, 216);
 }
 .dark {
   --nav-bg: rgba(15, 13, 36, 0.97);
@@ -20,24 +20,23 @@
    Light mode: warm brown text — avoid near-black
    (mirrors the dark mode decision to avoid pure white)
 ────────────────────────────────────────── */
-html:not(.dark) .text-stone-900 { color: #2c1808; }
-html:not(.dark) .text-stone-800 { color: #3d2210; }
-html:not(.dark) .text-stone-700 { color: #5a3820; }
-html:not(.dark) .text-stone-600 { color: #7a5030; }
-html:not(.dark) .text-stone-500 { color: #9a7050; }
-html:not(.dark) .text-stone-400 { color: #b89070; }
+/* :where() zeroes the wrapper's specificity so hover: utility classes (0,1,1) can override these (0,1,0) */
+:where(html:not(.dark)) .text-stone-900 { color: #2c1808; }
+:where(html:not(.dark)) .text-stone-800 { color: #3d2210; }
+:where(html:not(.dark)) .text-stone-700 { color: #5a3820; }
+:where(html:not(.dark)) .text-stone-600 { color: #7a5030; }
+:where(html:not(.dark)) .text-stone-500 { color: #7a4828; }
+:where(html:not(.dark)) .text-stone-400 { color: #9a6840; }
 
 /* ──────────────────────────────────────────
    Light mode: warm amber borders globally
-   (stone-200/300 → amber-brown; dark: classes
-   override these naturally via specificity)
 ────────────────────────────────────────── */
-html:not(.dark) .border-stone-200     { border-color: #c8a870; }
-html:not(.dark) .border-stone-300     { border-color: #b8956a; }
-html:not(.dark) .border-stone-200\/70 { border-color: rgba(200, 168, 112, 0.7); }
-html:not(.dark) .border-stone-300\/50 { border-color: rgba(184, 149, 106, 0.5); }
-html:not(.dark) .border-stone-200\/60 { border-color: rgba(200, 168, 112, 0.6); }
-html:not(.dark) .divide-stone-200 > * + * { border-color: #c8a870; }
+:where(html:not(.dark)) .border-stone-200     { border-color: #aa8b56; }
+:where(html:not(.dark)) .border-stone-300     { border-color: #906a30; }
+:where(html:not(.dark)) .border-stone-200\/70 { border-color: rgba(170, 139, 86, 0.7); }
+:where(html:not(.dark)) .border-stone-300\/50 { border-color: rgba(144, 106, 48, 0.5); }
+:where(html:not(.dark)) .border-stone-200\/60 { border-color: rgba(170, 139, 86, 0.6); }
+:where(html:not(.dark)) .divide-stone-200 > * + * { border-color: #aa8b56; }
 
 /* ──────────────────────────────────────────
    Typewriter cursor blink
@@ -60,9 +59,9 @@ html:not(.dark) .divide-stone-200 > * + * { border-color: #c8a870; }
    Keyword glow (inline highlighted words)
 ────────────────────────────────────────── */
 .keyword-glow {
-  color: #b45309;
+  color: #798777;
   font-weight: 500;
-  text-shadow: 0 0 12px rgba(180, 83, 9, 0.25);
+  text-shadow: 0 0 12px rgba(121, 135, 119, 0.25);
 }
 .dark .keyword-glow {
   color: #fbbf24;
@@ -85,12 +84,24 @@ html, body {
   top: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(to right, #d97706, #ea580c);
+  background: linear-gradient(to right, #798777, #8a9888);
   z-index: 100;
   transition: width 0.1s linear;
 }
 .dark .reading-progress {
   background: linear-gradient(to right, #f59e0b, #7c3aed);
+}
+
+/* ──────────────────────────────────────────
+   Social icons infinite carousel
+────────────────────────────────────────── */
+@keyframes carousel-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.carousel-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
 
 /* ──────────────────────────────────────────
@@ -108,8 +119,8 @@ html, body {
    Highlight.js — light mode (rich parchment)
 ────────────────────────────────────────── */
 .hljs {
-  background: #e4d8c4 !important;
-  border: 1px solid rgba(150, 100, 40, 0.22);
+  background: #ddd8b0 !important;
+  border: 1px solid rgba(170, 139, 86, 0.28);
   border-radius: 0.5rem;
   color: #1a0d04;
 }

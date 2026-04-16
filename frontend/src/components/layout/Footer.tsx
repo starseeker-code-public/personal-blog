@@ -17,7 +17,7 @@ export default function Footer() {
             href="/feed.xml"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
+            className="flex items-center gap-1 hover:text-[#798777] dark:hover:text-amber-400 transition-colors"
             title="RSS Feed"
           >
             <IcoRss />
