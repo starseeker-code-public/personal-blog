@@ -4,7 +4,7 @@ import Footer from '../components/layout/Footer'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#f5ede0] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-[#f0e8d5] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <Navbar />
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4">

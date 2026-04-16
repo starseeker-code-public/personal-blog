@@ -54,7 +54,7 @@ const HOBBIES = [
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-[#f5ede0] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-[#f0e8d5] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <Navbar />
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 pt-28 pb-20 space-y-16">
@@ -62,7 +62,7 @@ export default function About() {
         {/* ── Intro ─────────────────────────────────────────────── */}
         <section>
           <h1
-            className="text-5xl sm:text-6xl text-stone-900 dark:text-[#f0ecfd] mb-2 leading-none"
+            className="text-5xl sm:text-6xl text-[#152b1e] dark:text-[#f0ecfd] mb-2 leading-none"
             style={{ fontFamily: 'Caveat' }}
           >
             Hey, I'm Joaquín.
@@ -95,7 +95,7 @@ export default function About() {
                 href={s.href}
                 target={s.key === 'email' ? undefined : '_blank'}
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#8b7db8] hover:border-amber-500/70 dark:hover:border-amber-500/70 hover:text-amber-700 dark:hover:text-amber-400 text-xs transition-colors"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#8b7db8] hover:border-[#1a5c38]/70 dark:hover:border-amber-500/70 hover:text-[#1a5c38] dark:hover:text-amber-400 text-xs transition-colors"
               >
                 {s.icon}
                 <span>{s.label}</span>
@@ -111,7 +111,7 @@ export default function About() {
           </h2>
           <div className="space-y-4">
             {AREAS.map(a => (
-              <div key={a.title} className="flex gap-4 p-4 rounded-xl border border-stone-300 dark:border-[#322d5a] bg-[#ede0cc]/40 dark:bg-[#1a1735]/60 hover:border-stone-400 dark:hover:border-[#4a4480] transition-colors">
+              <div key={a.title} className="flex gap-4 p-4 rounded-xl border border-stone-300 dark:border-[#322d5a] bg-[#e5dac8]/40 dark:bg-[#1a1735]/60 hover:border-stone-400 dark:hover:border-[#4a4480] transition-colors">
                 <span className="text-xl shrink-0 mt-0.5">{a.emoji}</span>
                 <div>
                   <p className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium mb-1">{a.title}</p>
@@ -185,7 +185,7 @@ export default function About() {
             {HOBBIES.map((h, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-stone-300 dark:border-[#322d5a] bg-[#ede0cc]/50 dark:bg-[#1a1735]/50 p-4 hover:border-stone-400 dark:hover:border-[#4a4480] hover:bg-[#ede0cc]/70 dark:hover:bg-[#1a1735]/80 transition-colors"
+                className="rounded-xl border border-stone-300 dark:border-[#322d5a] bg-[#e5dac8]/50 dark:bg-[#1a1735]/50 p-4 hover:border-stone-400 dark:hover:border-[#4a4480] hover:bg-[#e5dac8]/70 dark:hover:bg-[#1a1735]/80 transition-colors"
               >
                 <div className="text-xl mb-2">{h.icon}</div>
                 <p className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium mb-1">{h.title}</p>

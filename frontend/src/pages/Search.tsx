@@ -25,7 +25,7 @@ export default function Search() {
   }, [query])
 
   return (
-    <div className="min-h-screen bg-[#f5ede0] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-[#f0e8d5] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <Navbar />
 
       <Section id="search-results">
@@ -44,7 +44,7 @@ export default function Search() {
         {loading && (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
-              <div key={i} className="rounded-xl border border-stone-200 dark:border-[#322d5a] bg-[#ede0cc]/60 dark:bg-[#1a1735]/60 p-5 animate-pulse h-36" />
+              <div key={i} className="rounded-xl border border-stone-200 dark:border-[#322d5a] bg-[#e5dac8]/60 dark:bg-[#1a1735]/60 p-5 animate-pulse h-36" />
             ))}
           </div>
         )}

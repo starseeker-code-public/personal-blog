@@ -5,16 +5,39 @@
 @tailwind utilities;
 
 /* ──────────────────────────────────────────
-   Theme CSS variables — applied via JS class
+   Theme CSS variables — set via JS class
 ────────────────────────────────────────── */
 :root {
-  --nav-bg: rgba(245, 237, 224, 0.95);
-  --nav-mobile-bg: rgb(245, 237, 224);
+  --nav-bg: rgba(240, 232, 213, 0.97);
+  --nav-mobile-bg: rgb(240, 232, 213);
 }
 .dark {
   --nav-bg: rgba(15, 13, 36, 0.97);
   --nav-mobile-bg: rgb(15, 13, 36);
 }
+
+/* ──────────────────────────────────────────
+   Light mode: warm brown text — avoid near-black
+   (mirrors the dark mode decision to avoid pure white)
+────────────────────────────────────────── */
+html:not(.dark) .text-stone-900 { color: #2c1808; }
+html:not(.dark) .text-stone-800 { color: #3d2210; }
+html:not(.dark) .text-stone-700 { color: #5a3820; }
+html:not(.dark) .text-stone-600 { color: #7a5030; }
+html:not(.dark) .text-stone-500 { color: #9a7050; }
+html:not(.dark) .text-stone-400 { color: #b89070; }
+
+/* ──────────────────────────────────────────
+   Light mode: warm amber borders globally
+   (stone-200/300 → amber-brown; dark: classes
+   override these naturally via specificity)
+────────────────────────────────────────── */
+html:not(.dark) .border-stone-200     { border-color: #c8a870; }
+html:not(.dark) .border-stone-300     { border-color: #b8956a; }
+html:not(.dark) .border-stone-200\/70 { border-color: rgba(200, 168, 112, 0.7); }
+html:not(.dark) .border-stone-300\/50 { border-color: rgba(184, 149, 106, 0.5); }
+html:not(.dark) .border-stone-200\/60 { border-color: rgba(200, 168, 112, 0.6); }
+html:not(.dark) .divide-stone-200 > * + * { border-color: #c8a870; }
 
 /* ──────────────────────────────────────────
    Typewriter cursor blink
@@ -55,13 +78,13 @@ html, body {
 
 /* ──────────────────────────────────────────
    Reading progress bar (top of post pages)
-   Light: gold → orange | Dark: gold → violet
+   Light: gold → orange  |  Dark: gold → violet
 ────────────────────────────────────────── */
 .reading-progress {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 3px;
   background: linear-gradient(to right, #d97706, #ea580c);
   z-index: 100;
   transition: width 0.1s linear;
@@ -82,20 +105,20 @@ html, body {
 }
 
 /* ──────────────────────────────────────────
-   Highlight.js — light mode (parchment)
+   Highlight.js — light mode (rich parchment)
 ────────────────────────────────────────── */
 .hljs {
-  background: #e8d9c0 !important;
-  border: 1px solid rgba(120, 80, 30, 0.18);
+  background: #e4d8c4 !important;
+  border: 1px solid rgba(150, 100, 40, 0.22);
   border-radius: 0.5rem;
-  color: #2c1a0e;
+  color: #1a0d04;
 }
 .hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #7c2d12; font-weight: 600; }
 .hljs-string, .hljs-attr                          { color: #92400e; }
-.hljs-comment                                     { color: #a8957a; font-style: italic; }
-.hljs-number, .hljs-literal                       { color: #c2410c; }
+.hljs-comment                                     { color: #9a7850; font-style: italic; }
+.hljs-number, .hljs-literal                       { color: #b45309; }
 .hljs-function, .hljs-title                       { color: #1d4ed8; }
-.hljs-variable, .hljs-params                      { color: #374151; }
+.hljs-variable, .hljs-params                      { color: #3d2008; }
 
 /* ──────────────────────────────────────────
    Highlight.js — dark mode (midnight)

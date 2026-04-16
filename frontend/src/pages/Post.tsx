@@ -4,7 +4,7 @@ import type { Post as PostType } from '../types'
 import { api } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-import { Stars, Tag, PostMeta, Prose } from '../components/ui'
+import { Tag, PostMeta, Prose } from '../components/ui'
 import { IcoArrowLeft } from '../components/icons'
 
 function ReadingProgress() {
@@ -47,26 +47,25 @@ export default function Post() {
   }, [slug])
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans">
+    <div className="min-h-screen bg-[#f0e8d5] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <ReadingProgress />
-      <Stars />
       <Navbar />
 
       <main className="relative z-10 max-w-3xl mx-auto px-4 pt-28 pb-20">
         {loading && (
           <div className="space-y-4 animate-pulse">
-            <div className="h-8 bg-slate-800/60 rounded w-3/4" />
-            <div className="h-4 bg-slate-800/60 rounded w-1/2" />
-            <div className="h-4 bg-slate-800/60 rounded w-full mt-8" />
-            <div className="h-4 bg-slate-800/60 rounded w-full" />
+            <div className="h-8 bg-[#d8ccb8]/70 dark:bg-[#231f42]/80 rounded w-3/4" />
+            <div className="h-4 bg-[#d8ccb8]/70 dark:bg-[#231f42]/80 rounded w-1/2" />
+            <div className="h-4 bg-[#d8ccb8]/70 dark:bg-[#231f42]/80 rounded w-full mt-8" />
+            <div className="h-4 bg-[#d8ccb8]/70 dark:bg-[#231f42]/80 rounded w-full" />
           </div>
         )}
 
         {error && (
           <div className="text-center py-20">
-            <p className="text-slate-400 text-lg mb-2">Post not found</p>
-            <p className="text-slate-600 text-sm mb-6">{error}</p>
-            <Link to="/" className="text-violet-400 hover:text-violet-300 text-sm">
+            <p className="text-stone-600 dark:text-[#c9beed] text-lg mb-2">Post not found</p>
+            <p className="text-stone-500 dark:text-[#8b7db8] text-sm mb-6">{error}</p>
+            <Link to="/" className="text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 text-sm">
               ← Back to blog
             </Link>
           </div>
@@ -77,7 +76,7 @@ export default function Post() {
             {/* Back link */}
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-300 text-sm mb-8 transition-colors"
+              className="inline-flex items-center gap-2 text-stone-500 dark:text-[#8b7db8] hover:text-stone-700 dark:hover:text-[#c9beed] text-sm mb-8 transition-colors"
             >
               <IcoArrowLeft />
               Back to blog
@@ -85,14 +84,14 @@ export default function Post() {
 
             {/* Category */}
             {post.category && (
-              <p className="text-violet-400 text-xs tracking-widest uppercase mb-3">
+              <p className="text-[#1a5c38] dark:text-amber-400 text-xs tracking-widest uppercase mb-3">
                 {post.category}
               </p>
             )}
 
             {/* Title */}
             <h1
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 dark:text-[#f0ecfd] leading-tight mb-6"
               style={{ fontFamily: 'Capriola' }}
             >
               {post.title}
@@ -118,7 +117,7 @@ export default function Post() {
               <img
                 src={post.coverImage}
                 alt={post.title}
-                className="w-full rounded-xl border border-white/10 mb-10 object-cover max-h-80"
+                className="w-full rounded-xl border border-stone-200 dark:border-[#322d5a] mb-10 object-cover max-h-80"
               />
             )}
 
@@ -129,25 +128,25 @@ export default function Post() {
 
             {/* Author card */}
             {post.author && (
-              <div className="mt-16 rounded-xl border border-white/10 bg-slate-900/50 p-6 flex gap-4 items-start">
+              <div className="mt-16 rounded-xl border border-stone-200 dark:border-[#322d5a] bg-[#e5dac8]/60 dark:bg-[#1a1735]/60 p-6 flex gap-4 items-start">
                 {post.author.avatar && (
                   <img
                     src={post.author.avatar}
                     alt={post.author.name}
-                    className="w-12 h-12 rounded-full border border-white/10 shrink-0"
+                    className="w-12 h-12 rounded-full border border-stone-200 dark:border-[#322d5a] shrink-0"
                   />
                 )}
                 <div>
-                  <p className="text-white font-medium text-sm">{post.author.name}</p>
+                  <p className="text-stone-900 dark:text-[#f0ecfd] font-medium text-sm">{post.author.name}</p>
                   {post.author.bio && (
-                    <p className="text-slate-400 text-xs mt-1 leading-relaxed">{post.author.bio}</p>
+                    <p className="text-stone-600 dark:text-[#c9beed] text-xs mt-1 leading-relaxed">{post.author.bio}</p>
                   )}
                   {post.author.socials?.github && (
                     <a
                       href={post.author.socials.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-violet-400 text-xs hover:underline mt-2 inline-block"
+                      className="text-amber-700 dark:text-amber-400 text-xs hover:underline mt-2 inline-block"
                     >
                       GitHub →
                     </a>

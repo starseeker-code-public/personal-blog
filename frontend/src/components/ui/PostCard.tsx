@@ -11,12 +11,12 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <Link
       to={`/posts/${post.slug}`}
-      className="group block py-8 px-4 -mx-4 rounded-xl hover:bg-[#ddd0b5]/25 dark:hover:bg-[#1a1735]/70 transition-colors"
+      className="group block py-8 px-4 -mx-4 rounded-xl hover:bg-[#e4f0ea]/50 dark:hover:bg-[#1a1735]/70 transition-colors"
     >
       {/* Meta line */}
       <div className="flex flex-wrap items-center gap-2 text-xs mb-3">
         {post.category && (
-          <span className="text-amber-700 dark:text-amber-400 font-medium tracking-widest uppercase">
+          <span className="text-[#1a5c38] dark:text-amber-400 font-medium tracking-widest uppercase">
             {post.category}
           </span>
         )}
@@ -30,7 +30,7 @@ export function PostCard({ post }: PostCardProps) {
 
       {/* Title */}
       <h2
-        className="text-stone-900 dark:text-[#f0ecfd] text-xl sm:text-2xl font-bold leading-snug mb-3 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors"
+        className="text-stone-900 dark:text-[#f0ecfd] text-xl sm:text-2xl font-bold leading-snug mb-3 group-hover:text-[#1e7a48] dark:group-hover:text-amber-400 transition-colors"
         style={{ fontFamily: 'Capriola' }}
       >
         {post.title}
@@ -48,7 +48,7 @@ export function PostCard({ post }: PostCardProps) {
             <Tag key={t} label={t} linkable />
           ))}
         </div>
-        <span className="text-stone-400 dark:text-[#8b7db8] group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors text-base shrink-0">
+        <span className="text-stone-400 dark:text-[#8b7db8] group-hover:text-[#1e7a48] dark:group-hover:text-amber-400 transition-colors text-base shrink-0">
           →
         </span>
       </div>

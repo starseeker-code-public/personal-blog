@@ -8,7 +8,7 @@ interface TagProps {
 
 export function Tag({ label, linkable = false }: TagProps) {
   const pill = (
-    <span className="text-xs px-2 py-1 rounded-full bg-purple-100 dark:bg-[#2d1f4e] text-purple-700 dark:text-[#a78bfa] border border-purple-200 dark:border-[#4a3580] whitespace-nowrap">
+    <span className="text-xs px-2 py-1 rounded-full bg-[#f5edd8] dark:bg-[#2d1f4e] text-[#7c3b1a] dark:text-[#a78bfa] border border-[#d4a870] dark:border-[#4a3580] whitespace-nowrap">
       {label}
     </span>
   )
