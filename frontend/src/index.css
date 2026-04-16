@@ -103,6 +103,32 @@ html, body {
   -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
+.carousel-inner {
+  animation: carousel-scroll 10s linear infinite;
+  width: max-content;
+}
+.carousel-container:hover .carousel-inner {
+  animation-play-state: paused;
+}
+
+/* ──────────────────────────────────────────
+   Orbiting circles around avatar (Post page)
+────────────────────────────────────────── */
+@keyframes orbit-cw {
+  from { transform: translate(-50%, -50%) rotate(0deg)   translateX(58px) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg) translateX(58px) rotate(-360deg); }
+}
+.orbit-circle {
+  animation: orbit-cw 10s linear infinite;
+}
+.orbit-circle-offset {
+  animation: orbit-cw 10s linear infinite;
+  animation-delay: -5s;
+}
+.orbit-container:hover .orbit-circle,
+.orbit-container:hover .orbit-circle-offset {
+  animation-play-state: paused;
+}
 
 /* ──────────────────────────────────────────
    Gentle flash utility

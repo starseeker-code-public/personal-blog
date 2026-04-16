@@ -7,15 +7,18 @@ import Footer from '../components/layout/Footer'
 import { PostCard, Pagination } from '../components/ui'
 import { IcoSearch } from '../components/icons'
 
-// Rotates "Personal Blog" → "Visit my portfolio" (blinking) for ~60s → back permanently
+// Fades "Personal Blog" → "Visit my portfolio" after 5s
 function HeaderBadge() {
-  const [phase, setPhase] = useState<'blog' | 'portfolio' | 'done'>('blog')
+  const [phase, setPhase] = useState<'blog' | 'portfolio'>('blog')
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('portfolio'), 5_000)
-    const t2 = setTimeout(() => setPhase('done'), 65_000)
+    const t1 = setTimeout(() => setVisible(false), 4_500)
+    const t2 = setTimeout(() => { setPhase('portfolio'); setVisible(true) }, 5_200)
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
+
+  const base = 'text-xs tracking-[0.3em] uppercase mb-3 inline-block transition-opacity duration-700'
 
   if (phase === 'portfolio') {
     return (
@@ -23,7 +26,7 @@ function HeaderBadge() {
         href={SITE.portfolio}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[#dd0000] dark:text-amber-400 text-xs tracking-[0.3em] uppercase mb-3 inline-block animate-pulse hover:text-[#aa0000] dark:hover:text-amber-300 transition-colors"
+        className={`${base} text-[#dd0000] dark:text-amber-400 hover:text-[#aa0000] dark:hover:text-amber-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
       >
         Visit my portfolio →
       </a>
@@ -31,7 +34,9 @@ function HeaderBadge() {
   }
 
   return (
-    <p className="text-[#2a3428] dark:text-amber-400 text-xs tracking-[0.3em] uppercase mb-3">Personal Blog</p>
+    <p className={`${base} text-[#2a3428] dark:text-amber-400 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+      Personal Blog
+    </p>
   )
 }
 

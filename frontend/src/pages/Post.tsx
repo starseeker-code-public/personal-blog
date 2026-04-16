@@ -131,22 +131,26 @@ export default function Post() {
               <Prose>{post.body}</Prose>
             </div>
 
-            {/* Author card */}
+            {/* Author card — orbiting circles */}
             {post.author && (
-              <div className="mt-12 flex items-center justify-end">
-                <a href={post.author.socials?.github ?? SITE.social.github}
-                  target="_blank" rel="noopener noreferrer" title="GitHub"
-                  className="w-10 h-10 rounded-full border-2 border-stone-200 dark:border-[#322d5a] bg-[#e4ddba] dark:bg-[#1a1735] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors shrink-0 relative z-10 -mr-2">
-                  <IcoGithub />
-                </a>
-                <div className="w-16 h-16 rounded-full border-2 border-stone-200 dark:border-[#322d5a] overflow-hidden shrink-0 relative z-20">
-                  <img src="https://github.com/starseeker-code-public.png" alt={post.author.name} className="w-full h-full object-cover" />
+              <div className="mt-12 flex justify-end">
+                <div className="relative w-40 h-40 orbit-container">
+                  <a href={post.author.socials?.github ?? SITE.social.github}
+                    target="_blank" rel="noopener noreferrer" title="GitHub"
+                    className="orbit-circle absolute top-1/2 left-1/2 w-10 h-10 rounded-full border border-stone-300 bg-[#faf6ee] dark:bg-[#1a1735] dark:border-[#322d5a] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors z-30"
+                  >
+                    <IcoGithub />
+                  </a>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border-2 border-stone-200 dark:border-[#322d5a] overflow-hidden z-20">
+                    <img src="https://github.com/starseeker-code-public.png" alt={post.author.name} className="w-full h-full object-cover" />
+                  </div>
+                  <a href={SITE.portfolio}
+                    target="_blank" rel="noopener noreferrer" title="Portfolio"
+                    className="orbit-circle-offset absolute top-1/2 left-1/2 w-10 h-10 rounded-full border border-stone-300 bg-[#faf6ee] dark:bg-[#1a1735] dark:border-[#322d5a] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors z-30"
+                  >
+                    <IcoGlobe />
+                  </a>
                 </div>
-                <a href={SITE.portfolio}
-                  target="_blank" rel="noopener noreferrer" title="Portfolio"
-                  className="w-10 h-10 rounded-full border-2 border-stone-200 dark:border-[#322d5a] bg-[#e4ddba] dark:bg-[#1a1735] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors shrink-0 relative z-10 -ml-2">
-                  <IcoGlobe />
-                </a>
               </div>
             )}
           </article>

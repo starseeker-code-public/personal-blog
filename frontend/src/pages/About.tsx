@@ -2,36 +2,14 @@ import { SITE } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import {
-  IcoGithub, IcoLinkedin, IcoMail,
-  IcoInstagram, IcoDevTo, IcoCodewars, IcoGlobe,
+  IcoGithub, IcoLinkedin, IcoDevTo, IcoGlobe,
 } from '../components/icons'
 
 const SOCIALS = [
-  { key: 'portfolio', label: 'Portfolio',  icon: <IcoGlobe />,     href: SITE.portfolio },
-  { key: 'github',    label: 'GitHub',     icon: <IcoGithub />,    href: SITE.social.github },
-  { key: 'linkedin',  label: 'LinkedIn',   icon: <IcoLinkedin />,  href: SITE.social.linkedin },
-  { key: 'devto',     label: 'Dev.to',     icon: <IcoDevTo />,     href: SITE.social.devto },
-  { key: 'codewars',  label: 'Codewars',   icon: <IcoCodewars />,  href: SITE.social.codewars },
-  { key: 'instagram', label: 'Instagram',  icon: <IcoInstagram />, href: SITE.social.instagram },
-  { key: 'email',     label: 'Email',      icon: <IcoMail />,      href: `mailto:${SITE.author.email}` },
-]
-
-const AREAS = [
-  {
-    emoji: '⚙️',
-    title: 'Engineering',
-    desc: 'The craft I do for a living. Distributed systems, APIs, databases, the hard lessons production teaches you. Honest write-ups — including the mistakes.',
-  },
-  {
-    emoji: '🔭',
-    title: 'Hobbies',
-    desc: 'Pointing telescopes at the night sky. Competitive coding. Learning languages. Whatever I\'m obsessing over this month.',
-  },
-  {
-    emoji: '🌿',
-    title: 'Personal Life',
-    desc: 'Living and working remotely from Albacete, Spain. Opinions formed over years. Things I wish I\'d known sooner.',
-  },
+  { key: 'portfolio', label: 'Portfolio', icon: <IcoGlobe />,    href: SITE.portfolio },
+  { key: 'github',    label: 'GitHub',    icon: <IcoGithub />,   href: SITE.social.github },
+  { key: 'linkedin',  label: 'LinkedIn',  icon: <IcoLinkedin />, href: SITE.social.linkedin },
+  { key: 'devto',     label: 'Dev.to',    icon: <IcoDevTo />,    href: SITE.social.devto },
 ]
 
 const GALLERY = [
@@ -41,6 +19,30 @@ const GALLERY = [
   { url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80', caption: 'Teaching' },
   { url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80', caption: 'Late nights' },
   { url: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80', caption: 'Traveling' },
+]
+
+const FEATURES = [
+  {
+    subtitle: 'Engineering',
+    title: 'Where Hard Problems Live',
+    text: 'Seven years building distributed systems in Python. APIs, microservices, event-driven architectures — and the particular education that only production failures can give. I write about what worked, what broke, and why.',
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+    alt: 'Circuit board close-up',
+  },
+  {
+    subtitle: 'Hobbies',
+    title: 'After the Terminal Closes',
+    text: 'A Dobsonian telescope, the Messier catalogue, and too many clear nights. Competitive coding to keep the instinct sharp. Learning German — slowly, stubbornly. Teaching Python because explaining it out loud is the only real test of understanding.',
+    image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=80',
+    alt: 'Starry night sky',
+  },
+  {
+    subtitle: 'Life & Lifestyle',
+    title: 'The Human Behind the Code',
+    text: 'Based in Albacete, working remotely. Bilingual in Spanish and English. Opinions formed over years of doing, not just reading. This blog is my honest record — the engineering, the hobbies, and everything in between.',
+    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80',
+    alt: 'Landscape and lifestyle',
+  },
 ]
 
 export default function About() {
@@ -59,7 +61,7 @@ export default function About() {
             Hey, I'm Joaquín.
           </h1>
 
-          <div className="space-y-4 text-stone-700 dark:text-[#c9beed] text-sm sm:text-base leading-relaxed">
+          <div className="space-y-4 text-stone-700 dark:text-[#c9beed] text-sm sm:text-base leading-relaxed text-justify">
             <p>
               By day I'm a senior backend engineer at{' '}
               <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-[#dd0000] dark:text-amber-400 hover:underline">Allot</a>
@@ -75,17 +77,14 @@ export default function About() {
             </p>
           </div>
 
-          {/* Social icons carousel */}
-          <div className="mt-8 overflow-hidden carousel-fade">
-            <div
-              className="flex items-center gap-8"
-              style={{ animation: 'carousel-scroll 18s linear infinite', width: 'max-content' }}
-            >
+          {/* Social icons carousel — 4 icons, pause on hover */}
+          <div className="mt-8 w-56 mx-auto overflow-hidden carousel-fade carousel-container">
+            <div className="flex items-center gap-10 carousel-inner [&_svg]:w-6 [&_svg]:h-6">
               {[...SOCIALS, ...SOCIALS].map((s, i) => (
                 <a
                   key={`${s.key}-${i}`}
                   href={s.href}
-                  target={s.key === 'email' ? undefined : '_blank'}
+                  target="_blank"
                   rel="noopener noreferrer"
                   title={s.label}
                   className="text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors shrink-0"
@@ -94,24 +93,6 @@ export default function About() {
                 </a>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ── What I write about ────────────────────────────────── */}
-        <section>
-          <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
-            What I write about
-          </h2>
-          <div className="space-y-4">
-            {AREAS.map(a => (
-              <div key={a.title} className="flex gap-4 p-4 rounded-xl border border-stone-300 dark:border-[#322d5a] bg-[#e4ddba]/40 dark:bg-[#1a1735]/60 hover:border-stone-400 dark:hover:border-[#4a4480] transition-colors">
-                <span className="text-xl shrink-0 mt-0.5">{a.emoji}</span>
-                <div>
-                  <p className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium mb-1">{a.title}</p>
-                  <p className="text-stone-500 dark:text-[#8b7db8] text-sm leading-relaxed">{a.desc}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </section>
 
@@ -134,7 +115,7 @@ export default function About() {
                 May 2025 – Present
               </span>
             </div>
-            <p className="text-stone-600 dark:text-[#c9beed] text-xs leading-relaxed">
+            <p className="text-stone-600 dark:text-[#c9beed] text-xs leading-relaxed text-justify">
               Part of the ASM team — a cybersecurity SaaS platform sold to ISPs worldwide.
               Microservices in Python, Kafka, Redis, MongoDB. Processing millions of security events per second.
             </p>
@@ -146,10 +127,10 @@ export default function About() {
           </p>
         </section>
 
-        {/* ── Gallery ───────────────────────────────────────────── */}
+        {/* ── Outside the terminal (gallery) ────────────────────── */}
         <section>
           <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
-            Gallery
+            Outside the terminal
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {GALLERY.map((g, i) => (
@@ -167,6 +148,37 @@ export default function About() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* ── Feature sections ──────────────────────────────────── */}
+        {FEATURES.map((f, i) => (
+          <section key={f.subtitle}>
+            <div className={`flex flex-col sm:flex-row gap-6 items-center ${i % 2 === 1 ? 'sm:flex-row-reverse' : ''}`}>
+              <div className="w-full sm:w-2/5 aspect-[4/3] overflow-hidden rounded-xl border border-stone-200 dark:border-[#322d5a] shrink-0">
+                <img src={f.image} alt={f.alt} className="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs text-[#dd0000] dark:text-amber-400 tracking-widest uppercase mb-1">{f.subtitle}</p>
+                <h3
+                  className="text-stone-900 dark:text-[#f0ecfd] font-bold text-lg mb-3 leading-snug"
+                  style={{ fontFamily: 'Capriola' }}
+                >
+                  {f.title}
+                </h3>
+                <p className="text-stone-600 dark:text-[#c9beed] text-sm leading-relaxed text-justify">{f.text}</p>
+              </div>
+            </div>
+          </section>
+        ))}
+
+        {/* ── Personal project ──────────────────────────────────── */}
+        <section>
+          <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-4" style={{ fontFamily: 'Capriola' }}>
+            A Tool Nobody Asked For
+          </h2>
+          <p className="text-stone-600 dark:text-[#c9beed] text-sm leading-relaxed text-justify">
+            I'm building <span className="text-stone-900 dark:text-[#f0ecfd] font-medium">ObsidianSky</span> — a personal observation log for amateur astronomers. The premise is embarrassingly simple: two years into working through the Messier catalogue, I was still tracking sessions in a spreadsheet. That felt wrong for someone who writes distributed systems for a living. The goal is a lightweight Python backend with a clean interface to log sessions, sky conditions, equipment notes, and deep-sky object data — not for anyone else, just for me. Side projects are how I test ideas without the pressure of production. This one is half-finished and will probably always be.
+          </p>
         </section>
 
         <div>
