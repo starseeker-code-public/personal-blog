@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     posts_per_page: int = 10
     login_username: str = "user"
     login_password: str = "Test123!"
+    # Prefix for the admin router + upload endpoint. Pulled from env so the
+    # namespace can be renamed without touching any hand-written code.
+    secure_path: str = "/api/admin"
 
     # Love-letter email (opt-in from the composer).
     loved_one_email: str = "proyecto_noether@outlook.com"

@@ -6,7 +6,9 @@ RUN npm ci
 
 COPY . .
 ARG VITE_API_BASE=http://localhost:8000
+ARG VITE_SECURE_PATH=/api/admin
 ENV VITE_API_BASE=$VITE_API_BASE
+ENV VITE_SECURE_PATH=$VITE_SECURE_PATH
 RUN npm run build
 
 FROM nginx:alpine

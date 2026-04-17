@@ -37,7 +37,7 @@ services:
     build:
       context: ./backend/python
       dockerfile: Dockerfile
-    restart: unless-stopped
+    restart: "on-failure:6"
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-blog_user}:${POSTGRES_PASSWORD:-blog_password}@db:5432/${POSTGRES_DB:-blog}
       REDIS_URL: redis://redis:6379/0
@@ -46,6 +46,7 @@ services:
       SITE_URL: ${SITE_URL:-http://localhost:3001}
       LOGIN_USERNAME: ${LOGIN_USERNAME:-user}
       LOGIN_PASSWORD: ${LOGIN_PASSWORD:-Test123!}
+      SECURE_PATH: ${SECURE_PATH:-/api/admin}
       LOVED_ONE_EMAIL: ${LOVED_ONE_EMAIL:-proyecto_noether@outlook.com}
       SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
@@ -68,6 +69,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_BASE: ${VITE_API_BASE:-http://localhost:8001}
+        VITE_SECURE_PATH: ${VITE_SECURE_PATH:-/api/admin}
     restart: unless-stopped
     ports:
       - "3001:80"

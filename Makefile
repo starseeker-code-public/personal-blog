@@ -1,7 +1,7 @@
 .PHONY: help \
         up up-build down restart build ps \
         logs logs-backend logs-frontend logs-db logs-redis \
-        backend-shell \
+        backend-shell test test-basics test-security \
         frontend-install frontend-dev frontend-build frontend-preview \
         dev-backend dev-frontend \
         setup health post open-docs open-blog \
@@ -69,6 +69,17 @@ logs-redis: ## Tail Redis logs only
 
 backend-shell: ## Open a bash shell inside the running backend container
 	docker compose exec backend /bin/bash
+
+## Tests (require the stack to be up — `make up` first)
+
+test: ## Run all backend tests (basics + admin security)
+	docker compose exec backend pytest -v tests/
+
+test-basics: ## Run only the basic smoke tests
+	docker compose exec backend pytest -v tests/test_basics.py
+
+test-security: ## Run only the admin-namespace security tests
+	docker compose exec backend pytest -v tests/test_security_admin.py
 
 ## Frontend (local)
 

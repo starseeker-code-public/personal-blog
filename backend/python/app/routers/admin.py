@@ -1,6 +1,7 @@
 """Admin-only endpoints — auth-required, not part of the public API contract."""
 
 import secrets
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
@@ -8,12 +9,18 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.config import settings
 from app.database import get_db
 from app.models.post import Post
 from app.schemas.post import PostOut
 from app.security import require_admin
 
-router = APIRouter(prefix="/api/admin", tags=["admin"])
+# Rolling window for the admin post picker. 4 × 365 + 1 accounts for one
+# leap day. Anything older is out of scope for the edit UI — old posts
+# are still reachable by slug if needed.
+_ADMIN_POST_WINDOW_DAYS = 365 * 4 + 1
+
+router = APIRouter(prefix=settings.secure_path, tags=["admin"])
 
 UPLOAD_DIR = Path("/app/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -46,6 +53,28 @@ async def list_drafts(
     )
     drafts = result.scalars().all()
     return [PostOut.from_orm_post(p) for p in drafts]
+
+
+@router.get("/posts", response_model=list[PostOut])
+async def list_recent_posts(
+    db: AsyncSession = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
+    """Posts (drafts + published) within the last 4 years, newest first.
+    Bounded so the admin picker keeps responding fast as the archive grows."""
+    cutoff = datetime.now(timezone.utc) - timedelta(days=_ADMIN_POST_WINDOW_DAYS)
+    result = await db.execute(
+        select(Post)
+        .where(Post.published_at >= cutoff)
+        .order_by(Post.published_at.desc())
+        .options(
+            selectinload(Post.tags),
+            selectinload(Post.category),
+            selectinload(Post.author),
+        )
+    )
+    posts = result.scalars().all()
+    return [PostOut.from_orm_post(p) for p in posts]
 
 
 @router.post("/upload-image")

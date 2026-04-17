@@ -2,6 +2,8 @@ import type { Category, PaginatedResponse, Post, Tag } from '../types'
 import { getAuth } from '../utils/auth'
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
+// Admin namespace prefix — matches the backend's SECURE_PATH env var.
+export const SECURE_PATH = import.meta.env.VITE_SECURE_PATH ?? '/api/admin'
 
 /** Prepend API_BASE to relative `/uploads/...` URLs; leave absolute URLs alone. */
 export function resolveImageUrl(src?: string | null): string | undefined {
@@ -95,11 +97,18 @@ export const api = {
     apiAuthRequest<Post>('POST', '/api/posts', payload),
 
   /** List all draft posts (admin-only). */
-  listDrafts: () => apiAuthRequest<Post[]>('GET', '/api/admin/drafts'),
+  listDrafts: () => apiAuthRequest<Post[]>('GET', `${SECURE_PATH}/drafts`),
+
+  /** List every post, drafts + published, newest first (admin-only). */
+  listAllPosts: () => apiAuthRequest<Post[]>('GET', `${SECURE_PATH}/posts`),
 
   /** Publish a draft by flipping draft=false. */
   publishDraft: (slug: string) =>
     apiAuthRequest<Post>('PUT', `/api/posts/${slug}`, { draft: false }),
+
+  /** Update any existing post — admin-only. */
+  updatePost: (slug: string, payload: Partial<PostCreatePayload>) =>
+    apiAuthRequest<Post>('PUT', `/api/posts/${slug}`, payload),
 
   /** Upload an image; returns { url } pointing at /uploads/<filename>. */
   uploadImage: async (file: File): Promise<{ url: string }> => {
@@ -107,7 +116,7 @@ export const api = {
     if (!auth) throw new Error('Not authenticated')
     const form = new FormData()
     form.append('file', file)
-    const res = await fetch(`${API_BASE}/api/admin/upload-image`, {
+    const res = await fetch(`${API_BASE}${SECURE_PATH}/upload-image`, {
       method: 'POST',
       headers: { Authorization: auth },
       body: form,
