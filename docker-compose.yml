@@ -70,6 +70,10 @@ services:
       args:
         VITE_API_BASE: ${VITE_API_BASE:-http://localhost:8001}
         VITE_SECURE_PATH: ${VITE_SECURE_PATH:-/api/admin}
+        VITE_PATH_LOGIN: ${VITE_PATH_LOGIN:-/login}
+        VITE_PATH_ADMIN_NEW: ${VITE_PATH_ADMIN_NEW:-/admin/new}
+        VITE_PATH_ADMIN_UPDATE: ${VITE_PATH_ADMIN_UPDATE:-/admin/update}
+        VITE_PATH_ADMIN_DREAMS: ${VITE_PATH_ADMIN_DREAMS:-/admin/dreams}
     restart: unless-stopped
     ports:
       - "3001:80"

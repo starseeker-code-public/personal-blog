@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory } from '../data'
+import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_LOGIN } from '../data'
 import { TAGS_BY_CATEGORY } from '../data/tags'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
-import { IcoSun, IcoMoon, IcoPencil } from '../components/icons'
+import { IcoSun, IcoMoon, IcoPencil, IcoDreams } from '../components/icons'
 import type { Post } from '../types'
 
 const inputClass =
@@ -18,7 +18,7 @@ export default function AdminNewPost() {
   const { theme, toggle } = useTheme()
 
   useEffect(() => {
-    if (!isAuthenticated()) navigate('/login', { replace: true })
+    if (!isAuthenticated()) navigate(PATH_LOGIN || '/', { replace: true })
   }, [navigate])
 
   // ── Drafts panel ──────────────────────────────────────────────────────────
@@ -52,7 +52,7 @@ export default function AdminNewPost() {
       logoutToBlog()
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Publish failed'
-      if (msg.startsWith('401')) { clearAuth(); navigate('/login', { replace: true }); return }
+      if (msg.startsWith('401')) { clearAuth(); navigate(PATH_LOGIN, { replace: true }); return }
       setError(msg)
       setPublishingSlug(null)
     }
@@ -97,7 +97,7 @@ export default function AdminNewPost() {
       setCoverImage(url)
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Upload failed'
-      if (msg.startsWith('401')) { clearAuth(); navigate('/login', { replace: true }); return }
+      if (msg.startsWith('401')) { clearAuth(); navigate(PATH_LOGIN, { replace: true }); return }
       setError(msg)
     } finally {
       setUploading(false)
@@ -143,18 +143,28 @@ export default function AdminNewPost() {
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to publish post'
-      if (msg.startsWith('401')) { clearAuth(); navigate('/login', { replace: true }); return }
+      if (msg.startsWith('401')) { clearAuth(); navigate(PATH_LOGIN, { replace: true }); return }
       setError(msg)
       setSubmitting(false)
     }
   }
+
+  if (!isAuthenticated()) return null
 
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300 flex flex-col">
 
       <div className="flex justify-end items-center gap-3 p-4">
         <Link
-          to="/admin/update"
+          to={PATH_ADMIN_DREAMS}
+          className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"
+          aria-label="Dreams"
+          title="Dreams"
+        >
+          <IcoDreams />
+        </Link>
+        <Link
+          to={PATH_ADMIN_UPDATE}
           className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"
           aria-label="Edit an existing post"
           title="Edit an existing post"

@@ -8,6 +8,13 @@ import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import AdminNewPost from './pages/AdminNewPost'
 import AdminUpdatePost from './pages/AdminUpdatePost'
+import AdminDreams from './pages/AdminDreams'
+import {
+  PATH_LOGIN,
+  PATH_ADMIN_NEW,
+  PATH_ADMIN_UPDATE,
+  PATH_ADMIN_DREAMS,
+} from './data'
 
 export default function App() {
   return (
@@ -17,9 +24,10 @@ export default function App() {
       <Route path="/categories/:slug" element={<Category />} />
       <Route path="/about" element={<About />} />
       <Route path="/search" element={<Search />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/admin/new" element={<AdminNewPost />} />
-      <Route path="/admin/update" element={<AdminUpdatePost />} />
+      {PATH_LOGIN        && <Route path={PATH_LOGIN}        element={<Login />} />}
+      {PATH_ADMIN_NEW    && <Route path={PATH_ADMIN_NEW}    element={<AdminNewPost />} />}
+      {PATH_ADMIN_UPDATE && <Route path={PATH_ADMIN_UPDATE} element={<AdminUpdatePost />} />}
+      {PATH_ADMIN_DREAMS && <Route path={PATH_ADMIN_DREAMS} element={<AdminDreams />} />}
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

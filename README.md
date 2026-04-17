@@ -32,13 +32,10 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 
 ## Table of Contents
 
-- [Roadmap](#roadmap)
 - [Tech Stack](#tech-stack)
 - [Database Schema](#database-schema)
 - [Development & Docker](#development--docker)
   - [Quick Start](#quick-start)
-  - [.env template](#env-template)
-  - [Environment Variables Reference](#environment-variables-reference)
   - [Running locally (without Docker)](#running-locally-without-docker)
 - [Project Structure & Architecture](#project-structure--architecture)
   - [Architecture Overview](#architecture-overview)
@@ -60,52 +57,7 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 - [API Reference](#api-reference)
 - [Security](#security)
 - [CI/CD](#cicd)
-- [Contributing](#contributing)
 - [License](#license)
-
----
-
-## Roadmap
-
-<details id="next" open>
-<summary><strong>Near term — content & deployment</strong></summary>
-
-**Content authoring**
-
-- Draft preview — render Markdown in the browser before publishing
-- Image upload support — attach images to posts, served from object storage
-
-**Deployment**
-
-- Containerised production deployment (VPS or cloud)
-- HTTPS via reverse proxy (Nginx + Let's Encrypt or cloud-managed cert)
-- CI pipeline: lint + type check on every push
-
-</details>
-
-<details id="future">
-<summary><strong>Future — multi-language backends</strong></summary>
-
-The `backend/` directory is designed to hold multiple implementations of the same API:
-
-```text
-backend/
-  python/   ← current implementation (FastAPI)
-  go/       ← planned
-  rust/     ← planned
-```
-
-All implementations expose the same REST contract so the React frontend requires no changes. To switch the active backend in Docker Compose, change the build context:
-
-```yaml
-backend:
-  build:
-    context: ./backend/go   # ← swap language here
-```
-
-This is the main long-term goal of the project: rebuild the same API in other languages and compare the experience.
-
-</details>
 
 ---
 
@@ -231,9 +183,6 @@ erDiagram
 # Clone
 git clone <repo-url>
 cd personal-blog
-
-# Create the root .env file (see the template below) — there is only ONE .env
-# at the project root; the backend and frontend both read from it.
 ```
 
 **Docker (recommended):**
@@ -248,66 +197,6 @@ open http://localhost:3001
 # Open the interactive API docs
 open http://localhost:8001/docs
 ```
-
-### .env (single root file)
-
-There is **one `.env` file at the project root**. It is read by:
-
-- **Docker Compose** (`POSTGRES_*`, `SECRET_KEY`, `ALLOWED_ORIGINS`, `SITE_URL`, `VITE_API_BASE`)
-- **The FastAPI backend** — `app/config.py` resolves the project root from its own location and loads the same `.env` whether you run the backend locally or in Docker
-- **The Vite frontend** — `vite.config.ts` sets `envDir: '..'` so `npm run dev` and `vite build` both read the root `.env`
-
-`.env` is gitignored and **never committed**. Generate fresh secrets when bootstrapping a new copy:
-
-```bash
-# Strong SECRET_KEY (32-byte hex)
-python -c "import secrets; print(secrets.token_hex(32))"
-
-# Strong POSTGRES_PASSWORD (URL-safe)
-python -c "import secrets; print(secrets.token_urlsafe(24))"
-```
-
-The structure of the root `.env`:
-
-```bash
-# ── PostgreSQL ──────────────────────────────────────────────────────────────
-POSTGRES_DB=blog
-POSTGRES_USER=blog_user
-POSTGRES_PASSWORD=<generated>
-
-# ── Backend ─────────────────────────────────────────────────────────────────
-# Used when running the backend locally without Docker. Inside Docker the
-# values from docker-compose (host=db, host=redis) take precedence.
-DATABASE_URL=postgresql+asyncpg://blog_user:<password>@localhost:5433/blog
-REDIS_URL=redis://localhost:6380/0
-
-SECRET_KEY=<generated>
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3001
-SITE_NAME=Joaquín · Blog
-SITE_URL=http://localhost:3001
-CACHE_TTL=300
-POSTS_PER_PAGE=10
-
-# ── Frontend ────────────────────────────────────────────────────────────────
-VITE_API_BASE=http://localhost:8001
-```
-
-### Environment Variables Reference
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `POSTGRES_DB` | `blog` | Database name (used by `db` service in Docker Compose) |
-| `POSTGRES_USER` | `blog_user` | Database user |
-| `POSTGRES_PASSWORD` | — | Database password — must be set, generate a strong value |
-| `DATABASE_URL` | `postgresql+asyncpg://...` | Backend connection string (local dev — Docker uses internal hostnames) |
-| `REDIS_URL` | `redis://localhost:6380/0` | Redis connection string (local dev) |
-| `SECRET_KEY` | — | Reserved for signing/encryption needs — must be a strong random value |
-| `ALLOWED_ORIGINS` | `http://localhost:5173,http://localhost:3001` | Comma-separated CORS allowed origins |
-| `SITE_NAME` | `Joaquín · Blog` | Site name used in metadata and feeds |
-| `SITE_URL` | `http://localhost:3001` | Used in RSS feed and sitemap URLs |
-| `CACHE_TTL` | `300` | Redis cache TTL in seconds |
-| `POSTS_PER_PAGE` | `10` | Default page size for paginated lists |
-| `VITE_API_BASE` | `http://localhost:8001` | Frontend: backend base URL |
 
 ### Running locally (without Docker)
 
@@ -867,51 +756,6 @@ The project currently follows a simple single-branch workflow on `main`. When CI
 
 ---
 
-## Contributing
-
-This is a personal project and not open to outside contributions, but the development workflow is documented here for reference.
-
-### Development Workflow
-
-```bash
-# Install backend dependencies
-cd backend/python
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-
-# Install frontend dependencies
-cd frontend
-npm install
-```
-
-1. Make changes in `backend/python/` or `frontend/src/`
-2. Run Docker Compose to verify the full stack works end-to-end
-3. Commit with a short message describing what changed
-4. `git push origin main`
-
-### Code Conventions
-
-| Area | Convention |
-|------|-----------|
-| **API responses** | camelCase field names (Pydantic aliases) — consumed directly by React |
-| **Models** | SQLAlchemy ORM, explicit `__tablename__`, async session everywhere |
-| **Routers** | One file per resource (`posts.py`, `categories.py`, etc.) |
-| **Schemas** | Separate `Create`, `Update`, and `Response` Pydantic models per resource |
-| **Services** | Business logic (caching, scheduling) extracted out of routers |
-| **React components** | One component per file; UI primitives in `components/ui/`, page sections in `sections/`, routes in `pages/` |
-| **TypeScript** | All API responses typed — interfaces in `types/index.ts` |
-| **Styling** | Tailwind utility classes only; no custom CSS except the Tailwind config |
-
-### Adding a New Backend Language
-
-1. Create `backend/<language>/` alongside `backend/python/`
-2. Implement the same REST API contract (same paths, same response shapes)
-3. Add a Dockerfile inside the new directory
-4. Update `docker-compose.yml` to point `backend.build.context` at the new directory
-5. The frontend requires no changes
-
----
-
 ## License
 
-Personal project — all rights reserved.
+GNU Affero General Public License v3.0 — see [LICENSE](LICENSE).

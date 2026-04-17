@@ -5,6 +5,14 @@ export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
 // Admin namespace prefix — matches the backend's SECURE_PATH env var.
 export const SECURE_PATH = import.meta.env.VITE_SECURE_PATH ?? '/api/admin'
 
+// Admin page paths — set via VITE_PATH_* env vars (gitignored .env).
+// Fallbacks keep the app functional locally when env vars aren't set;
+// set them in .env to any path you like for production.
+export const PATH_LOGIN        = import.meta.env.VITE_PATH_LOGIN        ?? '/login'
+export const PATH_ADMIN_NEW    = import.meta.env.VITE_PATH_ADMIN_NEW    ?? '/admin/new'
+export const PATH_ADMIN_UPDATE = import.meta.env.VITE_PATH_ADMIN_UPDATE ?? '/admin/update'
+export const PATH_ADMIN_DREAMS = import.meta.env.VITE_PATH_ADMIN_DREAMS ?? '/admin/dreams'
+
 /** Prepend API_BASE to relative `/uploads/...` URLs; leave absolute URLs alone. */
 export function resolveImageUrl(src?: string | null): string | undefined {
   if (!src) return undefined

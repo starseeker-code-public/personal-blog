@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { api } from '../data'
+import { api, PATH_ADMIN_NEW } from '../data'
 import { setAuth } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon } from '../components/icons'
@@ -20,7 +20,7 @@ export default function Login() {
     try {
       await api.verifyLogin(username, password)
       setAuth(username, password)
-      navigate('/admin/new')
+      navigate(PATH_ADMIN_NEW)
     } catch {
       setError('Invalid credentials.')
     } finally {
