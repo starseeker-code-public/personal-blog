@@ -9,6 +9,7 @@ from sqlalchemy.orm import selectinload
 from app.database import get_db
 from app.models.post import Category, Post, Tag
 from app.schemas.post import PaginatedPosts, PostCreate, PostOut, PostUpdate
+from app.security import require_admin
 from app.services.cache import cache_delete_pattern, cache_get, cache_set
 
 router = APIRouter(prefix="/api/posts", tags=["posts"])
@@ -128,7 +129,11 @@ async def get_post(slug: str, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("", response_model=PostOut, status_code=201)
-async def create_post(data: PostCreate, db: AsyncSession = Depends(get_db)):
+async def create_post(
+    data: PostCreate,
+    db: AsyncSession = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
     # Generate unique slug
     base_slug = slugify(data.title)
     slug = base_slug
@@ -152,7 +157,7 @@ async def create_post(data: PostCreate, db: AsyncSession = Depends(get_db)):
     )
 
     if data.category:
-        post.category = await _get_or_create_category(db, data.category)
+        post.category = await _get_or_create_category(db, data.category.value)
 
     if data.tags:
         post.tags = [await _get_or_create_tag(db, t) for t in data.tags]
@@ -168,11 +173,17 @@ async def create_post(data: PostCreate, db: AsyncSession = Depends(get_db)):
     post = result.scalar_one()
 
     await cache_delete_pattern("posts:list:*")
+    await cache_delete_pattern("feed:*")
     return PostOut.from_orm_post(post)
 
 
 @router.put("/{slug}", response_model=PostOut)
-async def update_post(slug: str, data: PostUpdate, db: AsyncSession = Depends(get_db)):
+async def update_post(
+    slug: str,
+    data: PostUpdate,
+    db: AsyncSession = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
     result = await db.execute(
         select(Post).where(Post.slug == slug).options(*_load_options())
     )
@@ -192,7 +203,7 @@ async def update_post(slug: str, data: PostUpdate, db: AsyncSession = Depends(ge
     if data.draft is not None:
         post.draft = data.draft
     if data.category is not None:
-        post.category = await _get_or_create_category(db, data.category)
+        post.category = await _get_or_create_category(db, data.category.value)
     if data.tags is not None:
         post.tags = [await _get_or_create_tag(db, t) for t in data.tags]
 
@@ -201,6 +212,7 @@ async def update_post(slug: str, data: PostUpdate, db: AsyncSession = Depends(ge
 
     await cache_delete_pattern(f"posts:slug:{slug}")
     await cache_delete_pattern("posts:list:*")
+    await cache_delete_pattern("feed:*")
 
     result = await db.execute(
         select(Post).where(Post.id == post.id).options(*_load_options())
@@ -210,7 +222,11 @@ async def update_post(slug: str, data: PostUpdate, db: AsyncSession = Depends(ge
 
 
 @router.delete("/{slug}", status_code=204)
-async def delete_post(slug: str, db: AsyncSession = Depends(get_db)):
+async def delete_post(
+    slug: str,
+    db: AsyncSession = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
     result = await db.execute(select(Post).where(Post.slug == slug))
     post = result.scalar_one_or_none()
     if post is None:
@@ -221,3 +237,4 @@ async def delete_post(slug: str, db: AsyncSession = Depends(get_db)):
 
     await cache_delete_pattern(f"posts:slug:{slug}")
     await cache_delete_pattern("posts:list:*")
+    await cache_delete_pattern("feed:*")

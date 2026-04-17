@@ -44,6 +44,8 @@ services:
       SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3001}
       SITE_URL: ${SITE_URL:-http://localhost:3001}
+      LOGIN_USERNAME: ${LOGIN_USERNAME:-user}
+      LOGIN_PASSWORD: ${LOGIN_PASSWORD:-Test123!}
     depends_on:
       db:
         condition: service_healthy

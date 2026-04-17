@@ -1,4 +1,5 @@
 import type { Category, PaginatedResponse, Post, Tag } from '../types'
+import { getAuth } from '../utils/auth'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
 
@@ -6,6 +7,49 @@ async function apiGet<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`)
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
   return res.json()
+}
+
+async function apiAuthGet<T>(path: string, authHeader: string): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    headers: { Authorization: authHeader },
+  })
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+  return res.json()
+}
+
+async function apiAuthRequest<T>(
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+  path: string,
+  body?: unknown,
+): Promise<T> {
+  const auth = getAuth()
+  if (!auth) throw new Error('Not authenticated')
+  const res = await fetch(`${API_BASE}${path}`, {
+    method,
+    headers: {
+      ...(body !== undefined && { 'Content-Type': 'application/json' }),
+      Authorization: auth,
+    },
+    ...(body !== undefined && { body: JSON.stringify(body) }),
+  })
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '')
+    throw new Error(`${res.status} ${res.statusText}${detail ? ` — ${detail}` : ''}`)
+  }
+  return res.json()
+}
+
+export const POST_CATEGORIES = ['Engineering', 'Hobbies', 'Personal Life'] as const
+export type PostCategory = typeof POST_CATEGORIES[number]
+
+export interface PostCreatePayload {
+  title: string
+  excerpt?: string
+  body: string
+  tags?: string[]
+  category?: PostCategory
+  draft?: boolean
+  coverImage?: string
 }
 
 export const api = {
@@ -28,6 +72,25 @@ export const api = {
 
   search: (q: string, limit = 20) =>
     apiGet<Post[]>(`/api/search?q=${encodeURIComponent(q)}&limit=${limit}`),
+
+  // ── Admin (authenticated) ─────────────────────────────────────────────────
+
+  /** Validate Basic Auth credentials against the backend. Returns the username. */
+  verifyLogin: (username: string, password: string) => {
+    const header = `Basic ${btoa(`${username}:${password}`)}`
+    return apiAuthGet<{ username: string }>('/api/auth/me', header)
+  },
+
+  /** Create a new post. Requires the admin Basic Auth header in sessionStorage. */
+  createPost: (payload: PostCreatePayload) =>
+    apiAuthRequest<Post>('POST', '/api/posts', payload),
+
+  /** List all draft posts (admin-only). */
+  listDrafts: () => apiAuthRequest<Post[]>('GET', '/api/admin/drafts'),
+
+  /** Publish a draft by flipping draft=false. */
+  publishDraft: (slug: string) =>
+    apiAuthRequest<Post>('PUT', `/api/posts/${slug}`, { draft: false }),
 }
 
 export const SITE = {

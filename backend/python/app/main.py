@@ -12,7 +12,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from app.config import settings
 from app.database import create_tables
 from app.redis_client import close_redis, get_redis
-from app.routers import categories, health, posts, search, tags
+from app.routers import admin, auth, categories, feed, health, posts, search, tags
 from app.services.scheduler import setup_scheduler, update_search_vectors
 
 logging.basicConfig(level=logging.INFO)
@@ -68,10 +68,13 @@ app.add_middleware(
 
 # Routers
 app.include_router(health.router)
+app.include_router(auth.router)
+app.include_router(admin.router)
 app.include_router(posts.router)
 app.include_router(categories.router)
 app.include_router(tags.router)
 app.include_router(search.router)
+app.include_router(feed.router)
 
 
 # ---------------------------------------------------------------------------

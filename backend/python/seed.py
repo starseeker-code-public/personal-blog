@@ -14,12 +14,13 @@ from app.models.post import Author, Category, Post, Tag
 
 
 SAMPLE_POSTS = [
+    # ── Engineering ─────────────────────────────────────────────────────────
     {
         "title": "Why I switched from Celery to asyncio queues for I/O-bound tasks",
         "excerpt": "After years of running Celery workers in production I found that asyncio queues — combined with a simple Redis broker — handle I/O-bound workloads with far less operational overhead.",
         "body": """## The problem with Celery for I/O-bound work
 
-Celery is the default choice for background tasks in Django/Flask land, but it carries a heavy cost: worker processes, a separate broker (RabbitMQ or Redis), result backends, and a non-trivial ops surface.
+Celery is the default choice for background tasks in Django/Flask land, but it carries a heavy cost: worker processes, a separate broker, result backends, and a non-trivial ops surface.
 
 For **I/O-bound** tasks — HTTP calls, database writes, file uploads — all that machinery is overkill.
 
@@ -48,34 +49,32 @@ async def main() -> None:
 ## When Celery still wins
 
 - CPU-bound tasks (use `ProcessPoolExecutor` instead)
-- Tasks that must survive process restarts (persist to DB or Redis Stream)
+- Tasks that must survive process restarts (persist to Redis Stream)
 - Distributed task routing across multiple machines
 
 ## Conclusion
 
 For a FastAPI service that needs background I/O work, asyncio queues give you 80% of Celery's value at 20% of the complexity. Profile first, choose deliberately.
 """,
-        "tags": ["python", "asyncio", "celery", "backend"],
-        "category": "Python",
+        "tags": ["python", "asyncio", "backend"],
+        "category": "Engineering",
         "read_time_minutes": 8,
     },
     {
-        "title": "PostgreSQL full-text search: a practical guide",
-        "excerpt": "PostgreSQL's built-in tsvector/tsquery gives you relevance-ranked full-text search without Elasticsearch. Here's how to use it effectively.",
+        "title": "PostgreSQL full-text search without Elasticsearch",
+        "excerpt": "PostgreSQL's built-in tsvector/tsquery gives you relevance-ranked full-text search without the operational overhead of a separate search cluster. Here's how to use it in production.",
         "body": """## Why not Elasticsearch?
 
-Elasticsearch is powerful but adds significant ops overhead. For most applications, PostgreSQL's full-text search is more than sufficient and is already in your stack.
+Elasticsearch is powerful but adds significant ops overhead: a separate cluster to manage, JVM tuning, index mapping decisions. For most applications, PostgreSQL's full-text search is more than sufficient.
 
 ## Core concepts
 
 ```sql
 -- Convert text to a searchable vector
 SELECT to_tsvector('english', 'FastAPI is a modern Python web framework');
--- 'fastapi':1 'framework':7 'modern':4 'python':5 'web':6
 
 -- Create a query
 SELECT plainto_tsquery('english', 'python framework');
--- 'python' & 'framework'
 
 -- Match
 SELECT to_tsvector('english', 'FastAPI is a modern Python web framework')
@@ -83,9 +82,9 @@ SELECT to_tsvector('english', 'FastAPI is a modern Python web framework')
 -- true
 ```
 
-## Storing the search vector
+## Storing and indexing
 
-For production, pre-compute and index it:
+For production, pre-compute and index the vector:
 
 ```sql
 ALTER TABLE posts ADD COLUMN search_vector tsvector;
@@ -99,8 +98,7 @@ CREATE INDEX ix_posts_search ON posts USING GIN(search_vector);
 ## Ranking results
 
 ```sql
-SELECT title,
-       ts_rank(search_vector, query) AS rank
+SELECT title, ts_rank(search_vector, query) AS rank
 FROM posts, plainto_tsquery('english', 'python asyncio') query
 WHERE search_vector @@ query
 ORDER BY rank DESC;
@@ -108,167 +106,141 @@ ORDER BY rank DESC;
 
 ## Keeping it fresh
 
-Use a trigger or a scheduled job (APScheduler works great) to update `search_vector` whenever a post changes.
+Use APScheduler to rebuild search vectors every few minutes:
+
+```python
+async def update_search_vectors(db: AsyncSession) -> None:
+    await db.execute(text(
+        "UPDATE posts SET search_vector = "
+        "to_tsvector('english', title || ' ' || coalesce(excerpt,'') || ' ' || body)"
+    ))
+    await db.commit()
+```
+
+This is what powers the search on this blog.
 """,
         "tags": ["postgresql", "search", "backend", "sql"],
-        "category": "Backend",
+        "category": "Engineering",
         "read_time_minutes": 10,
     },
+    # ── Hobbies ─────────────────────────────────────────────────────────────
     {
-        "title": "Redis caching strategies for FastAPI",
-        "excerpt": "Caching is the difference between a fast API and a slow one. Here are three patterns that work well with FastAPI and Redis.",
-        "body": """## Pattern 1 — Cache-aside (lazy loading)
+        "title": "My first year as an amateur astronomer",
+        "excerpt": "What happens when a backend engineer turns a telescope toward the sky. Objects found, mistakes made, and why programming and astronomy are more alike than I expected.",
+        "body": """## How it started
 
-The most common pattern: check the cache first, fetch from DB on miss, write to cache.
+It's embarrassing to admit, but the telescope sat in its box for two months after I bought it. Setting up a Dobsonian reflector looked like assembling IKEA furniture with extra steps, and I kept telling myself I'd do it "when I had a clear night and enough time."
 
-```python
-async def get_post(slug: str, db: AsyncSession, redis: Redis) -> PostOut:
-    cached = await redis.get(f"post:{slug}")
-    if cached:
-        return PostOut.model_validate_json(cached)
+Eventually a Friday night arrived with no clouds and no excuses.
 
-    post = await db.execute(select(Post).where(Post.slug == slug))
-    result = PostOut.from_orm(post.scalar_one())
-    await redis.setex(f"post:{slug}", 300, result.model_dump_json())
-    return result
-```
+## The first objects
 
-## Pattern 2 — Write-through
+My first successful observation was the Moon, which feels anticlimactic until you actually look. The terminator — the boundary between lunar day and night — throws craters into sharp relief. I spent two hours on it and forgot I had work on Monday.
 
-Update the cache on every write. Keeps data fresh but adds latency to writes.
+Jupiter was next. You can see the four Galilean moons with almost any telescope. When you first spot them, you understand viscerally why Galileo was convinced the Earth wasn't the centre of everything.
 
-## Pattern 3 — Background refresh
+## What I've learned
 
-A scheduler (APScheduler) pre-warms cache before TTL expires. Zero cold-start penalty.
+- **Collimation matters more than aperture.** A well-aligned 6" beats a poorly-aligned 10" every time.
+- **Dark adaptation is real.** Your eyes need 20–30 minutes to fully adjust. Don't check your phone.
+- **Star-hopping is underrated.** GoTo mounts are convenient, but learning to navigate by star patterns teaches you the sky in a way automation never will.
+- **Manage your expectations.** Deep-sky objects look nothing like Hubble photos. Most galaxies are a faint smudge. That smudge is two hundred billion suns. Both things are true simultaneously.
 
-## Cache invalidation
+## The programming overlap
 
-The hard problem. Use a pattern-based delete:
+There's more overlap than I expected. Astronomy is a hobby with near-infinite depth — the same feeling you get going down a distributed systems rabbit hole. And there's something satisfying about working with data that has been traveling through space for millions of years before reaching your eye.
 
-```python
-async def invalidate_post(slug: str, redis: Redis) -> None:
-    cursor = 0
-    while True:
-        cursor, keys = await redis.scan(cursor, match="posts:list:*", count=100)
-        if keys:
-            await redis.delete(*keys)
-        if cursor == 0:
-            break
-    await redis.delete(f"post:{slug}")
-```
-
-## Key naming conventions
-
-- `posts:list:p1:s10:tag=None:cat=None` — paginated list
-- `posts:slug:my-post-slug` — individual post
-- `categories:all` — full category list
-
-Always namespace by resource type for easy pattern-based invalidation.
+More posts on specific targets, equipment, and the occasional astrophoto to follow.
 """,
-        "tags": ["redis", "fastapi", "caching", "python"],
-        "category": "Backend",
+        "tags": ["astronomy", "hobbies", "learning"],
+        "category": "Hobbies",
         "read_time_minutes": 7,
     },
     {
-        "title": "Docker Compose for local development: patterns that actually work",
-        "excerpt": "After running Docker Compose setups across a dozen projects I've settled on a few patterns that make local dev fast, reproducible, and close to production.",
-        "body": """## The service dependency graph
+        "title": "Competitive coding made me a better engineer",
+        "excerpt": "I've been solving Codewars katas for three years. Here's what daily algorithmic practice taught me that years of professional development didn't.",
+        "body": """## Three years of kata practice
 
-Always declare proper health-checks and `depends_on` conditions:
+I started solving Codewars katas to prepare for technical interviews. I stayed because I genuinely enjoy it.
 
-```yaml
-services:
-  backend:
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+Three years in, I'm at 3 kyu — the top ~5% of users. More importantly, I'm a noticeably different engineer than when I started.
+
+## What kata practice actually teaches
+
+### Thinking before writing
+
+A kata forces you to understand the problem fully before touching the keyboard. Real-world code reviewers appreciate this more than you'd expect.
+
+### Recognising patterns
+
+After a hundred problems you start seeing that most reduce to a handful of patterns: sliding window, two pointers, dynamic programming, graph traversal. This transfers directly to API design and data pipeline work.
+
+### Python fluency
+
+```python
+# Before kata practice, I'd write:
+result = []
+for item in items:
+    if condition(item):
+        result.append(transform(item))
+
+# After:
+result = [transform(item) for item in items if condition(item)]
+
+# And know when the first is actually clearer.
 ```
 
-Without `condition: service_healthy` your app starts before Postgres is ready and crashes on the first DB call.
+### Humility
 
-## Separate dev and prod Dockerfiles
+You will be outperformed by someone's elegant one-liner. That's fine. Understanding *why* it works is the whole point.
 
-```
-backend/
-  Dockerfile          # production: multi-stage, no dev tools
-  Dockerfile.dev      # development: mounts source, enables hot-reload
-```
+## The limits
 
-## Volume mounts for hot reload
+Kata practice won't teach you system design, stakeholder communication, or how to disagree with a product manager. It's one tool.
 
-```yaml
-  backend:
-    volumes:
-      - ./backend:/app   # source mount
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-## Environment variables
-
-Use `.env` for local values, never commit secrets:
-
-```
-# .env.example (commit this)
-POSTGRES_PASSWORD=change-me
-
-# .env (gitignored)
-POSTGRES_PASSWORD=my-local-secret
-```
-
-## Named volumes for persistence
-
-```yaml
-volumes:
-  postgres_data:   # survives container restarts
-  redis_data:
-```
-
-Without named volumes your database is wiped on every `docker compose down`.
+But for sharpening the pure problem-solving instinct — the muscle that figures out *how* before worrying about *what* — nothing I've found works better.
 """,
-        "tags": ["docker", "devops", "local-dev"],
-        "category": "DevOps",
+        "tags": ["codewars", "algorithms", "python", "hobbies"],
+        "category": "Hobbies",
         "read_time_minutes": 6,
     },
+    # ── Personal Life ────────────────────────────────────────────────────────
     {
-        "title": "Building this blog: FastAPI + React, the decisions behind it",
-        "excerpt": "Every technical project is a series of tradeoffs. Here's why I chose FastAPI, PostgreSQL, Redis, and React for this blog — and what I'd change if I started over.",
-        "body": """## Why FastAPI?
+        "title": "On working remotely from Albacete, Spain",
+        "excerpt": "Most remote work advice assumes you're escaping a major city. Here's what it's actually like to work as a senior engineer from a mid-sized Spanish city — including the surprising advantages.",
+        "body": """## The default assumption
 
-Three reasons:
-1. **Async first** — plays well with asyncpg and Redis without threads
-2. **Auto-generated docs** — `/docs` just works
-3. **Pydantic v2** — fast, strict, great DX
+Most remote work content assumes you're escaping London or San Francisco to live cheaply elsewhere while billing at big-city rates. The classic geoarbitrage narrative.
 
-Flask is fine but its sync-by-default model means thread pools and more workers for the same I/O throughput.
+I'm not doing that. I'm from Albacete. I've always been from Albacete. Working remotely as a senior engineer from here is a different thing entirely.
 
-## Why PostgreSQL over MongoDB?
+## The practical reality
 
-Blog posts have a clear schema. Postgres gives us:
-- Full-text search (no Elasticsearch needed)
-- ACID transactions
-- Proper foreign keys for tags/categories
-- JSON columns if we ever need schema flexibility
+Internet in Spain is genuinely excellent. FTTH coverage is better here than in most western European countries. My connection is 600 Mbps symmetric for €30/month.
 
-## Why Redis?
+The salary gap with Madrid is closing. Senior backend roles now pay within 15–20% of Madrid rates fully remotely, and the cost of living difference more than compensates.
 
-Two jobs:
-1. **Cache** — avoid hitting Postgres for every `GET /api/posts`
-2. **Pub/sub** (future) — live comment notifications
+## The honest part
 
-## Why React + Vite?
+Albacete doesn't have a tech scene. There are no meetups, no co-working spaces with startup energy, no serendipitous conversations with other engineers at a coffee shop.
 
-The portfolio is already on this stack. Consistency over novelty.
+You build that deliberately — online communities, occasional trips for conferences, and being genuinely good at async written communication so you feel present in your team even from a distance.
 
-## What I'd change
+## What I've gained
 
-- **SSR / SSG** — a React SPA hurts SEO for a blog. `vite-plugin-ssg` or Next.js would be better for production.
-- **Full-text search** — for >100k posts, Meilisearch or Typesense beats PostgreSQL's tsvector.
+Time. The commute is zero. I walk to a café when I want a change of scenery. I observe from a dark-sky site 40 minutes away on clear nights.
+
+The option to go into nature on a Tuesday afternoon and make the time up in the evening. This is not something Madrid gives you.
+
+## What I'd tell myself earlier
+
+Build the online community deliberately. Invest in your home setup like it's an office — because it is. Go to at least one in-person conference per year to remember that your colleagues are real humans.
+
+The rest takes care of itself.
 """,
-        "tags": ["fastapi", "react", "postgresql", "redis", "architecture"],
-        "category": "Python",
-        "read_time_minutes": 9,
+        "tags": ["remote-work", "life", "spain"],
+        "category": "Personal Life",
+        "read_time_minutes": 5,
     },
 ]
 
@@ -288,16 +260,14 @@ async def seed() -> None:
         # Author
         author = Author(
             name="Joaquín Hernández Martínez",
-            bio="Python backend engineer. I write about what I build.",
+            bio="Senior Python backend engineer. Amateur astronomer. Writing about engineering, hobbies, and life from Albacete, Spain.",
             email="proyecto_noether@outlook.com",
             github="https://github.com/starseeker-code-public",
         )
         db.add(author)
         await db.flush()
 
-        # Categories cache
         categories: dict[str, Category] = {}
-        # Tags cache
         tags: dict[str, Tag] = {}
 
         def get_or_make_category(name: str) -> Category:
@@ -320,7 +290,7 @@ async def seed() -> None:
 
         await db.flush()
 
-        for i, data in enumerate(SAMPLE_POSTS):
+        for data in SAMPLE_POSTS:
             from slugify import slugify
 
             post = Post(
@@ -339,7 +309,7 @@ async def seed() -> None:
             db.add(post)
 
         await db.commit()
-        print(f"Seeded {len(SAMPLE_POSTS)} posts, author, categories, and tags.")
+        print(f"Seeded {len(SAMPLE_POSTS)} posts across Engineering, Hobbies, and Personal Life.")
 
 
 if __name__ == "__main__":

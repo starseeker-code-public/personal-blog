@@ -1,8 +1,17 @@
 from datetime import datetime
+from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
+
+
+class CategoryName(str, Enum):
+    """Fixed list of post categories. Mirrors the three pillars on /about."""
+
+    ENGINEERING = "Engineering"
+    HOBBIES = "Hobbies"
+    PERSONAL_LIFE = "Personal Life"
 
 
 class CamelModel(BaseModel):
@@ -97,26 +106,26 @@ class PostOut(CamelModel):
 # Post input
 # ---------------------------------------------------------------------------
 
-class PostCreate(BaseModel):
+class PostCreate(CamelModel):
     title: str
     excerpt: str = ""
     body: str = ""
     cover_image: Optional[str] = None
     draft: bool = False
     tags: list[str] = []
-    category: Optional[str] = None
+    category: Optional[CategoryName] = None
     author_name: Optional[str] = None
     published_at: Optional[datetime] = None
 
 
-class PostUpdate(BaseModel):
+class PostUpdate(CamelModel):
     title: Optional[str] = None
     excerpt: Optional[str] = None
     body: Optional[str] = None
     cover_image: Optional[str] = None
     draft: Optional[bool] = None
     tags: Optional[list[str]] = None
-    category: Optional[str] = None
+    category: Optional[CategoryName] = None
 
 
 # ---------------------------------------------------------------------------
@@ -128,3 +137,29 @@ class PaginatedPosts(CamelModel):
     total: int
     page: int
     page_size: int  # → pageSize on the wire
+
+
+# ---------------------------------------------------------------------------
+# Feed response (canonical, for external frontends)
+# ---------------------------------------------------------------------------
+
+class FeedPage(CamelModel):
+    """Canonical paginated feed response.
+
+    Always paginates the last 9 published posts at 3 per page (max 3 pages).
+    """
+
+    items: list[PostOut]
+    page: int
+    page_size: int
+    total_pages: int
+    total_posts: int
+    has_next: bool
+    has_prev: bool
+
+
+class WebhookRequest(BaseModel):
+    """Optional body for the publish webhook. If slug is omitted, the most
+    recently published post is returned."""
+
+    slug: Optional[str] = None

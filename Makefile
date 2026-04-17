@@ -4,7 +4,7 @@
         seed backend-shell \
         frontend-install frontend-dev frontend-build frontend-preview \
         dev-backend dev-frontend \
-        env setup health post open-docs open-blog \
+        setup health post open-docs open-blog \
         clean clean-images
 
 .DEFAULT_GOAL := help
@@ -30,10 +30,10 @@ help: ## Show this help
 
 ## Docker
 
-up: env ## Start all services in the background
+up: ## Start all services in the background
 	docker compose up -d
 
-up-build: env ## Rebuild images and start all services
+up-build: ## Rebuild images and start all services
 	docker compose up -d --build
 
 down: ## Stop all services
@@ -97,10 +97,8 @@ dev-frontend: ## Run Vite dev server locally
 
 ## Utilities
 
-env: ## Create .env from .env.example (skips if .env already exists)
-	@test -f .env || (cp .env.example .env && echo "  Created .env from .env.example — edit it if needed.")
-
-setup: env frontend-install ## First-time setup: create .env and install frontend deps
+setup: frontend-install ## First-time setup: install frontend deps (assumes .env is already present)
+	@test -f .env || (echo "  ERROR: .env not found at the project root. Create one before running setup." && exit 1)
 	@echo ""
 	@echo "  Done. Next steps:"
 	@echo "    make up-build   — build images and start all services"
