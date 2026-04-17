@@ -28,7 +28,7 @@ const RAW_TAGS_BY_CATEGORY: Record<PostCategory, readonly string[]> = {
     'sleep', 'fashion', 'meditation', 'stress management', 'journaling', 'relax',
     'presence', 'social skills', 'personal finance', 'investing', 'economics',
     'learning', 'habits', 'productivity', 'reflection', 'goals', 'love',
-    'friendships', 'social life', 'communication', 'gratefulness',
+    'friendships', 'social life', 'communication', 'gratefulness', 'books',
   ],
 } as const
 

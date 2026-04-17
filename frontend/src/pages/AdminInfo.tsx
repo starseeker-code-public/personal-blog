@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import { api, PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_LOGIN } from '../data'
-import { getCookie, setCookie } from '../utils/cookies'
+import { getJsonCookie } from '../utils/cookies'
 import { isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoDreams } from '../components/icons'
@@ -42,17 +40,9 @@ export default function AdminInfo() {
   }, [navigate])
 
   // ── Goals ─────────────────────────────────────────────────────────────────
-  const [goals, setGoals] = useState<string>(() => getCookie(COOKIE_GOALS) ?? '')
-  const [editingGoals, setEditingGoals] = useState(false)
-  const [goalsDraft, setGoalsDraft] = useState('')
-
-  function startEditGoals() { setGoalsDraft(goals); setEditingGoals(true) }
-  function cancelGoals() { setEditingGoals(false) }
-  function saveGoals() {
-    setGoals(goalsDraft)
-    setCookie(COOKIE_GOALS, goalsDraft)
-    setEditingGoals(false)
-  }
+  // Stored as a JSON array in the `blog_goals_<year>` cookie. Edit it by hand
+  // via devtools → Application → Cookies, e.g. ["Run a marathon","Ship v1"].
+  const goals = getJsonCookie<string[]>(COOKIE_GOALS, [])
 
   // ── Analytics ─────────────────────────────────────────────────────────────
   const [posts, setPosts] = useState<Post[]>([])
@@ -190,56 +180,22 @@ export default function AdminInfo() {
 
         {/* ── Goals ───────────────────────────────────────────────────────── */}
         <div className={sectionCard}>
-          <h2 className={`${sectionTitle} justify-between`}>
-            <span className="flex items-center gap-2">
-              <span className="text-[#395144] dark:text-amber-400">◎</span>
-              {currentYear} Goals
-            </span>
-            {!editingGoals && (
-              <button
-                onClick={startEditGoals}
-                className="p-1 rounded-md text-stone-400 dark:text-[#5a5180] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
-                aria-label="Edit goals"
-                title="Edit"
-              >
-                <IcoPencil />
-              </button>
-            )}
+          <h2 className={sectionTitle}>
+            <span className="text-[#395144] dark:text-amber-400">◎</span>
+            {currentYear} Goals
           </h2>
 
-          {editingGoals ? (
-            <div className="space-y-3">
-              <textarea
-                autoFocus
-                value={goalsDraft}
-                onChange={e => setGoalsDraft(e.target.value)}
-                rows={12}
-                placeholder={`List your goals for ${currentYear} — markdown supported.`}
-                className="w-full px-3 py-2 rounded-lg bg-[#efead8] dark:bg-[#0f0d24] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#dd0000] dark:focus:border-amber-400 transition-colors text-sm leading-relaxed resize-none font-sans"
-              />
-              <div className="flex gap-2 justify-end">
-                <button
-                  onClick={cancelGoals}
-                  className="px-4 py-1.5 rounded-lg text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={saveGoals}
-                  className="px-5 py-1.5 rounded-lg text-xs uppercase tracking-widest bg-[#395144] dark:bg-amber-400 text-white dark:text-[#0f0d24] hover:opacity-90 transition-opacity"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          ) : goals.trim() ? (
-            <div className="prose prose-sm dark:prose-invert max-w-none prose-stone dark:prose-p:text-[#d4cef5] dark:prose-headings:text-[#f0ecfd] dark:prose-strong:text-[#f0ecfd] dark:prose-li:text-[#d4cef5]">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{goals}</ReactMarkdown>
-            </div>
-          ) : (
+          {goals.length === 0 ? (
             <p className="text-stone-400 dark:text-[#5a5180] text-sm italic">
-              No goals set for {currentYear} yet.
+              No goals set for {currentYear} yet — edit the{' '}
+              <code className="text-xs">{COOKIE_GOALS}</code> cookie to add some.
             </p>
+          ) : (
+            <ul className="list-disc pl-6 space-y-1.5 text-sm text-stone-700 dark:text-[#d4cef5]">
+              {goals.map((g, i) => (
+                <li key={i}>{g}</li>
+              ))}
+            </ul>
           )}
         </div>
 
