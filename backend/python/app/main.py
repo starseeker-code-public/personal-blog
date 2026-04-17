@@ -59,8 +59,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-logger.info("CORS allow_origins=%r", settings.origins_list)
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.origins_list,
@@ -68,22 +66,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.middleware("http")
-async def log_cors_preflights(request, call_next):
-    """Log every OPTIONS request with its Origin header so CORS mismatches
-    on hosted deployments are obvious in the logs."""
-    if request.method == "OPTIONS":
-        origin = request.headers.get("origin")
-        acrm = request.headers.get("access-control-request-method")
-        response = await call_next(request)
-        logger.info(
-            "CORS preflight: origin=%r acr-method=%r path=%s -> %d",
-            origin, acrm, request.url.path, response.status_code,
-        )
-        return response
-    return await call_next(request)
 
 # Routers
 app.include_router(health.router)
