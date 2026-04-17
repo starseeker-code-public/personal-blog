@@ -6,14 +6,14 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-blog}
-      POSTGRES_USER: ${POSTGRES_USER:-blog_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-blog_password}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-blog_user} -d ${POSTGRES_DB:-blog}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB:-blog}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -39,15 +39,15 @@ services:
       dockerfile: Dockerfile
     restart: "on-failure:6"
     environment:
-      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-blog_user}:${POSTGRES_PASSWORD:-blog_password}@db:5432/${POSTGRES_DB:-blog}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-blog}
       REDIS_URL: redis://redis:6379/0
-      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+      SECRET_KEY: ${SECRET_KEY}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3001}
       SITE_URL: ${SITE_URL:-http://localhost:3001}
-      LOGIN_USERNAME: ${LOGIN_USERNAME:-user}
-      LOGIN_PASSWORD: ${LOGIN_PASSWORD:-Test123!}
-      SECURE_PATH: ${SECURE_PATH:-/api/admin}
-      LOVED_ONE_EMAIL: ${LOVED_ONE_EMAIL:-proyecto_noether@outlook.com}
+      LOGIN_USERNAME: ${LOGIN_USERNAME}
+      LOGIN_PASSWORD: ${LOGIN_PASSWORD}
+      SECURE_PATH: ${SECURE_PATH}
+      LOVED_ONE_EMAIL: ${LOVED_ONE_EMAIL}
       SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_USERNAME: ${SMTP_USERNAME:-}
@@ -69,11 +69,12 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_BASE: ${VITE_API_BASE:-http://localhost:8001}
-        VITE_SECURE_PATH: ${VITE_SECURE_PATH:-/api/admin}
-        VITE_PATH_LOGIN: ${VITE_PATH_LOGIN:-/login}
-        VITE_PATH_ADMIN_NEW: ${VITE_PATH_ADMIN_NEW:-/admin/new}
-        VITE_PATH_ADMIN_UPDATE: ${VITE_PATH_ADMIN_UPDATE:-/admin/update}
-        VITE_PATH_ADMIN_DREAMS: ${VITE_PATH_ADMIN_DREAMS:-/admin/dreams}
+        VITE_SECURE_PATH: ${VITE_SECURE_PATH}
+        VITE_PATH_LOGIN: ${VITE_PATH_LOGIN}
+        VITE_PATH_ADMIN_NEW: ${VITE_PATH_ADMIN_NEW}
+        VITE_PATH_ADMIN_UPDATE: ${VITE_PATH_ADMIN_UPDATE}
+        VITE_PATH_ADMIN_DREAMS: ${VITE_PATH_ADMIN_DREAMS}
+        VITE_PATH_ADMIN_INFO: ${VITE_PATH_ADMIN_INFO}
     restart: unless-stopped
     ports:
       - "3001:80"

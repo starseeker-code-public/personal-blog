@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory, PATH_ADMIN_NEW, PATH_ADMIN_DREAMS, PATH_LOGIN } from '../data'
+import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory, PATH_ADMIN_NEW, PATH_ADMIN_DREAMS, PATH_ADMIN_INFO, PATH_LOGIN } from '../data'
 import { TAGS_BY_CATEGORY } from '../data/tags'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
-import { IcoSun, IcoMoon, IcoPlus, IcoSearch, IcoArrowLeft, IcoDreams } from '../components/icons'
+import { IcoSun, IcoMoon, IcoPlus, IcoSearch, IcoArrowLeft, IcoDreams, IcoChart } from '../components/icons'
 import type { Post } from '../types'
 
 const inputClass =
@@ -157,6 +157,14 @@ export default function AdminUpdatePost() {
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300 flex flex-col">
 
       <div className="flex justify-end items-center gap-3 p-4">
+        <Link
+          to={PATH_ADMIN_INFO}
+          className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"
+          aria-label="Analytics"
+          title="Analytics"
+        >
+          <IcoChart />
+        </Link>
         <Link
           to={PATH_ADMIN_DREAMS}
           className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"

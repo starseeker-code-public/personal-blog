@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_LOGIN } from '../data'
+import { PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_ADMIN_INFO, PATH_LOGIN } from '../data'
 import { PRIMUS, DREAMS } from '../data/dreams'
 import { getCookie, setCookie, getJsonCookie } from '../utils/cookies'
 import { isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
-import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoStar } from '../components/icons'
+import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoStar, IcoChart } from '../components/icons'
 
 const COOKIE_PRIMUS  = 'blog_primus'
 const COOKIE_DREAMS  = 'blog_dreams'
@@ -78,6 +78,9 @@ export default function AdminDreams() {
 
       {/* ── Nav ─────────────────────────────────────────────────────────────── */}
       <div className="flex justify-end items-center gap-3 p-4">
+        <Link to={PATH_ADMIN_INFO} className={navBtn} aria-label="Analytics" title="Analytics">
+          <IcoChart />
+        </Link>
         <Link to={PATH_ADMIN_UPDATE} className={navBtn} aria-label="Edit post" title="Edit post">
           <IcoPencil />
         </Link>

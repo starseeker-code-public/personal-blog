@@ -3,15 +3,16 @@ import { getAuth } from '../utils/auth'
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
 // Admin namespace prefix — matches the backend's SECURE_PATH env var.
-export const SECURE_PATH = import.meta.env.VITE_SECURE_PATH ?? '/api/admin'
+export const SECURE_PATH = import.meta.env.VITE_SECURE_PATH ?? ''
 
 // Admin page paths — set via VITE_PATH_* env vars (gitignored .env).
-// Fallbacks keep the app functional locally when env vars aren't set;
-// set them in .env to any path you like for production.
-export const PATH_LOGIN        = import.meta.env.VITE_PATH_LOGIN        ?? '/login'
-export const PATH_ADMIN_NEW    = import.meta.env.VITE_PATH_ADMIN_NEW    ?? '/admin/new'
-export const PATH_ADMIN_UPDATE = import.meta.env.VITE_PATH_ADMIN_UPDATE ?? '/admin/update'
-export const PATH_ADMIN_DREAMS = import.meta.env.VITE_PATH_ADMIN_DREAMS ?? '/admin/dreams'
+// No fallbacks: missing vars leave the constant undefined, routes don't
+// mount, and no admin path is ever baked into the published bundle.
+export const PATH_LOGIN        = import.meta.env.VITE_PATH_LOGIN        ?? ''
+export const PATH_ADMIN_NEW    = import.meta.env.VITE_PATH_ADMIN_NEW    ?? ''
+export const PATH_ADMIN_UPDATE = import.meta.env.VITE_PATH_ADMIN_UPDATE ?? ''
+export const PATH_ADMIN_DREAMS = import.meta.env.VITE_PATH_ADMIN_DREAMS ?? ''
+export const PATH_ADMIN_INFO   = import.meta.env.VITE_PATH_ADMIN_INFO   ?? ''
 
 /** Prepend API_BASE to relative `/uploads/...` URLs; leave absolute URLs alone. */
 export function resolveImageUrl(src?: string | null): string | undefined {

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_LOGIN } from '../data'
+import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_ADMIN_INFO, PATH_LOGIN } from '../data'
 import { TAGS_BY_CATEGORY } from '../data/tags'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
-import { IcoSun, IcoMoon, IcoPencil, IcoDreams } from '../components/icons'
+import { IcoSun, IcoMoon, IcoPencil, IcoDreams, IcoChart } from '../components/icons'
 import type { Post } from '../types'
 
 const inputClass =
@@ -162,6 +162,14 @@ export default function AdminNewPost() {
           title="Dreams"
         >
           <IcoDreams />
+        </Link>
+        <Link
+          to={PATH_ADMIN_INFO}
+          className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"
+          aria-label="Goals & analytics"
+          title="Goals & analytics"
+        >
+          <IcoChart />
         </Link>
         <Link
           to={PATH_ADMIN_UPDATE}

@@ -16,9 +16,9 @@ import httpx
 import pytest
 
 BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000")
-SECURE_PATH = os.getenv("SECURE_PATH", "/api/admin")
-ADMIN_USERNAME = os.getenv("LOGIN_USERNAME", "user")
-ADMIN_PASSWORD = os.getenv("LOGIN_PASSWORD", "Test123!")
+SECURE_PATH = os.environ["SECURE_PATH"]
+ADMIN_USERNAME = os.environ["LOGIN_USERNAME"]
+ADMIN_PASSWORD = os.environ["LOGIN_PASSWORD"]
 
 
 @pytest.fixture(scope="session")

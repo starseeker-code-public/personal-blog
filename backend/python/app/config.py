@@ -13,22 +13,22 @@ ENV_FILE = _parents[3] / ".env" if len(_parents) >= 4 else Path(".env")
 
 
 class Settings(BaseSettings):
-    database_url: str = "postgresql+asyncpg://blog_user:blog_password@localhost:5432/blog"
+    database_url: str
     redis_url: str = "redis://localhost:6379/0"
-    secret_key: str = "change-me-in-production"
+    secret_key: str
     allowed_origins: str = "http://localhost:5173,http://localhost:3000"
     site_name: str = "Joaquín · Blog"
     site_url: str = "http://localhost:3000"
     cache_ttl: int = 300
     posts_per_page: int = 10
-    login_username: str = "user"
-    login_password: str = "Test123!"
+    login_username: str
+    login_password: str
     # Prefix for the admin router + upload endpoint. Pulled from env so the
     # namespace can be renamed without touching any hand-written code.
-    secure_path: str = "/api/admin"
+    secure_path: str
 
     # Love-letter email (opt-in from the composer).
-    loved_one_email: str = "proyecto_noether@outlook.com"
+    loved_one_email: str
     smtp_host: str = ""
     smtp_port: int = 587
     smtp_username: str = ""

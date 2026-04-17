@@ -133,6 +133,13 @@ export const IcoStar = () => (
   </svg>
 )
 
+export const IcoChart = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+    <path d="M3 3v18h18" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7 16v-5M11 16V9M15 16v-3M19 16V5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
 export const IcoDreams = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
     <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.937A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" strokeLinecap="round" strokeLinejoin="round" />
