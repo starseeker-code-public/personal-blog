@@ -50,13 +50,14 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
   - [Frontend](#frontend-features)
   - [Pages](#pages)
 - [Post wire format](#post-wire-format)
-  - [Field specification](#field-specification)
-  - [Example payload](#example-payload)
-  - [TypeScript interface](#typescript-interface)
+  - [GET response shape — `Post`](#get-response-shape--post)
+  - [Example response payload](#example-response-payload)
+  - [POST request shape — `PostCreate`](#post-request-shape--postcreate)
+  - [Example create request](#example-create-request)
+  - [TypeScript interfaces](#typescript-interfaces)
   - [Pull vs push — two delivery philosophies](#pull-vs-push--two-delivery-philosophies)
   - [Feed endpoints](#feed-endpoints)
 - [API Reference](#api-reference)
-- [Creating a Post](#creating-a-post)
 - [Security](#security)
 - [CI/CD](#cicd)
 - [Contributing](#contributing)
@@ -241,9 +242,6 @@ cd personal-blog
 # Build and start all services (PostgreSQL, Redis, backend, frontend)
 docker compose up --build
 
-# Seed sample posts (first time only)
-docker compose exec backend python seed.py
-
 # Open the blog
 open http://localhost:3001
 
@@ -328,7 +326,6 @@ pip install -r requirements.txt
 # (defaults assume Docker Compose is running with its published ports).
 
 uvicorn app.main:app --reload   # http://localhost:8001
-python seed.py                  # Populate with sample posts
 ```
 
 **Frontend:**
@@ -428,7 +425,6 @@ personal-blog/
 │       │       ├── cache.py    # Redis get/set/delete helpers
 │       │       └── scheduler.py # APScheduler background jobs
 │       │
-│       ├── seed.py             # Populates the DB with sample posts
 │       ├── requirements.txt
 │       └── Dockerfile
 │
@@ -558,95 +554,144 @@ This is the canonical JSON shape of a blog post as exposed over the REST API. It
 
 All fields are serialised in **camelCase** on the wire (Pydantic v2 `alias_generator=to_camel`). Dates are ISO 8601 with timezone (UTC).
 
-### Field specification
+### GET response shape — `Post`
+
+Every endpoint that returns a post — `GET /api/posts`, `GET /api/posts/{slug}`, `GET /api/feed`, `POST /api/feed/webhook` — serialises the **same** `Post` object. Align against this shape and your consumer works against all four.
 
 | Field | Type | Nullable | Description |
 |-------|------|----------|-------------|
 | `slug` | `string` | no | URL-safe unique identifier. Derived from the title, collision-handled by suffix. |
 | `title` | `string` | no | Post title as written by the author. |
 | `excerpt` | `string` | no | Short summary (plain text, typically 1-3 sentences). May be empty. |
-| `body` | `string` | no | Full post body in Markdown. Supports GitHub Flavored Markdown (tables, task lists, footnotes, strikethrough) and fenced code blocks with language hints for syntax highlighting. |
+| `body` | `string` | no | Full post body in Markdown with GFM (tables, task lists, footnotes, strikethrough, fenced code blocks). Bare URLs (`https://…`, `www.…`) are auto-linked by the renderer. Inline image syntax `![alt](url)` is intentionally **not** rendered — it would fight the floated cover image in the post layout. |
 | `publishedAt` | `string` (ISO 8601) | no | Publication timestamp in UTC. Used for ordering in the feed. |
 | `updatedAt` | `string` (ISO 8601) | yes | Last edit timestamp in UTC. `null` if the post has never been edited since publication. |
 | `readTimeMinutes` | `integer` | no | Estimated read time in whole minutes. Computed from word count on save (≈200 wpm, floor of 1). |
-| `coverImage` | `string` (URL) | yes | Absolute URL to the post's cover image. `null` if none. |
-| `draft` | `boolean` | no | `true` for drafts (excluded from public feeds by default), `false` for published posts. |
-| `tags` | `string[]` | no | Array of tag names (not slugs). Empty array if untagged. Order is insertion-stable but not semantically meaningful. |
-| `category` | `string` | no | Category name (not slug). Empty string if uncategorised. A post belongs to at most one category. |
-| `author` | `object \| null` | yes | Author object (see below). `null` if the post has no attached author. |
+| `coverImage` | `string` | yes | Either an absolute URL (`https://…`) or a relative path (`/uploads/<filename>`) served by this backend. Clients should resolve relative paths against the API base. Every post on this blog has a cover image; `null` is only possible for legacy rows. |
+| `draft` | `boolean` | no | `true` for drafts (excluded from all public endpoints), `false` for published posts. |
+| `tags` | `string[]` | no | Array of tag names drawn from a fixed, category-scoped catalogue. Empty array if untagged. Order is insertion-stable but not semantically meaningful. The blog collapses anything past the first 5 behind a "…" chip. |
+| `category` | `string` | no | One of `"Engineering"`, `"Hobbies"`, `"Personal Life"`, or `""` when uncategorised. A post belongs to at most one category and the enum is enforced by the backend. |
+| `author` | `object \| null` | yes | Author object (see below). `null` when no author is attached; consumers should fall back to a site-level default. |
 | `author.name` | `string` | no | Author's display name. |
 | `author.avatar` | `string` (URL) | yes | Absolute URL to the author's avatar image. |
 | `author.bio` | `string` | yes | Short author bio (plain text). |
-| `author.socials` | `object` | yes | Map of social-platform → handle/URL. Known keys: `github`, `linkedin`, `twitter`, `email`. Absent keys mean "no link". The object itself is `null` if the author has no socials. |
+| `author.socials` | `object \| null` | yes | Map of social-platform → handle/URL. Known keys: `github`, `linkedin`, `twitter`, `email`. Absent keys mean "no link". `null` when the author has no socials. |
 
-### Example payload
+### Example response payload
 
 ```json
 {
-  "slug": "async-fastapi-with-sqlalchemy-2",
+  "slug": "async-fastapi-with-sqlalchemy-2-0",
   "title": "Async FastAPI with SQLAlchemy 2.0",
-  "excerpt": "A practical walkthrough of wiring async SQLAlchemy sessions into a FastAPI app without blocking the event loop.",
-  "body": "# Async FastAPI with SQLAlchemy 2.0\n\nFastAPI is async all the way down, so your database access layer had better be too...\n\n## Engine setup\n\n```python\nfrom sqlalchemy.ext.asyncio import create_async_engine\n\nengine = create_async_engine(DATABASE_URL, echo=False, pool_pre_ping=True)\n```\n\n...",
-  "publishedAt": "2026-04-12T09:30:00+00:00",
-  "updatedAt": "2026-04-15T14:02:11+00:00",
-  "readTimeMinutes": 7,
-  "coverImage": "https://blog.joaquin.dev/static/covers/async-fastapi.png",
+  "excerpt": "FastAPI is async top to bottom. Your database layer had better be too — SQLAlchemy 2.0 makes that painless.",
+  "body": "# Async FastAPI with SQLAlchemy 2.0\n\nFastAPI is async top to bottom...\n\n## Engine and session\n\n```python\nfrom sqlalchemy.ext.asyncio import create_async_engine\n```\n\nRead more at https://docs.sqlalchemy.org/en/20/ or www.pydantic.dev.",
+  "publishedAt": "2026-04-17T12:00:00+00:00",
+  "updatedAt": null,
+  "readTimeMinutes": 4,
+  "coverImage": "/uploads/14c0f04d38c6c9ce7e3b6924.jpg",
   "draft": false,
-  "tags": ["python", "fastapi", "sqlalchemy", "async"],
-  "category": "Backend",
-  "author": {
-    "name": "Joaquín Hernández",
-    "avatar": "https://blog.joaquin.dev/static/authors/joaquin.jpg",
-    "bio": "Python backend engineer. Writing about what I'm learning.",
-    "socials": {
-      "github": "https://github.com/joaquinhm",
-      "linkedin": "https://linkedin.com/in/joaquinhm",
-      "email": "jhernandez@allot.com"
-    }
-  }
+  "tags": ["python", "backend", "api-design", "performance"],
+  "category": "Engineering",
+  "author": null
 }
 ```
 
-### TypeScript interface
+### POST request shape — `PostCreate`
 
-Drop this straight into any TypeScript frontend to stay aligned with the contract:
+`POST /api/posts` accepts a `PostCreate` body. Field names are camelCase on the wire; the backend also accepts the underlying snake_case names for interoperability.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `title` | `string` | **yes** | — | Post title. Also the basis for the auto-generated slug. |
+| `body` | `string` | yes (in practice) | `""` | Post body in Markdown (GFM). Stored as-is; rendered by the frontend. |
+| `excerpt` | `string` | no | `""` | Short summary. Used in list cards and meta tags. |
+| `coverImage` | `string` | no | `null` | Absolute URL or a backend-relative `/uploads/<filename>` path. The blog UI requires one before publish. |
+| `draft` | `boolean` | no | `false` | `true` hides the post from every public endpoint. |
+| `tags` | `string[]` | no | `[]` | Tag names. Drawn from the category's catalogue on the blog UI; the API itself does not enforce membership. |
+| `category` | `"Engineering" \| "Hobbies" \| "Personal Life" \| null` | no | `null` | Enum-validated by the backend — any other value returns `422`. |
+| `publishedAt` | `string` (ISO 8601) | no | server time | Override the publish timestamp. |
+
+**Responses:**
+
+| Status | When |
+|--------|------|
+| `201` | Created. Body is the full `Post` (same shape as GET). |
+| `422` | Validation error — typically `category` outside the enum, or a missing required field. |
+
+### Example create request
+
+```bash
+curl -X POST http://localhost:8001/api/posts \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Async FastAPI with SQLAlchemy 2.0",
+    "excerpt": "A practical walkthrough of wiring async sessions into a FastAPI app.",
+    "body": "# Hello\n\nPost body in **Markdown**.",
+    "category": "Engineering",
+    "tags": ["python", "backend", "api-design"],
+    "coverImage": "/uploads/14c0f04d38c6c9ce7e3b6924.jpg",
+    "draft": false
+  }'
+```
+
+The response is the full `Post` object, and the post is immediately reachable at `/posts/<generated-slug>` on the frontend.
+
+### TypeScript interfaces
+
+Drop these straight into any TypeScript consumer to stay aligned with the contract:
 
 ```ts
+export type PostCategory = 'Engineering' | 'Hobbies' | 'Personal Life'
+
 export interface Author {
-  name: string;
-  avatar: string | null;
-  bio: string | null;
+  name: string
+  avatar: string | null
+  bio: string | null
   socials: {
-    github?: string;
-    linkedin?: string;
-    twitter?: string;
-    email?: string;
-  } | null;
+    github?: string
+    linkedin?: string
+    twitter?: string
+    email?: string
+  } | null
 }
 
+// GET response shape — returned by every post-serving endpoint.
 export interface Post {
-  slug: string;
-  title: string;
-  excerpt: string;
-  body: string;                     // Markdown (GFM)
-  publishedAt: string;              // ISO 8601 UTC
-  updatedAt: string | null;         // ISO 8601 UTC
-  readTimeMinutes: number;
-  coverImage: string | null;
-  draft: boolean;
-  tags: string[];
-  category: string;
-  author: Author | null;
+  slug: string
+  title: string
+  excerpt: string
+  body: string                      // Markdown (GFM); inline ![]() is dropped
+  publishedAt: string               // ISO 8601 UTC
+  updatedAt: string | null          // ISO 8601 UTC
+  readTimeMinutes: number
+  coverImage: string | null         // absolute URL or "/uploads/<filename>"
+  draft: boolean
+  tags: string[]
+  category: PostCategory | ''
+  author: Author | null
 }
 
+// POST request body — omitted fields fall back to their defaults.
+export interface PostCreate {
+  title: string
+  body: string
+  excerpt?: string
+  coverImage?: string
+  draft?: boolean
+  tags?: string[]
+  category?: PostCategory
+  publishedAt?: string
+}
+
+// Feed pagination envelope (returned by GET /api/feed).
 export interface FeedPage {
-  items: Post[];
-  page: number;                     // 1-indexed
-  pageSize: number;                 // always 3
-  totalPages: number;               // 1-3
-  totalPosts: number;               // 0-9
-  hasNext: boolean;
-  hasPrev: boolean;
+  items: Post[]
+  page: number                      // 1-indexed
+  pageSize: number                  // always 3
+  totalPages: number                // 1–3
+  totalPosts: number                // 0–9
+  hasNext: boolean
+  hasPrev: boolean
 }
 ```
 
@@ -777,25 +822,6 @@ The webhook invalidates the feed cache (`feed:*`) and the post-list cache (`post
 | `GET` | `/redoc` | ReDoc API docs |
 
 Interactive docs are available at `http://localhost:8001/docs` when the backend is running.
-
-### Creating a Post
-
-Use the interactive docs at `/docs`, curl, or any HTTP client:
-
-```bash
-curl -X POST http://localhost:8001/api/posts \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "My first post",
-    "excerpt": "A short summary of what this post is about.",
-    "body": "# Hello\n\nThis is the post body in **Markdown**.",
-    "tags": ["python", "fastapi"],
-    "category": "Backend",
-    "draft": false
-  }'
-```
-
-The post appears immediately in the frontend at `/posts/<generated-slug>`.
 
 ---
 

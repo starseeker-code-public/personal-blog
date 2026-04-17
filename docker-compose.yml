@@ -46,6 +46,12 @@ services:
       SITE_URL: ${SITE_URL:-http://localhost:3001}
       LOGIN_USERNAME: ${LOGIN_USERNAME:-user}
       LOGIN_PASSWORD: ${LOGIN_PASSWORD:-Test123!}
+      LOVED_ONE_EMAIL: ${LOVED_ONE_EMAIL:-proyecto_noether@outlook.com}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
     depends_on:
       db:
         condition: service_healthy
@@ -53,6 +59,8 @@ services:
         condition: service_healthy
     ports:
       - "8001:8000"
+    volumes:
+      - uploads:/app/uploads
 
   frontend:
     build:
@@ -69,3 +77,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  uploads:

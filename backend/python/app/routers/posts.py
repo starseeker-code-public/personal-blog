@@ -11,6 +11,7 @@ from app.models.post import Category, Post, Tag
 from app.schemas.post import PaginatedPosts, PostCreate, PostOut, PostUpdate
 from app.security import require_admin
 from app.services.cache import cache_delete_pattern, cache_get, cache_set
+from app.services.mailer import send_love_letter
 
 router = APIRouter(prefix="/api/posts", tags=["posts"])
 
@@ -174,6 +175,17 @@ async def create_post(
 
     await cache_delete_pattern("posts:list:*")
     await cache_delete_pattern("feed:*")
+
+    # Love-letter dispatch — only on publish, only when the composer ticked
+    # the opt-in box, only when the `love` tag is present. Failures here
+    # are logged but never block the publish response.
+    if data.send_to_loved_one and not post.draft and any(t.name == "love" for t in post.tags):
+        send_love_letter(
+            title=post.title,
+            slug=post.slug,
+            excerpt=post.excerpt or "",
+        )
+
     return PostOut.from_orm_post(post)
 
 

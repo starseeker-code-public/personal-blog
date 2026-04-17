@@ -1,7 +1,7 @@
 .PHONY: help \
         up up-build down restart build ps \
         logs logs-backend logs-frontend logs-db logs-redis \
-        seed backend-shell \
+        backend-shell \
         frontend-install frontend-dev frontend-build frontend-preview \
         dev-backend dev-frontend \
         setup health post open-docs open-blog \
@@ -67,9 +67,6 @@ logs-redis: ## Tail Redis logs only
 
 ## Database
 
-seed: ## Seed the DB with 5 sample posts (run once after first up)
-	docker compose exec backend python seed.py
-
 backend-shell: ## Open a bash shell inside the running backend container
 	docker compose exec backend /bin/bash
 
@@ -102,7 +99,6 @@ setup: frontend-install ## First-time setup: install frontend deps (assumes .env
 	@echo ""
 	@echo "  Done. Next steps:"
 	@echo "    make up-build   — build images and start all services"
-	@echo "    make seed       — populate sample blog posts"
 	@echo "    make open-blog  — open the blog in your browser"
 	@echo ""
 

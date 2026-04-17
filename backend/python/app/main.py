@@ -8,6 +8,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import create_tables
@@ -75,6 +76,12 @@ app.include_router(categories.router)
 app.include_router(tags.router)
 app.include_router(search.router)
 app.include_router(feed.router)
+
+# Uploaded images are served from /uploads. Backed by a Docker volume so
+# files survive container rebuilds (see docker-compose.yml).
+_uploads = Path("/app/uploads")
+_uploads.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(_uploads)), name="uploads")
 
 
 # ---------------------------------------------------------------------------

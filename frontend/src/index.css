@@ -84,7 +84,7 @@ html, body {
   top: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(to right, #798777, #8a9888);
+  background: linear-gradient(to right, #dd0000 0%, #dd0000 65%, #395144 100%);
   z-index: 100;
   transition: width 0.1s linear;
 }
@@ -142,27 +142,49 @@ html, body {
 }
 
 /* ──────────────────────────────────────────
+   Reset inline-code styling inside fenced code blocks — the <pre>
+   is the card, the inner <code> should just hold tokens. Without this
+   the prose-code utilities would paint a pill background around every
+   line, fighting the card and the hljs highlighting.
+────────────────────────────────────────── */
+.prose pre code,
+.prose pre code.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: inherit;
+}
+
+/* ──────────────────────────────────────────
    Highlight.js — light mode (rich parchment)
+   The surrounding <pre> is the card; .hljs only
+   carries token colors, no background/border of its own.
 ────────────────────────────────────────── */
 .hljs {
-  background: #ddd8b0 !important;
-  border: 1px solid rgba(170, 139, 86, 0.28);
-  border-radius: 0.5rem;
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
   color: #1a0d04;
 }
-.hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #7c2d12; font-weight: 600; }
-.hljs-string, .hljs-attr                          { color: #92400e; }
-.hljs-comment                                     { color: #9a7850; font-style: italic; }
-.hljs-number, .hljs-literal                       { color: #b45309; }
-.hljs-function, .hljs-title                       { color: #1d4ed8; }
-.hljs-variable, .hljs-params                      { color: #3d2008; }
+/* Widened palette — real hue contrast against parchment so `def add(n1, n2):`
+   actually reads as coloured tokens instead of five shades of brown. */
+.hljs-keyword, .hljs-selector-tag { color: #7c2d12; font-weight: 700; }
+.hljs-built_in, .hljs-type        { color: #0f766e; font-weight: 600; }
+.hljs-string, .hljs-attr          { color: #15803d; }
+.hljs-comment, .hljs-quote        { color: #78716c; font-style: italic; }
+.hljs-number, .hljs-literal       { color: #7e22ce; }
+.hljs-function, .hljs-title       { color: #1d4ed8; font-weight: 600; }
+.hljs-variable, .hljs-params      { color: #3d2008; }
+.hljs-symbol, .hljs-bullet        { color: #c2410c; }
+.hljs-meta, .hljs-regexp          { color: #9f1239; }
 
 /* ──────────────────────────────────────────
    Highlight.js — dark mode (midnight)
 ────────────────────────────────────────── */
 .dark .hljs {
-  background: #1a1735 !important;
-  border: 1px solid rgba(100, 90, 160, 0.25);
+  background: transparent !important;
+  border: 0 !important;
   color: #e8e0f8;
 }
 .dark .hljs-keyword, .dark .hljs-selector-tag, .dark .hljs-built_in { color: #a78bfa; font-weight: 600; }

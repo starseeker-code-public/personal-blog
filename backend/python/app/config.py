@@ -24,6 +24,14 @@ class Settings(BaseSettings):
     login_username: str = "user"
     login_password: str = "Test123!"
 
+    # Love-letter email (opt-in from the composer).
+    loved_one_email: str = "proyecto_noether@outlook.com"
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: str = ""
+    smtp_from: str = ""
+
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
         env_file_encoding="utf-8",

@@ -77,7 +77,7 @@ export default function Login() {
                 autoFocus
                 value={username}
                 onChange={e => setUsername(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-[#efead8] dark:bg-[#0f0d24] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#798777] dark:focus:border-amber-400 transition-colors"
+                className="w-full px-3 py-2 rounded-lg bg-[#efead8] dark:bg-[#0f0d24] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#dd0000] dark:focus:border-amber-400 transition-colors"
                 required
               />
             </div>
@@ -95,7 +95,7 @@ export default function Login() {
                 autoComplete="current-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-[#efead8] dark:bg-[#0f0d24] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#798777] dark:focus:border-amber-400 transition-colors"
+                className="w-full px-3 py-2 rounded-lg bg-[#efead8] dark:bg-[#0f0d24] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#dd0000] dark:focus:border-amber-400 transition-colors"
                 required
               />
             </div>

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import type { Post as PostType } from '../types'
-import { api, SITE } from '../data'
+import { api, SITE, resolveImageUrl } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-import { Tag, Prose } from '../components/ui'
+import { TagList, Prose } from '../components/ui'
 import { IcoArrowLeft, IcoGithub, IcoGlobe } from '../components/icons'
 
 function ReadingProgress() {
@@ -110,49 +110,70 @@ export default function Post() {
               {post.title}
             </h1>
 
-            {/* Tags */}
-            {post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-4 mb-10">
-                {post.tags.map(t => <Tag key={t} label={t} linkable />)}
-              </div>
-            )}
-
-            {/* Cover image */}
+            {/* Cover image + tags + body share a single flow so the floated
+                image starts at the tag row and wraps both the tag line and
+                the paragraphs that follow. Extra left/bottom margin around
+                the image lets the text breathe rather than hugging it. */}
             {post.coverImage && (
               <img
-                src={post.coverImage}
+                src={resolveImageUrl(post.coverImage)}
                 alt={post.title}
-                className="w-full rounded-xl border border-stone-200 dark:border-[#322d5a] mb-10 object-cover max-h-80"
+                className="float-right ml-8 mb-6 rounded-xl border border-stone-200 dark:border-[#322d5a] object-cover w-[20vw] min-w-[150px] max-w-[260px] aspect-square"
               />
             )}
 
-            {/* Body */}
-            <div className="mt-6">
-              <Prose>{post.body}</Prose>
-            </div>
-
-            {/* Author card — orbiting circles */}
-            {post.author && (
-              <div className="mt-12 flex justify-end">
-                <div className="relative w-40 h-40 orbit-container">
-                  <a href={post.author.socials?.github ?? SITE.social.github}
-                    target="_blank" rel="noopener noreferrer" title="GitHub"
-                    className="orbit-circle absolute top-1/2 left-1/2 w-10 h-10 rounded-full border border-stone-300 bg-[#faf6ee] dark:bg-[#1a1735] dark:border-[#322d5a] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors z-30"
-                  >
-                    <IcoGithub />
-                  </a>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border-2 border-stone-200 dark:border-[#322d5a] overflow-hidden z-20">
-                    <img src="https://github.com/starseeker-code-public.png" alt={post.author.name} className="w-full h-full object-cover" />
-                  </div>
-                  <a href={SITE.portfolio}
-                    target="_blank" rel="noopener noreferrer" title="Portfolio"
-                    className="orbit-circle-offset absolute top-1/2 left-1/2 w-10 h-10 rounded-full border border-stone-300 bg-[#faf6ee] dark:bg-[#1a1735] dark:border-[#322d5a] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors z-30"
-                  >
-                    <IcoGlobe />
-                  </a>
-                </div>
+            {/* Tags — first 5 visible, rest collapse behind a "…" chip. */}
+            {post.tags.length > 0 && (
+              <div className="mt-2 mb-8">
+                <TagList tags={post.tags} maxVisible={5} linkable />
               </div>
             )}
+
+            <div>
+              <Prose>{post.body}</Prose>
+
+              {/* Goodbye signature — always present, italic serif + Marck Script
+                  sign-off. `clear: both` makes sure it settles below the
+                  floated image regardless of how short the body is. */}
+              <div className="clear-both mt-12 pt-8 border-t border-stone-200 dark:border-[#322d5a] text-right">
+                <p className="italic text-stone-600 dark:text-[#c9beed] font-serif text-base sm:text-lg leading-relaxed">
+                  So many stories yet to tell… may your sky stay curious, your compass stubborn, and your horizon a bit wider.
+                </p>
+                <p
+                  className="mt-3 text-2xl sm:text-3xl text-[#395144] dark:text-amber-400"
+                  style={{ fontFamily: 'Marck Script' }}
+                >
+                  — Starseeker
+                </p>
+              </div>
+            </div>
+
+            {/* Author card — always present (orbit of GitHub + Portfolio icons). */}
+            <div className="clear-both mt-12 flex justify-end">
+              <div className="relative w-40 h-40 orbit-container">
+                <a
+                  href={post.author?.socials?.github ?? SITE.social.github}
+                  target="_blank" rel="noopener noreferrer" title="GitHub"
+                  className="orbit-circle absolute top-1/2 left-1/2 w-10 h-10 rounded-full border border-stone-300 bg-[#faf6ee] dark:bg-[#1a1735] dark:border-[#322d5a] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors z-30"
+                >
+                  <IcoGithub />
+                </a>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border-2 border-stone-200 dark:border-[#322d5a] overflow-hidden z-20">
+                  <img
+                    src={post.author?.avatar ?? 'https://github.com/starseeker-code-public.png'}
+                    alt={post.author?.name ?? SITE.author.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <a
+                  href={SITE.portfolio}
+                  target="_blank" rel="noopener noreferrer" title="Portfolio"
+                  className="orbit-circle-offset absolute top-1/2 left-1/2 w-10 h-10 rounded-full border border-stone-300 bg-[#faf6ee] dark:bg-[#1a1735] dark:border-[#322d5a] flex items-center justify-center text-stone-500 dark:text-[#8b7db8] hover:border-[#dd0000] hover:text-[#dd0000] dark:hover:border-amber-400 dark:hover:text-amber-400 transition-colors z-30"
+                >
+                  <IcoGlobe />
+                </a>
+              </div>
+            </div>
           </article>
         )}
       </main>

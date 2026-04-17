@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import type { Post } from '../../types'
-import { Tag } from './Tag'
+import { TagList } from './TagList'
 
 interface PostCardProps {
   post: Post
@@ -43,11 +43,7 @@ export function PostCard({ post }: PostCardProps) {
 
       {/* Tags + arrow */}
       <div className="flex items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-1.5">
-          {post.tags.slice(0, 4).map(t => (
-            <Tag key={t} label={t} linkable />
-          ))}
-        </div>
+        <TagList tags={post.tags} maxVisible={5} linkable />
         <span className="text-stone-400 dark:text-[#8b7db8] group-hover:text-[#395144] dark:group-hover:text-amber-400 transition-colors text-base shrink-0">
           →
         </span>

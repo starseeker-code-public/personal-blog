@@ -1,7 +1,15 @@
 import type { Category, PaginatedResponse, Post, Tag } from '../types'
 import { getAuth } from '../utils/auth'
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
+export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
+
+/** Prepend API_BASE to relative `/uploads/...` URLs; leave absolute URLs alone. */
+export function resolveImageUrl(src?: string | null): string | undefined {
+  if (!src) return undefined
+  if (src.startsWith('http://') || src.startsWith('https://')) return src
+  if (src.startsWith('/')) return `${API_BASE}${src}`
+  return src
+}
 
 async function apiGet<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`)
@@ -50,6 +58,7 @@ export interface PostCreatePayload {
   category?: PostCategory
   draft?: boolean
   coverImage?: string
+  sendToLovedOne?: boolean
 }
 
 export const api = {
@@ -91,6 +100,24 @@ export const api = {
   /** Publish a draft by flipping draft=false. */
   publishDraft: (slug: string) =>
     apiAuthRequest<Post>('PUT', `/api/posts/${slug}`, { draft: false }),
+
+  /** Upload an image; returns { url } pointing at /uploads/<filename>. */
+  uploadImage: async (file: File): Promise<{ url: string }> => {
+    const auth = getAuth()
+    if (!auth) throw new Error('Not authenticated')
+    const form = new FormData()
+    form.append('file', file)
+    const res = await fetch(`${API_BASE}/api/admin/upload-image`, {
+      method: 'POST',
+      headers: { Authorization: auth },
+      body: form,
+    })
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '')
+      throw new Error(`${res.status} ${res.statusText}${detail ? ` — ${detail}` : ''}`)
+    }
+    return res.json()
+  },
 }
 
 export const SITE = {

@@ -116,6 +116,9 @@ class PostCreate(CamelModel):
     category: Optional[CategoryName] = None
     author_name: Optional[str] = None
     published_at: Optional[datetime] = None
+    # Opt-in by the composer. The backend fires the love-letter email only
+    # when this is True AND `draft` is False AND the `love` tag is present.
+    send_to_loved_one: bool = False
 
 
 class PostUpdate(CamelModel):
