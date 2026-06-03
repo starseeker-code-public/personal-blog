@@ -57,6 +57,7 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 - [API Reference](#api-reference)
 - [Security](#security)
 - [CI/CD](#cicd)
+- [Deploying to Fly.io](#deploying-to-flyio)
 - [License](#license)
 
 ---
@@ -753,6 +754,368 @@ The project currently follows a simple single-branch workflow on `main`. When CI
 - `main` will be protected — no direct pushes
 - A `development` branch will be used for day-to-day work
 - A PR to `main` will be required to merge, with CI passing
+
+---
+
+## Deploying to Fly.io
+
+### Overview
+
+On Fly.io the project runs as **two separate apps** backed by Fly-managed Postgres and Upstash Redis:
+
+```
+Browser
+  └─► your-blog-frontend.fly.dev   (Nginx · static React build)
+        └─► your-blog-backend.fly.dev   (FastAPI · Uvicorn)
+              ├─► blog-db    (Fly Postgres)
+              └─► blog-redis (Fly Upstash Redis)
+```
+
+The backend mounts a persistent Fly volume at `/app/uploads` so uploaded cover images survive redeployments.
+
+---
+
+### Prerequisites
+
+- [`flyctl`](https://fly.io/docs/hands-on/install-flyctl/) installed and up to date
+- A Fly.io account — `fly auth login`
+- `openssl` in your shell (used to generate `SECRET_KEY`)
+
+---
+
+### Step 1 — Choose a region
+
+Pick the region closest to your audience:
+
+| Code | Location |
+|------|----------|
+| `ams` | Amsterdam |
+| `cdg` | Paris |
+| `lhr` | London |
+| `iad` | Northern Virginia |
+| `sjc` | San Jose |
+
+```bash
+fly platform regions   # full list with current status
+```
+
+All commands below use `<region>` — substitute your chosen code throughout.
+
+---
+
+### Step 2 — Create the two Fly apps
+
+```bash
+fly apps create your-blog-backend  --region <region>
+fly apps create your-blog-frontend --region <region>
+```
+
+Pick names that are globally unique on Fly; they become your default hostnames (`your-blog-backend.fly.dev`). You will reference both names in every subsequent step.
+
+---
+
+### Step 3 — Provision Postgres
+
+```bash
+fly postgres create \
+  --name blog-db \
+  --region <region> \
+  --initial-cluster-size 1 \
+  --vm-size shared-cpu-1x \
+  --volume-size 10
+
+fly postgres attach blog-db --app your-blog-backend
+```
+
+`fly postgres attach` injects `DATABASE_URL` into the backend's secrets automatically. The injected scheme is `postgres://`, but asyncpg requires `postgresql+asyncpg://`. Copy the URL printed by the attach command and override the scheme:
+
+```bash
+# Take the URL from the attach output and change only the scheme prefix:
+fly secrets set \
+  DATABASE_URL="postgresql+asyncpg://USER:PASSWORD@blog-db.internal:5432/DB_NAME" \
+  --app your-blog-backend
+```
+
+The hostname `blog-db.internal` resolves over Fly's private WireGuard network — no public exposure needed.
+
+---
+
+### Step 4 — Provision Redis
+
+```bash
+fly redis create \
+  --name blog-redis \
+  --region <region> \
+  --no-replicas
+
+# Show the connection URL
+fly redis status blog-redis
+```
+
+Copy the private URL from the output (the `.upstash.io` address). You will use it as `REDIS_URL` in the next step. The `redis://` scheme works fine over Fly's private network; TLS (`rediss://`) is not required for internal traffic.
+
+---
+
+### Step 5 — Set backend secrets
+
+Set all remaining environment variables as Fly secrets. Secrets are encrypted at rest, injected as environment variables at runtime, and never baked into the Docker image.
+
+```bash
+fly secrets set \
+  REDIS_URL="redis://default:PASSWORD@fly-blog-redis.upstash.io:PORT" \
+  SECRET_KEY="$(openssl rand -hex 32)" \
+  ALLOWED_ORIGINS="https://your-blog-frontend.fly.dev" \
+  SITE_URL="https://your-blog-frontend.fly.dev" \
+  SITE_NAME="Your Name · Blog" \
+  LOGIN_USERNAME="your_admin_username" \
+  LOGIN_PASSWORD="a_strong_random_password" \
+  SECURE_PATH="your-secret-admin-path" \
+  LOVED_ONE_EMAIL="someone@example.com" \
+  SMTP_HOST="" \
+  SMTP_PORT="587" \
+  SMTP_USERNAME="" \
+  SMTP_PASSWORD="" \
+  SMTP_FROM="" \
+  --app your-blog-backend
+```
+
+> **SMTP**: leave `SMTP_HOST` empty to disable email. Populate all five SMTP fields to enable it.
+
+> **Verify secrets are set**: `fly secrets list --app your-blog-backend` (shows names only, never values).
+
+---
+
+### Step 6 — Create the uploads volume
+
+```bash
+fly volumes create uploads \
+  --app your-blog-backend \
+  --region <region> \
+  --size 5
+```
+
+A Fly volume is a persistent block device — cover images written here survive container restarts and redeployments. If you later scale to multiple backend machines, each machine needs its own volume; Fly volumes are not shared between machines. For multi-machine setups, move uploads to object storage (e.g. S3 or Tigris, Fly's built-in object store).
+
+---
+
+### Step 7 — Add `fly.toml` files
+
+**`backend/python/fly.toml`**
+
+```toml
+app            = 'your-blog-backend'
+primary_region = '<region>'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[http_service]
+  internal_port        = 8000
+  force_https          = true
+  auto_stop_machines   = 'stop'
+  auto_start_machines  = true
+  # 1 = always one warm machine (no cold starts, small ongoing cost).
+  # 0 = scale to zero when idle (free tier friendly, ~3 s cold start).
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type       = 'connections'
+    hard_limit = 25
+    soft_limit = 20
+
+  [[http_service.checks]]
+    grace_period = '30s'
+    interval     = '30s'
+    method       = 'GET'
+    path         = '/health'
+    timeout      = '10s'
+
+[[vm]]
+  size   = 'shared-cpu-1x'
+  memory = '512mb'
+
+[[mounts]]
+  source      = 'uploads'
+  destination = '/app/uploads'
+```
+
+**`frontend/fly.toml`**
+
+```toml
+app            = 'your-blog-frontend'
+primary_region = '<region>'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+  [build.args]
+    # VITE_API_BASE is safe to commit — it is the public backend URL.
+    VITE_API_BASE = 'https://your-blog-backend.fly.dev'
+    # The remaining VITE_* admin-path args are sensitive — do NOT add them
+    # here. Pass them via --build-arg at deploy time (see step 9).
+
+[http_service]
+  internal_port        = 80
+  force_https          = true
+  auto_stop_machines   = 'stop'
+  auto_start_machines  = true
+  min_machines_running = 1
+
+[[vm]]
+  size   = 'shared-cpu-1x'
+  memory = '256mb'
+```
+
+> **Why build args and not `fly secrets`?** Vite bakes `VITE_*` variables into the compiled JS bundle at build time. By the time the Nginx container is running, these values are already embedded — runtime environment variables have no effect. Fly secrets are runtime-only and therefore useless for Vite builds.
+
+---
+
+### Step 8 — Deploy the backend
+
+```bash
+cd backend/python
+fly deploy --app your-blog-backend
+```
+
+On first boot the app calls `create_tables()` to initialise the schema, then the entrypoint runs the test suite against the live server before accepting traffic. Tail the logs to watch both phases:
+
+```bash
+fly logs --app your-blog-backend
+```
+
+Confirm the health endpoint is green before proceeding:
+
+```bash
+curl https://your-blog-backend.fly.dev/health
+# → {"status":"ok","db":"ok","redis":"ok"}
+```
+
+---
+
+### Step 9 — Deploy the frontend
+
+`VITE_API_BASE` is already in `fly.toml`. The admin path variables are sensitive — pass them as `--build-arg` flags at deploy time, never commit them to any tracked file:
+
+```bash
+cd frontend
+fly deploy --app your-blog-frontend \
+  --build-arg VITE_SECURE_PATH="your-secret-path" \
+  --build-arg VITE_PATH_LOGIN="your-login-path" \
+  --build-arg VITE_PATH_ADMIN_NEW="your-new-post-path" \
+  --build-arg VITE_PATH_ADMIN_UPDATE="your-update-path" \
+  --build-arg VITE_PATH_ADMIN_DREAMS="your-dreams-path" \
+  --build-arg VITE_PATH_ADMIN_INFO="your-info-path"
+```
+
+---
+
+### Step 10 — Verify the full stack
+
+```bash
+# Blog
+open https://your-blog-frontend.fly.dev
+
+# API explorer
+open https://your-blog-backend.fly.dev/docs
+
+# Health
+curl https://your-blog-backend.fly.dev/health
+
+# RSS feed
+curl https://your-blog-backend.fly.dev/feed.xml
+```
+
+---
+
+### (Optional) Step 11 — Custom domain
+
+```bash
+fly certs add yourdomain.com     --app your-blog-frontend
+fly certs add api.yourdomain.com --app your-blog-backend
+```
+
+Each command prints the DNS record you need to create (CNAME for subdomains, A/AAAA for the apex). Fly provisions a TLS certificate automatically once DNS propagates.
+
+After DNS is live, update the backend secrets and redeploy the frontend so all cross-origin and sitemap URLs point to the real domain:
+
+```bash
+# Update backend with the live domain
+fly secrets set \
+  ALLOWED_ORIGINS="https://yourdomain.com" \
+  SITE_URL="https://yourdomain.com" \
+  --app your-blog-backend
+
+# Redeploy frontend with the new API base
+cd frontend
+fly deploy --app your-blog-frontend \
+  --build-arg VITE_API_BASE="https://api.yourdomain.com" \
+  --build-arg VITE_SECURE_PATH="your-secret-path" \
+  --build-arg VITE_PATH_LOGIN="your-login-path" \
+  --build-arg VITE_PATH_ADMIN_NEW="your-new-post-path" \
+  --build-arg VITE_PATH_ADMIN_UPDATE="your-update-path" \
+  --build-arg VITE_PATH_ADMIN_DREAMS="your-dreams-path" \
+  --build-arg VITE_PATH_ADMIN_INFO="your-info-path"
+```
+
+---
+
+### Day-2 operations
+
+**Scaling**
+
+```bash
+# Run two machines for zero-downtime rolling deploys
+fly scale count 2 --app your-blog-backend
+
+# Upgrade to a larger VM if the 512 MB machine shows memory pressure
+fly scale vm shared-cpu-2x --memory 1024 --app your-blog-backend
+```
+
+**Redeploying after a code change**
+
+```bash
+# Backend — secrets are already set; no extra flags needed
+cd backend/python && fly deploy --app your-blog-backend
+
+# Frontend — always pass the admin path build args
+cd frontend && fly deploy --app your-blog-frontend \
+  --build-arg VITE_SECURE_PATH="..." \
+  --build-arg VITE_PATH_LOGIN="..." \
+  --build-arg VITE_PATH_ADMIN_NEW="..." \
+  --build-arg VITE_PATH_ADMIN_UPDATE="..." \
+  --build-arg VITE_PATH_ADMIN_DREAMS="..." \
+  --build-arg VITE_PATH_ADMIN_INFO="..."
+```
+
+**Rotating the secret key**
+
+```bash
+fly secrets set SECRET_KEY="$(openssl rand -hex 32)" --app your-blog-backend
+# The machine restarts automatically; existing sessions are invalidated.
+```
+
+**Database backups**
+
+Fly Postgres takes daily volume snapshots automatically. To take an on-demand backup:
+
+```bash
+fly postgres backup create --app blog-db
+fly postgres backup list   --app blog-db
+```
+
+**Viewing logs**
+
+```bash
+fly logs --app your-blog-backend
+fly logs --app your-blog-frontend
+```
+
+**SSH into a running machine**
+
+```bash
+fly ssh console --app your-blog-backend
+# Useful for: inspecting /app/uploads, running one-off scripts, checking env vars
+```
 
 ---
 
