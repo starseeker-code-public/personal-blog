@@ -57,7 +57,7 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 - [API Reference](#api-reference)
 - [Security](#security)
 - [CI/CD](#cicd)
-- [Deploying to Fly.io](#deploying-to-flyio)
+- [Deploying to Koyeb](#deploying-to-koyeb)
 - [License](#license)
 
 ---
@@ -757,364 +757,464 @@ The project currently follows a simple single-branch workflow on `main`. When CI
 
 ---
 
-## Deploying to Fly.io
+## Deploying to Koyeb
 
-### Overview
+This project deploys as two Koyeb Services (backend + frontend) with a serverless Postgres database and Upstash as the Redis cache. All providers have a free tier that covers a personal blog indefinitely.
 
-On Fly.io the project runs as **two separate apps** backed by Fly-managed Postgres and Upstash Redis:
+### Choosing a Postgres provider
+
+Two serverless Postgres providers fit this stack well. Pick one before starting.
+
+| | **Neon** | **Supabase** |
+|---|---|---|
+| Free storage | 0.5 GB | 500 MB |
+| Idle behaviour | Compute suspends after **5 min** idle; wakes automatically on first query | Entire project pauses after **1 week** of inactivity; requires manual reactivation |
+| asyncpg compatibility | Native — no gotchas | Must use the **direct connection** URL, not the pooler (see step 2) |
+| Extra services | None | Auth, Storage, Realtime, REST API |
+| Best fit | This project ✓ | Projects already using the Supabase ecosystem |
+
+Neon is the better default here: its autosuspend is transparent to the app (the SQLAlchemy engine reconnects silently), whereas Supabase's project pause blocks all traffic until you click **Restore** in the dashboard.
+
+---
+
+### Free tier at a glance
+
+| Provider | What you get for free | Relevant limit |
+|----------|----------------------|----------------|
+| **Koyeb** | 1 web service · 512 MB RAM · 0.1 vCPU | Free tier covers **one** service — see note below |
+| **Neon** | 1 project · 0.5 GB storage · 191 compute-hours/month | Suspends after 5 min idle, wakes on first query |
+| **Supabase** | 1 project · 500 MB storage · 2 projects total | Pauses after 1 week inactive, manual reactivation |
+| **Upstash** | 1 Redis database · 10 000 commands/day · 256 MB | Enough for a personal blog with caching |
+
+> **Two services, one free slot.** Koyeb's free tier covers a single web service. For a backend + frontend setup, the second service needs a paid instance. The cheapest option is the **Eco** instance (~$0.003/hr, billed per second) — running a lightweight Nginx container costs under a dollar a month. Alternatively, host the frontend for free on Cloudflare Pages or Netlify (it is a static build) and reserve the Koyeb free slot for the backend.
+
+> **Uploads volume.** Koyeb persistent volumes are not available on free or Eco instances — they require a **Standard** instance type and are only available in the `fra` (Frankfurt) and `was` (Washington D.C.) regions. On the free tier, cover images must be referenced as external URLs (e.g. Cloudinary, Imgur). To use the built-in upload endpoint, upgrade the backend to a Standard instance and attach a volume as described in step 7.
+
+---
+
+### Architecture
 
 ```
 Browser
-  └─► your-blog-frontend.fly.dev   (Nginx · static React build)
-        └─► your-blog-backend.fly.dev   (FastAPI · Uvicorn)
-              ├─► blog-db    (Fly Postgres)
-              └─► blog-redis (Fly Upstash Redis)
+  └─► blog-frontend.koyeb.app      (Nginx · static React build)
+        └─► blog-backend.koyeb.app      (FastAPI · Uvicorn)
+              ├─► Neon or Supabase       (serverless PostgreSQL)
+              └─► Upstash Redis          (serverless Redis)
 ```
 
-The backend mounts a persistent Fly volume at `/app/uploads` so uploaded cover images survive redeployments.
+Koyeb deploys directly from GitHub — it clones the repo, builds the Dockerfile in the configured work directory, and runs the container. There are no platform config files to commit; everything is configured via the dashboard or CLI.
 
 ---
 
 ### Prerequisites
 
-- [`flyctl`](https://fly.io/docs/hands-on/install-flyctl/) installed and up to date
-- A Fly.io account — `fly auth login`
-- `openssl` in your shell (used to generate `SECRET_KEY`)
+- A **Koyeb** account — [app.koyeb.com](https://app.koyeb.com)
+- A **Neon** account — [neon.tech](https://neon.tech) **or** a **Supabase** account — [supabase.com](https://supabase.com) (both free, no card required)
+- An **Upstash** account — [upstash.com](https://upstash.com) (free, no card required)
+- Your repo pushed to GitHub
+- Koyeb CLI:
+  ```bash
+  # macOS / Linux (Homebrew)
+  brew install koyeb/tap/koyeb
+
+  # Any platform
+  curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
+  export PATH=$HOME/.koyeb/bin:$PATH
+  ```
+- `koyeb login`
+- `openssl` for generating `SECRET_KEY`
 
 ---
 
-### Step 1 — Choose a region
+### Step 1 — Create the database
 
-Pick the region closest to your audience:
+#### Neon
 
-| Code | Location |
-|------|----------|
-| `ams` | Amsterdam |
-| `cdg` | Paris |
-| `lhr` | London |
-| `iad` | Northern Virginia |
-| `sjc` | San Jose |
+1. Log in to [console.neon.tech](https://console.neon.tech) and click **New Project**.
+2. Name the project (e.g. `personal-blog`) and pick the region closest to your Koyeb region:
 
-```bash
-fly platform regions   # full list with current status
+   | Koyeb region | Nearest Neon region |
+   |---|---|
+   | `fra` | `eu-central-1` (Frankfurt) |
+   | `was` | `us-east-2` (Ohio) |
+   | `sin` | `ap-southeast-1` (Singapore) |
+   | `par` | `eu-west-3` (Paris) |
+
+3. Neon creates a default database (`neondb`) and role. Open **Connection Details** and copy the connection string:
+   ```
+   postgresql://neondb_owner:PASSWORD@ep-XXXXX.eu-central-1.aws.neon.tech/neondb?sslmode=require
+   ```
+
+#### Supabase
+
+1. Log in to [supabase.com](https://supabase.com) and click **New project**.
+2. Set a project name, a strong database password, and pick the region closest to your Koyeb region:
+
+   | Koyeb region | Nearest Supabase region |
+   |---|---|
+   | `fra` | `eu-central-1` (Frankfurt) |
+   | `was` | `us-east-1` (N. Virginia) |
+   | `sin` | `ap-southeast-1` (Singapore) |
+   | `par` | `eu-west-2` (London) |
+
+3. Once the project is ready, go to **Project Settings → Database** and scroll to **Connection string**. Select the **Direct connection** tab — not the pooler. It looks like:
+   ```
+   postgresql://postgres:PASSWORD@db.PROJECT_ID.supabase.co:5432/postgres
+   ```
+
+   > **Why direct connection?** Supabase's default connection string routes through Supavisor (their connection pooler) in transaction mode. asyncpg uses PostgreSQL prepared statements, which are not supported in transaction mode pooling and cause errors at runtime. The direct connection bypasses the pooler entirely.
+
+---
+
+### Step 2 — Adapt the database URL for asyncpg
+
+This step is the same for both providers: the URL scheme must be changed and SSL must be present. The details differ slightly.
+
+#### Neon
+
+**Change the scheme:** SQLAlchemy's engine (see [database.py:6](backend/python/app/database.py#L6)) selects the driver from the URL prefix. Neon gives `postgresql://`; asyncpg requires `postgresql+asyncpg://`:
+
 ```
+# From Neon:
+postgresql://neondb_owner:PASSWORD@ep-XXXXX.eu-central-1.aws.neon.tech/neondb?sslmode=require
+
+# DATABASE_URL to set:
+postgresql+asyncpg://neondb_owner:PASSWORD@ep-XXXXX.eu-central-1.aws.neon.tech/neondb?sslmode=require
+```
+
+Change only the leading scheme — keep `?sslmode=require` exactly as Neon gave it. Neon enforces TLS and will reject connections without it.
+
+**Autosuspend handling:** Neon suspends compute after 5 minutes of idle. The engine's `pool_pre_ping=True` sends a lightweight `SELECT 1` before reusing any pooled connection. If the connection is dead (Neon suspended), SQLAlchemy silently drops it and opens a fresh one. The request that wakes Neon adds roughly one second of latency; all subsequent requests are normal.
+
+#### Supabase
+
+**Change the scheme and add SSL:** Supabase's direct connection URL uses `postgresql://` and does not include `?sslmode=require` — you must add it:
+
+```
+# From Supabase (direct connection tab):
+postgresql://postgres:PASSWORD@db.PROJECT_ID.supabase.co:5432/postgres
+
+# DATABASE_URL to set:
+postgresql+asyncpg://postgres:PASSWORD@db.PROJECT_ID.supabase.co:5432/postgres?sslmode=require
+```
+
+Two changes: scheme prefix (`postgresql+asyncpg://`) and the appended `?sslmode=require`. Supabase enforces TLS on all connections.
+
+**Project pause handling:** Supabase pauses the entire project after one week of inactivity. Unlike Neon's compute-level suspend, a paused Supabase project cannot accept connections at all until manually restored via the dashboard (**Project Settings → General → Restore project**). `pool_pre_ping=True` will detect the dead connection and retry, but the retry will also fail until the project is restored. For a blog that may go quiet for weeks, Neon's automatic wake-up is more reliable.
+
+---
+
+### Step 3 — Set up Redis (Upstash)
+
+1. Create a free account at [upstash.com](https://upstash.com).
+2. Create a new **Redis** database. Choose the region closest to your Koyeb services (`eu-central-1` ≈ `fra`, `us-east-1` ≈ `was`).
+3. On the database detail page, open the **Details** tab and copy the **Redis URL**:
+   ```
+   redis://default:PASSWORD@xxx-xxx.upstash.io:PORT
+   ```
+   This is your `REDIS_URL`. Use `rediss://` instead of `redis://` if you want TLS.
+
+---
+
+### Step 4 — Choose a Koyeb region
+
+| Code | Location | Volumes |
+|------|----------|---------|
+| `fra` | Frankfurt, Germany | yes |
+| `was` | Washington D.C., USA | yes |
+| `sin` | Singapore | no |
+| `tyo` | Tokyo, Japan | no |
+| `par` | Paris, France | no |
+
+If you need the uploads volume, use `fra` or `was`. Co-locate the frontend in the same region to avoid inter-region latency.
 
 All commands below use `<region>` — substitute your chosen code throughout.
 
 ---
 
-### Step 2 — Create the two Fly apps
+### Step 5 — Create Koyeb Secrets
+
+Koyeb Secrets are encrypted at rest, scoped to your organisation, and injected as environment variables at runtime. The `blog-database-url` value differs by provider — use whichever URL you built in step 2.
 
 ```bash
-fly apps create your-blog-backend  --region <region>
-fly apps create your-blog-frontend --region <region>
+# Neon:
+koyeb secrets create blog-database-url \
+  --value "postgresql+asyncpg://neondb_owner:PASSWORD@ep-XXXXX.<neon-region>.aws.neon.tech/neondb?sslmode=require"
+
+# Supabase (direct connection):
+koyeb secrets create blog-database-url \
+  --value "postgresql+asyncpg://postgres:PASSWORD@db.PROJECT_ID.supabase.co:5432/postgres?sslmode=require"
+
+koyeb secrets create blog-redis-url \
+  --value "redis://default:PASSWORD@xxx-xxx.upstash.io:PORT"
+
+koyeb secrets create blog-secret-key \
+  --value "$(openssl rand -hex 32)"
+
+koyeb secrets create blog-login-username \
+  --value "your_admin_username"
+
+koyeb secrets create blog-login-password \
+  --value "a_strong_random_password"
+
+koyeb secrets create blog-secure-path \
+  --value "your-secret-admin-path"
+
+# Admin path args — baked into the JS bundle at build time
+koyeb secrets create blog-vite-path-login    --value "your-login-path"
+koyeb secrets create blog-vite-path-new      --value "your-new-post-path"
+koyeb secrets create blog-vite-path-update   --value "your-update-path"
+koyeb secrets create blog-vite-path-dreams   --value "your-dreams-path"
+koyeb secrets create blog-vite-path-info     --value "your-info-path"
 ```
 
-Pick names that are globally unique on Fly; they become your default hostnames (`your-blog-backend.fly.dev`). You will reference both names in every subsequent step.
+Verify: `koyeb secrets list`
 
 ---
 
-### Step 3 — Provision Postgres
+### Step 6 — Deploy the backend service
+
+Koyeb clones the repo, enters `backend/python/`, and builds the `Dockerfile` there.
+
+**Via dashboard** (recommended for first deploy):
+
+1. **Create Service → GitHub** — select your repo and `main` branch
+2. **Builder**: Dockerfile · **Work directory**: `backend/python`
+3. **Port**: `8000`
+4. **Health check**: HTTP · path `/health` · initial delay `30s`
+5. **Instance type**: `Free` (no volume) or `Standard Nano` (volume support — `fra`/`was` only)
+6. **Region**: `<region>`
+7. **Environment variables**:
+
+| Name | Value |
+|------|-------|
+| `DATABASE_URL` | `{{secret.blog-database-url}}` |
+| `REDIS_URL` | `{{secret.blog-redis-url}}` |
+| `SECRET_KEY` | `{{secret.blog-secret-key}}` |
+| `LOGIN_USERNAME` | `{{secret.blog-login-username}}` |
+| `LOGIN_PASSWORD` | `{{secret.blog-login-password}}` |
+| `SECURE_PATH` | `{{secret.blog-secure-path}}` |
+| `ALLOWED_ORIGINS` | `https://your-blog-frontend.koyeb.app` |
+| `SITE_URL` | `https://your-blog-frontend.koyeb.app` |
+| `SITE_NAME` | `Your Name · Blog` |
+| `LOVED_ONE_EMAIL` | `someone@example.com` |
+| `SMTP_HOST` | *(empty to disable)* |
+| `SMTP_PORT` | `587` |
+| `SMTP_USERNAME` | *(empty)* |
+| `SMTP_PASSWORD` | *(empty)* |
+| `SMTP_FROM` | *(empty)* |
+
+**Via CLI** (equivalent):
 
 ```bash
-fly postgres create \
-  --name blog-db \
+koyeb services create blog-backend \
+  --git github.com/YOUR_USER/personal-blog \
+  --git-branch main \
+  --git-workdir backend/python \
+  --dockerfile Dockerfile \
+  --port 8000:http \
   --region <region> \
-  --initial-cluster-size 1 \
-  --vm-size shared-cpu-1x \
-  --volume-size 10
-
-fly postgres attach blog-db --app your-blog-backend
+  --instance-type free \
+  --health-check-http-path /health \
+  --env DATABASE_URL={{secret.blog-database-url}} \
+  --env REDIS_URL={{secret.blog-redis-url}} \
+  --env SECRET_KEY={{secret.blog-secret-key}} \
+  --env LOGIN_USERNAME={{secret.blog-login-username}} \
+  --env LOGIN_PASSWORD={{secret.blog-login-password}} \
+  --env SECURE_PATH={{secret.blog-secure-path}} \
+  --env ALLOWED_ORIGINS="https://your-blog-frontend.koyeb.app" \
+  --env SITE_URL="https://your-blog-frontend.koyeb.app" \
+  --env SITE_NAME="Your Name · Blog" \
+  --env LOVED_ONE_EMAIL="someone@example.com" \
+  --env SMTP_HOST="" \
+  --env SMTP_PORT="587" \
+  --env SMTP_USERNAME="" \
+  --env SMTP_PASSWORD="" \
+  --env SMTP_FROM="" \
+  --scale 1
 ```
 
-`fly postgres attach` injects `DATABASE_URL` into the backend's secrets automatically. The injected scheme is `postgres://`, but asyncpg requires `postgresql+asyncpg://`. Copy the URL printed by the attach command and override the scheme:
+On first boot `create_tables()` runs (SQLAlchemy creates the schema against the database), then the entrypoint runs the test suite before the container accepts traffic. Watch it:
 
 ```bash
-# Take the URL from the attach output and change only the scheme prefix:
-fly secrets set \
-  DATABASE_URL="postgresql+asyncpg://USER:PASSWORD@blog-db.internal:5432/DB_NAME" \
-  --app your-blog-backend
+koyeb services logs blog-backend
 ```
 
-The hostname `blog-db.internal` resolves over Fly's private WireGuard network — no public exposure needed.
-
----
-
-### Step 4 — Provision Redis
+Once green, confirm the database and Redis connections are alive:
 
 ```bash
-fly redis create \
-  --name blog-redis \
-  --region <region> \
-  --no-replicas
-
-# Show the connection URL
-fly redis status blog-redis
-```
-
-Copy the private URL from the output (the `.upstash.io` address). You will use it as `REDIS_URL` in the next step. The `redis://` scheme works fine over Fly's private network; TLS (`rediss://`) is not required for internal traffic.
-
----
-
-### Step 5 — Set backend secrets
-
-Set all remaining environment variables as Fly secrets. Secrets are encrypted at rest, injected as environment variables at runtime, and never baked into the Docker image.
-
-```bash
-fly secrets set \
-  REDIS_URL="redis://default:PASSWORD@fly-blog-redis.upstash.io:PORT" \
-  SECRET_KEY="$(openssl rand -hex 32)" \
-  ALLOWED_ORIGINS="https://your-blog-frontend.fly.dev" \
-  SITE_URL="https://your-blog-frontend.fly.dev" \
-  SITE_NAME="Your Name · Blog" \
-  LOGIN_USERNAME="your_admin_username" \
-  LOGIN_PASSWORD="a_strong_random_password" \
-  SECURE_PATH="your-secret-admin-path" \
-  LOVED_ONE_EMAIL="someone@example.com" \
-  SMTP_HOST="" \
-  SMTP_PORT="587" \
-  SMTP_USERNAME="" \
-  SMTP_PASSWORD="" \
-  SMTP_FROM="" \
-  --app your-blog-backend
-```
-
-> **SMTP**: leave `SMTP_HOST` empty to disable email. Populate all five SMTP fields to enable it.
-
-> **Verify secrets are set**: `fly secrets list --app your-blog-backend` (shows names only, never values).
-
----
-
-### Step 6 — Create the uploads volume
-
-```bash
-fly volumes create uploads \
-  --app your-blog-backend \
-  --region <region> \
-  --size 5
-```
-
-A Fly volume is a persistent block device — cover images written here survive container restarts and redeployments. If you later scale to multiple backend machines, each machine needs its own volume; Fly volumes are not shared between machines. For multi-machine setups, move uploads to object storage (e.g. S3 or Tigris, Fly's built-in object store).
-
----
-
-### Step 7 — Add `fly.toml` files
-
-**`backend/python/fly.toml`**
-
-```toml
-app            = 'your-blog-backend'
-primary_region = '<region>'
-
-[build]
-  dockerfile = 'Dockerfile'
-
-[http_service]
-  internal_port        = 8000
-  force_https          = true
-  auto_stop_machines   = 'stop'
-  auto_start_machines  = true
-  # 1 = always one warm machine (no cold starts, small ongoing cost).
-  # 0 = scale to zero when idle (free tier friendly, ~3 s cold start).
-  min_machines_running = 1
-
-  [http_service.concurrency]
-    type       = 'connections'
-    hard_limit = 25
-    soft_limit = 20
-
-  [[http_service.checks]]
-    grace_period = '30s'
-    interval     = '30s'
-    method       = 'GET'
-    path         = '/health'
-    timeout      = '10s'
-
-[[vm]]
-  size   = 'shared-cpu-1x'
-  memory = '512mb'
-
-[[mounts]]
-  source      = 'uploads'
-  destination = '/app/uploads'
-```
-
-**`frontend/fly.toml`**
-
-```toml
-app            = 'your-blog-frontend'
-primary_region = '<region>'
-
-[build]
-  dockerfile = 'Dockerfile'
-
-  [build.args]
-    # VITE_API_BASE is safe to commit — it is the public backend URL.
-    VITE_API_BASE = 'https://your-blog-backend.fly.dev'
-    # The remaining VITE_* admin-path args are sensitive — do NOT add them
-    # here. Pass them via --build-arg at deploy time (see step 9).
-
-[http_service]
-  internal_port        = 80
-  force_https          = true
-  auto_stop_machines   = 'stop'
-  auto_start_machines  = true
-  min_machines_running = 1
-
-[[vm]]
-  size   = 'shared-cpu-1x'
-  memory = '256mb'
-```
-
-> **Why build args and not `fly secrets`?** Vite bakes `VITE_*` variables into the compiled JS bundle at build time. By the time the Nginx container is running, these values are already embedded — runtime environment variables have no effect. Fly secrets are runtime-only and therefore useless for Vite builds.
-
----
-
-### Step 8 — Deploy the backend
-
-```bash
-cd backend/python
-fly deploy --app your-blog-backend
-```
-
-On first boot the app calls `create_tables()` to initialise the schema, then the entrypoint runs the test suite against the live server before accepting traffic. Tail the logs to watch both phases:
-
-```bash
-fly logs --app your-blog-backend
-```
-
-Confirm the health endpoint is green before proceeding:
-
-```bash
-curl https://your-blog-backend.fly.dev/health
+curl https://your-blog-backend.koyeb.app/health
 # → {"status":"ok","db":"ok","redis":"ok"}
 ```
 
 ---
 
-### Step 9 — Deploy the frontend
+### Step 7 — Attach the uploads volume (paid instances only)
 
-`VITE_API_BASE` is already in `fly.toml`. The admin path variables are sensitive — pass them as `--build-arg` flags at deploy time, never commit them to any tracked file:
+Skip this step if you are on the free instance type and storing cover images as external URLs.
+
+The volume must be created in the same region as the service.
+
+**Via dashboard**: **Volumes → Create Volume** → name `blog-uploads`, region `<region>`, size `5 GB` → open the backend service → **Storage** tab → **Attach volume** → mount path `/app/uploads`.
+
+**Via CLI**:
 
 ```bash
-cd frontend
-fly deploy --app your-blog-frontend \
-  --build-arg VITE_SECURE_PATH="your-secret-path" \
-  --build-arg VITE_PATH_LOGIN="your-login-path" \
-  --build-arg VITE_PATH_ADMIN_NEW="your-new-post-path" \
-  --build-arg VITE_PATH_ADMIN_UPDATE="your-update-path" \
-  --build-arg VITE_PATH_ADMIN_DREAMS="your-dreams-path" \
-  --build-arg VITE_PATH_ADMIN_INFO="your-info-path"
+koyeb volumes create blog-uploads --region <region> --size 5
+
+koyeb services update blog-backend \
+  --instance-type standard-nano \
+  --volume blog-uploads:/app/uploads
+```
+
+> Volumes support one Service at a time at scale 1. To scale horizontally later, migrate uploads to object storage (e.g. Cloudflare R2 or AWS S3).
+
+---
+
+### Step 8 — Deploy the frontend service
+
+Koyeb forwards every environment variable on a service to the Docker build as `--build-arg` values. The `ARG` declarations already present in `frontend/Dockerfile` pick them up, so Vite bakes `VITE_*` values into the JS bundle at compile time — no special handling needed.
+
+**Via dashboard**:
+
+1. **Create Service → GitHub** — same repo, `main` branch
+2. **Builder**: Dockerfile · **Work directory**: `frontend`
+3. **Port**: `80`
+4. **Instance type**: `Free` (or `Eco` if the free slot is taken by the backend)
+5. **Region**: `<region>`
+6. **Environment variables**:
+
+| Name | Value |
+|------|-------|
+| `VITE_API_BASE` | `https://your-blog-backend.koyeb.app` |
+| `VITE_SECURE_PATH` | `{{secret.blog-secure-path}}` |
+| `VITE_PATH_LOGIN` | `{{secret.blog-vite-path-login}}` |
+| `VITE_PATH_ADMIN_NEW` | `{{secret.blog-vite-path-new}}` |
+| `VITE_PATH_ADMIN_UPDATE` | `{{secret.blog-vite-path-update}}` |
+| `VITE_PATH_ADMIN_DREAMS` | `{{secret.blog-vite-path-dreams}}` |
+| `VITE_PATH_ADMIN_INFO` | `{{secret.blog-vite-path-info}}` |
+
+**Via CLI**:
+
+```bash
+koyeb services create blog-frontend \
+  --git github.com/YOUR_USER/personal-blog \
+  --git-branch main \
+  --git-workdir frontend \
+  --dockerfile Dockerfile \
+  --port 80:http \
+  --region <region> \
+  --instance-type free \
+  --env VITE_API_BASE="https://your-blog-backend.koyeb.app" \
+  --env VITE_SECURE_PATH={{secret.blog-secure-path}} \
+  --env VITE_PATH_LOGIN={{secret.blog-vite-path-login}} \
+  --env VITE_PATH_ADMIN_NEW={{secret.blog-vite-path-new}} \
+  --env VITE_PATH_ADMIN_UPDATE={{secret.blog-vite-path-update}} \
+  --env VITE_PATH_ADMIN_DREAMS={{secret.blog-vite-path-dreams}} \
+  --env VITE_PATH_ADMIN_INFO={{secret.blog-vite-path-info}} \
+  --scale 1
 ```
 
 ---
 
-### Step 10 — Verify the full stack
+### Step 9 — Verify the full stack
 
 ```bash
 # Blog
-open https://your-blog-frontend.fly.dev
+open https://your-blog-frontend.koyeb.app
 
 # API explorer
-open https://your-blog-backend.fly.dev/docs
+open https://your-blog-backend.koyeb.app/docs
 
-# Health
-curl https://your-blog-backend.fly.dev/health
+# Health (confirms Postgres + Upstash are reachable)
+curl https://your-blog-backend.koyeb.app/health
 
 # RSS feed
-curl https://your-blog-backend.fly.dev/feed.xml
+curl https://your-blog-backend.koyeb.app/feed.xml
 ```
 
 ---
 
-### (Optional) Step 11 — Custom domain
+### (Optional) Step 10 — Custom domain
+
+In the Koyeb dashboard go to **Domains → Add Domain**, enter your domain, and select the target service. Koyeb shows the CNAME record to create at your DNS provider; TLS is provisioned automatically.
+
+| Domain | Service |
+|--------|---------|
+| `www.yourdomain.com` | `blog-frontend` |
+| `api.yourdomain.com` | `blog-backend` |
+
+> Koyeb does not support bare apex domains. Use `www.` and redirect the apex at your DNS provider, or use Cloudflare/Route 53 which support CNAME flattening at the zone apex.
+
+After DNS propagates, update the backend URLs and trigger a frontend rebuild:
 
 ```bash
-fly certs add yourdomain.com     --app your-blog-frontend
-fly certs add api.yourdomain.com --app your-blog-backend
-```
+koyeb services update blog-backend \
+  --env ALLOWED_ORIGINS="https://www.yourdomain.com" \
+  --env SITE_URL="https://www.yourdomain.com"
 
-Each command prints the DNS record you need to create (CNAME for subdomains, A/AAAA for the apex). Fly provisions a TLS certificate automatically once DNS propagates.
-
-After DNS is live, update the backend secrets and redeploy the frontend so all cross-origin and sitemap URLs point to the real domain:
-
-```bash
-# Update backend with the live domain
-fly secrets set \
-  ALLOWED_ORIGINS="https://yourdomain.com" \
-  SITE_URL="https://yourdomain.com" \
-  --app your-blog-backend
-
-# Redeploy frontend with the new API base
-cd frontend
-fly deploy --app your-blog-frontend \
-  --build-arg VITE_API_BASE="https://api.yourdomain.com" \
-  --build-arg VITE_SECURE_PATH="your-secret-path" \
-  --build-arg VITE_PATH_LOGIN="your-login-path" \
-  --build-arg VITE_PATH_ADMIN_NEW="your-new-post-path" \
-  --build-arg VITE_PATH_ADMIN_UPDATE="your-update-path" \
-  --build-arg VITE_PATH_ADMIN_DREAMS="your-dreams-path" \
-  --build-arg VITE_PATH_ADMIN_INFO="your-info-path"
+koyeb services update blog-frontend \
+  --env VITE_API_BASE="https://api.yourdomain.com"
 ```
 
 ---
 
 ### Day-2 operations
 
-**Scaling**
+**Auto-redeploy on push**
+
+Koyeb watches the configured branch and redeploys on every push automatically. To trigger a manual redeploy:
 
 ```bash
-# Run two machines for zero-downtime rolling deploys
-fly scale count 2 --app your-blog-backend
-
-# Upgrade to a larger VM if the 512 MB machine shows memory pressure
-fly scale vm shared-cpu-2x --memory 1024 --app your-blog-backend
+koyeb services redeploy blog-backend
+koyeb services redeploy blog-frontend
 ```
 
-**Redeploying after a code change**
+**Scaling up**
 
 ```bash
-# Backend — secrets are already set; no extra flags needed
-cd backend/python && fly deploy --app your-blog-backend
+# Upgrade to a larger instance (e.g. when the 512 MB free instance shows memory pressure)
+koyeb services update blog-backend --instance-type standard-nano
 
-# Frontend — always pass the admin path build args
-cd frontend && fly deploy --app your-blog-frontend \
-  --build-arg VITE_SECURE_PATH="..." \
-  --build-arg VITE_PATH_LOGIN="..." \
-  --build-arg VITE_PATH_ADMIN_NEW="..." \
-  --build-arg VITE_PATH_ADMIN_UPDATE="..." \
-  --build-arg VITE_PATH_ADMIN_DREAMS="..." \
-  --build-arg VITE_PATH_ADMIN_INFO="..."
+# Keep scale=1 while a volume is attached.
+# To scale horizontally, migrate uploads to object storage first.
 ```
 
 **Rotating the secret key**
 
 ```bash
-fly secrets set SECRET_KEY="$(openssl rand -hex 32)" --app your-blog-backend
-# The machine restarts automatically; existing sessions are invalidated.
+koyeb secrets update blog-secret-key --value "$(openssl rand -hex 32)"
+# The service restarts automatically; existing sessions are invalidated.
 ```
 
 **Database backups**
 
-Fly Postgres takes daily volume snapshots automatically. To take an on-demand backup:
+*Neon* — retains 7 days of point-in-time history on the free tier. To restore: Neon console → **Branches → Restore to point in time**, pick a timestamp, and Neon creates a new branch from that snapshot. To export a plain SQL dump:
 
 ```bash
-fly postgres backup create --app blog-db
-fly postgres backup list   --app blog-db
+pg_dump "postgresql://neondb_owner:PASSWORD@ep-XXXXX.<neon-region>.aws.neon.tech/neondb?sslmode=require" \
+  > backup.sql
+```
+
+*Supabase* — automated daily backups on paid plans; free tier has no automated backups. To export manually:
+
+```bash
+pg_dump "postgresql://postgres:PASSWORD@db.PROJECT_ID.supabase.co:5432/postgres?sslmode=require" \
+  > backup.sql
 ```
 
 **Viewing logs**
 
 ```bash
-fly logs --app your-blog-backend
-fly logs --app your-blog-frontend
+koyeb services logs blog-backend
+koyeb services logs blog-frontend
 ```
 
-**SSH into a running machine**
+**Shell access**
 
 ```bash
-fly ssh console --app your-blog-backend
-# Useful for: inspecting /app/uploads, running one-off scripts, checking env vars
+koyeb services exec blog-backend /bin/sh
+# Useful for inspecting /app/uploads, running one-off scripts, or checking env vars
 ```
 
 ---
