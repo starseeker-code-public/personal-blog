@@ -1,14 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api, PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_LOGIN } from '../data'
-import { getJsonCookie } from '../utils/cookies'
+import { getJsonCookie, setCookie } from '../utils/cookies'
 import { isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
-import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoDreams } from '../components/icons'
+import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoDreams, IcoStar } from '../components/icons'
 import type { Post } from '../types'
 
 const currentYear = new Date().getFullYear()
 const COOKIE_GOALS = `blog_goals_${currentYear}`
+
+type ListItem = { text: string; checked: boolean }
+
+function parseItems(raw: unknown[]): ListItem[] {
+  return raw.filter(
+    (item): item is ListItem =>
+      item !== null && typeof item === 'object' && typeof (item as ListItem).text === 'string',
+  )
+}
 
 const navBtn =
   'p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors'
@@ -40,9 +49,26 @@ export default function AdminInfo() {
   }, [navigate])
 
   // ── Goals ─────────────────────────────────────────────────────────────────
-  // Stored as a JSON array in the `blog_goals_<year>` cookie. Edit it by hand
-  // via devtools → Application → Cookies, e.g. ["Run a marathon","Ship v1"].
-  const goals = getJsonCookie<string[]>(COOKIE_GOALS, [])
+  const [goals, setGoals] = useState<ListItem[]>(() =>
+    parseItems(getJsonCookie<unknown[]>(COOKIE_GOALS, [])),
+  )
+  const [editingGoals, setEditingGoals] = useState(false)
+  const [goalsDraft, setGoalsDraft] = useState('')
+
+  function toggleGoal(i: number) {
+    const next = goals.map((item, idx) => idx === i ? { ...item, checked: !item.checked } : item)
+    setGoals(next)
+    setCookie(COOKIE_GOALS, JSON.stringify(next))
+  }
+  function saveGoals() {
+    const existing = new Map(goals.map(item => [item.text, item.checked]))
+    const next: ListItem[] = goalsDraft
+      .split('\n').map(l => l.trim()).filter(Boolean)
+      .map(text => ({ text, checked: existing.get(text) ?? false }))
+    setGoals(next)
+    setCookie(COOKIE_GOALS, JSON.stringify(next))
+    setEditingGoals(false)
+  }
 
   // ── Analytics ─────────────────────────────────────────────────────────────
   const [posts, setPosts] = useState<Post[]>([])
@@ -180,22 +206,83 @@ export default function AdminInfo() {
 
         {/* ── Goals ───────────────────────────────────────────────────────── */}
         <div className={sectionCard}>
-          <h2 className={sectionTitle}>
-            <span className="text-[#395144] dark:text-amber-400">◎</span>
-            {currentYear} Goals
+          <h2 className={`${sectionTitle} justify-between`}>
+            <span className="flex items-center gap-2">
+              <span className="text-[#395144] dark:text-amber-400">◎</span>
+              {currentYear} Goals
+            </span>
+            {!editingGoals && (
+              <button
+                onClick={() => { setGoalsDraft(goals.map(g => g.text).join('\n')); setEditingGoals(true) }}
+                className="p-1 rounded-md text-stone-400 dark:text-[#5a5180] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
+                aria-label="Edit goals"
+                title="Edit"
+              >
+                <IcoPencil />
+              </button>
+            )}
           </h2>
 
-          {goals.length === 0 ? (
+          {editingGoals ? (
+            <div className="space-y-3">
+              <p className="text-xs text-stone-400 dark:text-[#5a5180]">One goal per line.</p>
+              <textarea
+                autoFocus
+                value={goalsDraft}
+                onChange={e => setGoalsDraft(e.target.value)}
+                rows={8}
+                placeholder={`Your goals for ${currentYear}, one per line.`}
+                className="w-full px-3 py-2 rounded-lg bg-[#efead8] dark:bg-[#0f0d24] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#dd0000] dark:focus:border-amber-400 transition-colors text-sm leading-relaxed resize-none font-sans"
+              />
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => setEditingGoals(false)}
+                  className="px-4 py-1.5 rounded-lg text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={saveGoals}
+                  className="px-5 py-1.5 rounded-lg text-xs uppercase tracking-widest bg-[#395144] dark:bg-amber-400 text-white dark:text-[#0f0d24] hover:opacity-90 transition-opacity"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          ) : goals.length === 0 ? (
             <p className="text-stone-400 dark:text-[#5a5180] text-sm italic">
-              No goals set for {currentYear} yet — edit the{' '}
-              <code className="text-xs">{COOKIE_GOALS}</code> cookie to add some.
+              No goals set for {currentYear} yet — click the pencil to add some.
             </p>
           ) : (
-            <ul className="list-disc pl-6 space-y-1.5 text-sm text-stone-700 dark:text-[#d4cef5]">
-              {goals.map((g, i) => (
-                <li key={i}>{g}</li>
-              ))}
-            </ul>
+            <>
+              <ul className="space-y-2.5">
+                {goals.map((goal, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <button
+                      onClick={() => toggleGoal(i)}
+                      className={`mt-0.5 shrink-0 transition-colors ${
+                        goal.checked
+                          ? 'text-amber-500 dark:text-amber-400'
+                          : 'text-stone-300 dark:text-[#3a3462] hover:text-amber-400'
+                      }`}
+                      aria-label={goal.checked ? 'Mark as not done' : 'Mark as done'}
+                    >
+                      <IcoStar />
+                    </button>
+                    <span className={`text-sm leading-relaxed transition-colors ${
+                      goal.checked
+                        ? 'line-through text-stone-400 dark:text-[#5a5180]'
+                        : 'text-stone-700 dark:text-[#d4cef5]'
+                    }`}>
+                      {goal.text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-xs text-stone-400 dark:text-[#5a5180]">
+                {goals.filter(g => g.checked).length} / {goals.length} done
+              </p>
+            </>
           )}
         </div>
 
