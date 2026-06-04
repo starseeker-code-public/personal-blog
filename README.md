@@ -26,13 +26,13 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 | Environment | URL | Notes |
 |-------------|-----|-------|
 | **Development** | `http://localhost:3001` | Local Docker Compose |
-| **Production** | [*Render with Docker*](https://personal-blog-frontend-jjzy.onrender.com/) | Render + Supabase |
+| **Production** | [joaquin-blog.uk](https://joaquin-blog.uk) | [Render](https://personal-blog-frontend-jjzy.onrender.com) + Supabase |
 
 | Commit | Date | Description |
 |--------|------|-------------|
+| `ee6e4ff` | 2026-06-04 | Added status check in readme |
+| `d4a91f3` | 2026-06-04 | Improved readme and added feed endpoint |
 | `29a1236` | 2026-06-04 | Fix asyncpg SSL: translate sslmode=require to connect_args |
-| `98c0afd` | 2026-06-03 | Added database deployment options |
-| `aa54fdb` | 2026-06-03 | Added fly deployment to readme |
 
 ---
 
@@ -797,7 +797,7 @@ Both services run as Docker containers on **Render** — the backend (FastAPI/Uv
 
 ```
 Browser
-  └─► personal-blog-frontend-jjzy.onrender.com   (Render — Nginx / React)
+  └─► joaquin-blog.uk   (Render — Nginx / React)
         └─► personal-blog-backend-e538.onrender.com    (Render — FastAPI / Uvicorn)
               ├─► Supabase                               (managed PostgreSQL)
               ├─► Render Redis                           (response cache)
@@ -907,7 +907,7 @@ curl https://<your-backend>.onrender.com/health
 
 | Resource | URL |
 |---|---|
-| Blog | [personal-blog-frontend-jjzy.onrender.com](https://personal-blog-frontend-jjzy.onrender.com) |
+| Blog | [joaquin-blog.uk](https://joaquin-blog.uk) |
 | API | [personal-blog-backend-e538.onrender.com](https://personal-blog-backend-e538.onrender.com) |
 
 Other resources not displayed (supabase PostgreSQL, Supabase Bucket and Render Redis)
