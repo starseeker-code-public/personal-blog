@@ -27,6 +27,10 @@ class Settings(BaseSettings):
     # namespace can be renamed without touching any hand-written code.
     secure_path: str
 
+    # Supabase Storage (optional — falls back to local disk when not set)
+    supabase_url: str = ""
+    supabase_service_key: str = ""
+
     # Love-letter email (opt-in from the composer).
     loved_one_email: str
     smtp_host: str = ""

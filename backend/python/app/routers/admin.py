@@ -4,6 +4,7 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import httpx
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -97,5 +98,21 @@ async def upload_image(
         )
 
     filename = f"{secrets.token_hex(12)}{_EXT_FOR_TYPE[file.content_type]}"
+
+    if settings.supabase_url and settings.supabase_service_key:
+        bucket = "uploads"
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                f"{settings.supabase_url}/storage/v1/object/{bucket}/{filename}",
+                headers={
+                    "Authorization": f"Bearer {settings.supabase_service_key}",
+                    "Content-Type": file.content_type,
+                },
+                content=data,
+            )
+        if resp.status_code not in (200, 201):
+            raise HTTPException(status_code=502, detail="Storage upload failed.")
+        return {"url": f"{settings.supabase_url}/storage/v1/object/public/{bucket}/{filename}"}
+
     (UPLOAD_DIR / filename).write_bytes(data)
     return {"url": f"/uploads/{filename}"}
