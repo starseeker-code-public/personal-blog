@@ -20,50 +20,68 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 | Environment | URL | Notes |
 |-------------|-----|-------|
 | **Development** | `http://localhost:3001` | Local Docker Compose |
-| **Production** | *(not yet deployed)* | Planned |
+| **Production** | [*Render with Docker*](https://personal-blog-frontend-jjzy.onrender.com/) | Render + Supabase |
 
 | Commit | Date | Description |
 |--------|------|-------------|
-| `db1a61c` | 2026-04-17 | Finished final styling and sample content |
-| `f71a91a` | 2026-04-17 | Made a better light mode and fixed some styling |
-| `9191ad1` | 2026-04-16 | Improved light mode |
+| `29a1236` | 2026-06-04 | Fix asyncpg SSL: translate sslmode=require to connect_args |
+| `98c0afd` | 2026-06-03 | Added database deployment options |
+| `aa54fdb` | 2026-06-03 | Added fly deployment to readme |
 
 ---
 
 ## Table of Contents
 
-- [Tech Stack](#tech-stack)
-- [Database Schema](#database-schema)
-- [Development & Docker](#development--docker)
-  - [Quick Start](#quick-start)
-  - [Running locally (without Docker)](#running-locally-without-docker)
-- [Project Structure & Architecture](#project-structure--architecture)
-  - [Architecture Overview](#architecture-overview)
-  - [Data Flow](#data-flow)
-  - [Directory Layout](#directory-layout)
-  - [Design Decisions](#design-decisions)
-- [Features](#features)
-  - [Backend](#backend-features)
-  - [Frontend](#frontend-features)
-  - [Pages](#pages)
-- [Post wire format](#post-wire-format)
-  - [GET response shape — `Post`](#get-response-shape--post)
-  - [Example response payload](#example-response-payload)
-  - [POST request shape — `PostCreate`](#post-request-shape--postcreate)
-  - [Example create request](#example-create-request)
-  - [TypeScript interfaces](#typescript-interfaces)
-  - [Pull vs push — two delivery philosophies](#pull-vs-push--two-delivery-philosophies)
-  - [Feed endpoints](#feed-endpoints)
-- [API Reference](#api-reference)
-- [Security](#security)
-- [CI/CD](#cicd)
-- [Production Deployment](#production-deployment)
-  - [Step 1 — Supabase](#step-1--supabase)
-  - [Step 2 — Deploy the backend on Render](#step-2--deploy-the-backend-on-render)
-  - [Step 3 — Deploy the frontend on Render](#step-3--deploy-the-frontend-on-render)
-  - [Step 4 — Verify](#step-4--verify)
-  - [Deployed resources](#deployed-resources)
-- [License](#license)
+- [Personal Blog](#personal-blog)
+    - [Project Status](#project-status)
+  - [Table of Contents](#table-of-contents)
+  - [Tech Stack](#tech-stack)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+    - [Infrastructure \& Deployment](#infrastructure--deployment)
+    - [Python Dependencies](#python-dependencies)
+  - [Database Schema](#database-schema)
+    - [ER Diagram](#er-diagram)
+    - [Key Constraints](#key-constraints)
+  - [Development \& Docker](#development--docker)
+    - [Quick Start](#quick-start)
+    - [Running locally (without Docker)](#running-locally-without-docker)
+  - [Project Structure \& Architecture](#project-structure--architecture)
+    - [Architecture Overview](#architecture-overview)
+    - [Data Flow](#data-flow)
+    - [Directory Layout](#directory-layout)
+    - [Design Decisions](#design-decisions)
+  - [Features](#features)
+    - [Backend Features](#backend-features)
+    - [Frontend Features](#frontend-features)
+    - [Pages](#pages)
+      - [Home](#home)
+      - [Post (`/posts/:slug`)](#post-postsslug)
+      - [Category (`/categories/:slug`)](#category-categoriesslug)
+      - [About](#about)
+      - [Search (`/search?q=...`)](#search-searchq)
+      - [Not Found](#not-found)
+  - [Post wire format](#post-wire-format)
+    - [GET response shape — `Post`](#get-response-shape--post)
+    - [Example response payload](#example-response-payload)
+    - [POST request shape — `PostCreate`](#post-request-shape--postcreate)
+    - [Example create request](#example-create-request)
+    - [TypeScript interfaces](#typescript-interfaces)
+    - [Pull vs push — two delivery philosophies](#pull-vs-push--two-delivery-philosophies)
+    - [Feed endpoints](#feed-endpoints)
+      - [`GET /api/feed`](#get-apifeed)
+      - [`POST /api/feed/webhook`](#post-apifeedwebhook)
+  - [API Reference](#api-reference)
+  - [Security](#security)
+    - [Future Security Improvements](#future-security-improvements)
+  - [CI/CD](#cicd)
+  - [Production Deployment](#production-deployment)
+    - [Step 1 — Supabase](#step-1--supabase)
+    - [Step 2 — Deploy the backend on Render](#step-2--deploy-the-backend-on-render)
+    - [Step 3 — Deploy the frontend on Render](#step-3--deploy-the-frontend-on-render)
+    - [Step 4 — Verify](#step-4--verify)
+    - [Deployed resources](#deployed-resources)
+  - [License](#license)
 
 ---
 
@@ -100,10 +118,9 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 | Docker | Multi-stage builds — Node → Nginx (frontend), Python (backend) |
 | Docker Compose | Local service orchestration (PostgreSQL + Redis + backend + frontend) |
 | Nginx | SPA fallback routing in production frontend container |
-| Render | Backend container hosting — deploys from the `backend/python` Dockerfile, auto-deployed from `main` |
-| Cloudflare Pages | Frontend hosting — builds the Vite app natively (`npm run build`), served from a global CDN |
-| Supabase | Managed PostgreSQL (direct connection) + object storage for image uploads |
-| Upstash | Serverless Redis — persistent cache with a free tier sized for a personal blog |
+| Render | Backend + frontend container hosting — auto-deployed from `main` on every push |
+| Supabase | Managed PostgreSQL (session-mode pooler) + object storage for image uploads |
+| Render Redis | Response cache — runs as a separate Render service alongside the backend |
 
 ### Python Dependencies
 
@@ -204,7 +221,7 @@ docker compose up --build
 # Open the blog
 open http://localhost:3001
 
-# Open the interactive API docs
+# Open the interactive API docs for backend
 open http://localhost:8001/docs
 ```
 
@@ -218,7 +235,7 @@ cd backend/python
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 
-pip install -r requirements.txt
+pip install -r requirements.txt  # Or use Poetry or UV
 
 # No per-app .env needed — the backend resolves the root .env from its own path.
 # Make sure PostgreSQL and Redis are reachable at the URLs in the root .env
@@ -775,7 +792,7 @@ Both services run as Docker containers on **Render** — the backend (FastAPI/Uv
 ```
 Browser
   └─► personal-blog-frontend-jjzy.onrender.com   (Render — Nginx / React)
-        └─► <your-backend>.onrender.com                (Render — FastAPI / Uvicorn)
+        └─► personal-blog-backend-e538.onrender.com    (Render — FastAPI / Uvicorn)
               ├─► Supabase                               (managed PostgreSQL)
               ├─► Render Redis                           (response cache)
               └─► Supabase Storage                       (image uploads)
@@ -798,15 +815,18 @@ Both services auto-deploy on every push to `main`. Everything is configured thro
 **Database**
 
 1. Create an account at [supabase.com](https://supabase.com) and click **New project**. Set a project name, a strong database password, and pick a region close to your Render deployment.
-2. Once the project is ready, go to **Project Settings → Database → Connection string** and select the **Direct connection** tab (not the pooler — asyncpg is incompatible with PgBouncer transaction mode).
-3. Copy the URL, then make two changes: add the `+asyncpg` driver prefix and append `?sslmode=require`:
+2. Once the project is ready, go to **Project Settings → Database → Connection string** and select the **Session** tab.
+
+> **Why Session mode — not Direct connection.** Since early 2024, Supabase routes direct connections over IPv6. Render free-tier containers only have IPv4 networking, so a direct connection fails immediately with `OSError: [Errno 101] Network is unreachable`. The Session mode pooler runs on IPv4 and is fully compatible with asyncpg. Do not use the Transaction tab either — asyncpg relies on PostgreSQL prepared statements, which PgBouncer drops in transaction mode.
+
+1. Copy the Session pooler URL. The username includes the project ref (`postgres.PROJECT_ID`, not just `postgres`). Make two changes: add the `+asyncpg` driver prefix and append `?sslmode=require`:
 
 ```
-# From Supabase (Direct connection tab):
-postgresql://postgres:PASSWORD@db.PROJECT_ID.supabase.co:5432/postgres
+# From Supabase (Session tab):
+postgresql://postgres.PROJECT_ID:PASSWORD@aws-0-REGION.pooler.supabase.com:5432/postgres
 
 # DATABASE_URL to use:
-postgresql+asyncpg://postgres:PASSWORD@db.PROJECT_ID.supabase.co:5432/postgres?sslmode=require
+postgresql+asyncpg://postgres.PROJECT_ID:PASSWORD@aws-0-REGION.pooler.supabase.com:5432/postgres?sslmode=require
 ```
 
 **Storage**
@@ -882,8 +902,9 @@ curl https://<your-backend>.onrender.com/health
 | Resource | URL |
 |---|---|
 | Blog | [personal-blog-frontend-jjzy.onrender.com](https://personal-blog-frontend-jjzy.onrender.com) |
-| API | `https://<your-backend>.onrender.com` |
-| Supabase project | `https://supabase.com/dashboard/project/<PROJECT_ID>` |
+| API | [personal-blog-backend-e538.onrender.com](https://personal-blog-backend-e538.onrender.com) |
+
+Other resources not displayed (supabase PostgreSQL, Supabase Bucket and Render Redis)
 
 ---
 
