@@ -21,6 +21,8 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
 
 ### Project Status
 
+[![API status](https://img.shields.io/website?url=https%3A%2F%2Fpersonal-blog-backend-e538.onrender.com%2Fapi%2Fhealth&label=API&up_message=online&down_message=offline)](https://personal-blog-backend-e538.onrender.com/api/health)
+
 | Environment | URL | Notes |
 |-------------|-----|-------|
 | **Development** | `http://localhost:3001` | Local Docker Compose |
