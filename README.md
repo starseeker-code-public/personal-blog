@@ -1,7 +1,11 @@
 # Personal Blog
 
 <p align="center">
-  <em>A personal blog and writing platform — FastAPI backend, React frontend.</em>
+  <img src="frontend/image/screenshot.png" alt="Blog screenshot" width="800">
+</p>
+
+<p align="center">
+  <em>A personal blog and writing platform — FastAPI backend, React frontend</em>
 </p>
 
 <p align="center">

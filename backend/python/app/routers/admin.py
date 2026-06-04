@@ -1,10 +1,13 @@
 """Admin-only endpoints — auth-required, not part of the public API contract."""
 
+import logging
 import secrets
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import httpx
+
+logger = logging.getLogger(__name__)
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -111,7 +114,11 @@ async def upload_image(
                 content=data,
             )
         if resp.status_code not in (200, 201):
-            raise HTTPException(status_code=502, detail="Storage upload failed.")
+            logger.error("Supabase Storage %s: %s", resp.status_code, resp.text)
+            raise HTTPException(
+                status_code=502,
+                detail=f"Storage upload failed ({resp.status_code}): {resp.text}",
+            )
         return {"url": f"{settings.supabase_url}/storage/v1/object/public/{bucket}/{filename}"}
 
     (UPLOAD_DIR / filename).write_bytes(data)

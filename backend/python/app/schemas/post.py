@@ -166,3 +166,12 @@ class WebhookRequest(BaseModel):
     recently published post is returned."""
 
     slug: Optional[str] = None
+
+
+class PortfolioPost(BaseModel):
+    """Minimal post shape consumed by the external portfolio frontend."""
+
+    title: str
+    date: str        # e.g. "Jun 2026"
+    readTime: str    # e.g. "8 min"
+    url: str         # absolute URL to the post on the blog frontend

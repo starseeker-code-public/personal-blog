@@ -12,9 +12,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.config import settings
 from app.database import get_db
 from app.models.post import Post
-from app.schemas.post import FeedPage, PostOut, WebhookRequest
+from app.schemas.post import FeedPage, PortfolioPost, PostOut, WebhookRequest
 from app.security import require_admin
 from app.services.cache import cache_delete_pattern, cache_get, cache_set
 
@@ -70,6 +71,35 @@ async def get_feed(
     )
     await cache_set(cache_key, response.model_dump(by_alias=True))
     return response
+
+
+@router.get("/portfolio", response_model=list[PortfolioPost])
+async def get_portfolio_feed(db: AsyncSession = Depends(get_db)):
+    """Last 5 published posts in the compact shape consumed by the portfolio frontend."""
+    cache_key = "feed:portfolio"
+    if cached := await cache_get(cache_key):
+        return cached
+
+    result = await db.execute(
+        select(Post)
+        .where(Post.draft.is_(False))
+        .order_by(Post.published_at.desc())
+        .limit(5)
+    )
+    posts = list(result.scalars().all())
+
+    items = [
+        PortfolioPost(
+            title=p.title,
+            date=p.published_at.strftime("%b %Y"),
+            readTime=f"{p.read_time_minutes} min",
+            url=f"{settings.site_url}/posts/{p.slug}",
+        )
+        for p in posts
+    ]
+
+    await cache_set(cache_key, [i.model_dump() for i in items])
+    return items
 
 
 @router.post("/webhook", response_model=PostOut)
