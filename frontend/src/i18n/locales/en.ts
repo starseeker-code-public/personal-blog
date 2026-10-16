@@ -55,6 +55,7 @@ const en = {
   common: {
     backToBlog: 'Back to blog',
     allPosts: 'All posts',
+    visitPortfolio: 'Visit my portfolio →',
   },
 
   nav: {
@@ -99,7 +100,6 @@ const en = {
 
   home: {
     badge: 'Personal Blog',
-    visitPortfolio: 'Visit my portfolio →',
     searchPlaceholder: 'Search posts by title, topic, or keyword…',
     search: 'Search',
     inCategory: (category: string) => ` in ${category}`,
@@ -136,7 +136,7 @@ const en = {
     greeting: "Hey, I'm Joaquín.",
     intro: {
       // Split around the link to Allot. `years` counts from CAREER_START (data/index.ts).
-      workBefore: "By day I'm a senior backend engineer at ",
+      workBefore: "I'm a senior backend engineer at ",
       workAfter: (years: number) =>
         `, building cybersecurity software that processes and secures ISP traffic at scale. ${yearsCount(years)} of distributed systems, Python, and backend-related projects. Seriously, I've done almost everything.`,
       notAll: "But that's not all!",

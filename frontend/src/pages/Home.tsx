@@ -30,7 +30,7 @@ function HeaderBadge() {
         rel="noopener noreferrer"
         className={`${base} text-[#dd0000] dark:text-amber-400 hover:text-[#aa0000] dark:hover:text-amber-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
       >
-        {m.home.visitPortfolio}
+        {m.common.visitPortfolio}
       </a>
     )
   }

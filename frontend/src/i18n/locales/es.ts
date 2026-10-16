@@ -120,6 +120,7 @@ const es: Messages = {
   common: {
     backToBlog: 'Volver al blog',
     allPosts: 'Todos los artículos',
+    visitPortfolio: 'Visita mi portfolio →',
   },
 
   nav: {
@@ -163,7 +164,6 @@ const es: Messages = {
 
   home: {
     badge: 'Blog personal',
-    visitPortfolio: 'Visita mi portfolio →',
     searchPlaceholder: 'Busca artículos por título, tema o palabra clave…',
     search: 'Buscar',
     inCategory: category => ` en ${category}`,
@@ -198,7 +198,7 @@ const es: Messages = {
   about: {
     greeting: 'Hola, soy Joaquín.',
     intro: {
-      workBefore: 'De día soy ingeniero backend sénior en ',
+      workBefore: 'Soy un ingeniero backend sénior en ',
       workAfter: years =>
         `, donde construyo software de ciberseguridad que procesa y protege el tráfico de proveedores de internet a gran escala. ${yearsCount(years)} de sistemas distribuidos, Python y proyectos de backend. En serio, he hecho de casi todo.`,
       notAll: '¡Pero eso no es todo!',

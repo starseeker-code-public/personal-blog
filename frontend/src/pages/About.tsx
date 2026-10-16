@@ -10,6 +10,11 @@ import { useI18n, type Messages } from '../i18n'
 import fiveADayImage from '../../image/five-a-day.png'
 import engineeringImage from '../../image/engineering-rust.svg'
 import meAndMyLoveImage from '../../image/me-and-my-love-web.jpg'
+import meImage from '../../image/me.jpg'
+import astronomyImage from '../../image/astronomy.jpg'
+import warhammerImage from '../../image/warhammer.jpg'
+import coffeeImage from '../../image/coffee.jpg'
+import greeceImage from '../../image/greece.jpg'
 
 // The page's text lives in i18n/locales/<lang>.ts, under `about`.
 
@@ -22,13 +27,15 @@ const SOCIALS = [
 
 type AboutText = Messages['about']
 
-// Unsplash images are placeholders until the real photos are in frontend/image/.
+// Tiles are square: `position` picks which part of a non-square photo shows.
 const GALLERY: { key: keyof AboutText['gallery']['captions']; image: string; position?: string }[] = [
-  { key: 'me',        image: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&q=80' },
-  { key: 'astronomy', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80' },
-  { key: 'warhammer', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80' },
-  { key: 'barista',   image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80' },
-  { key: 'tourism',   image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80' },
+  { key: 'me',        image: meImage },
+  { key: 'astronomy', image: astronomyImage },
+  { key: 'warhammer', image: warhammerImage },
+  // Keep the cup and its latte art (right side) in the square tile.
+  { key: 'barista',   image: coffeeImage, position: 'object-right' },
+  // Portrait photo: anchor to the bottom so I'm whole, arches above.
+  { key: 'tourism',   image: greeceImage, position: 'object-bottom' },
   // A wide screenshot: keep its left side (logo and heading) in the square tile.
   { key: 'fiveADay',  image: fiveADayImage, position: 'object-left' },
 ]
@@ -120,6 +127,18 @@ export default function About() {
             <a href="https://www.tajamar.es" target="_blank" rel="noopener noreferrer" className="hover:text-stone-700 dark:hover:text-[#c9beed] transition-colors">Tajamar</a>
             {a.currently.alsoAfter}
           </p>
+
+          {/* Same link as the home page header. */}
+          <div className="mt-10 text-center">
+            <a
+              href={SITE.portfolio}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs tracking-[0.3em] uppercase text-[#dd0000] dark:text-amber-400 hover:text-[#aa0000] dark:hover:text-amber-300 transition-colors"
+            >
+              {m.common.visitPortfolio}
+            </a>
+          </div>
         </section>
 
         {/* ── Outside the terminal (gallery) ────────────────────── */}
