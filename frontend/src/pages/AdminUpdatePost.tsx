@@ -343,7 +343,7 @@ export default function AdminUpdatePost() {
                       onChange={e => setTagFilter(e.target.value)}
                       className={`${inputClass} mb-3`}
                     />
-                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto pr-1">
+                    <div className="flex flex-wrap gap-2 max-h-80 overflow-y-auto pr-1">
                       {availableTags.map(t => {
                         const isSel = selectedTags.includes(t)
                         return (

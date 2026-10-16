@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_ADMIN_INFO, PATH_LOGIN } from '../data'
 import { TAGS_BY_CATEGORY } from '../data/tags'
+import { POST_TEMPLATE_GROUPS, type PostTemplate } from '../templates'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPencil, IcoDreams, IcoChart } from '../components/icons'
@@ -68,6 +69,9 @@ export default function AdminNewPost() {
   const [draft, setDraft] = useState(false)
   const [sendToLovedOne, setSendToLovedOne] = useState(false)
   const [coverImage, setCoverImage] = useState<string>('')
+  const [template, setTemplate] = useState<PostTemplate | null>(null)
+  const [templateMenuOpen, setTemplateMenuOpen] = useState(false)
+  const templateMenuRef = useRef<HTMLDivElement>(null)
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -78,12 +82,45 @@ export default function AdminNewPost() {
     setTagFilter('')
   }, [category])
 
+  // Close the template menu on outside click or Escape.
+  useEffect(() => {
+    if (!templateMenuOpen) return
+    function onPointerDown(e: MouseEvent) {
+      if (!templateMenuRef.current?.contains(e.target as Node)) setTemplateMenuOpen(false)
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setTemplateMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [templateMenuOpen])
+
+  const highlightedTags = useMemo(() => new Set(template?.tags ?? []), [template])
+
+  // Template-suggested tags float to the front so they're visible without scrolling.
   const availableTags = useMemo(() => {
     if (!category) return []
     const all = TAGS_BY_CATEGORY[category]
     const q = tagFilter.trim().toLowerCase()
-    return q ? all.filter(t => t.toLowerCase().includes(q)) : all
-  }, [category, tagFilter])
+    const filtered = q ? all.filter(t => t.toLowerCase().includes(q)) : all
+    return [
+      ...filtered.filter(t => highlightedTags.has(t)),
+      ...filtered.filter(t => !highlightedTags.has(t)),
+    ]
+  }, [category, tagFilter, highlightedTags])
+
+  function applyTemplate(t: PostTemplate) {
+    setTemplateMenuOpen(false)
+    if (!t.body) return
+    if (body.trim() && body !== t.body && !window.confirm(`Replace the current body with the "${t.label}" template?`)) return
+    setTemplate(t)
+    setCategory(t.category)
+    setBody(t.body)
+  }
 
   function toggleTag(t: string) {
     setSelectedTags(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t])
@@ -105,7 +142,7 @@ export default function AdminNewPost() {
   }
 
   function resetForm() {
-    setTitle(''); setExcerpt(''); setCategory('')
+    setTitle(''); setExcerpt(''); setCategory(''); setTemplate(null)
     setSelectedTags([]); setTagFilter('')
     setBody(''); setDraft(false); setSendToLovedOne(false); setCoverImage('')
   }
@@ -257,9 +294,9 @@ export default function AdminNewPost() {
             />
           </div>
 
-          {/* Category + cover image — side-by-side on md+, stacked on mobile.
-              Category gets 2/3 of the row; the cover-image slot gets 1/3. */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:items-end">
+          {/* Category + template + cover image — side-by-side on md+, stacked on mobile.
+              Category gets half of the row; template and cover image a quarter each. */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:items-end">
             <div className="md:col-span-2">
               <label htmlFor="category" className={labelClass}>Category</label>
               <select
@@ -270,6 +307,52 @@ export default function AdminNewPost() {
                 <option value="">— Select category —</option>
                 {POST_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
+            </div>
+            <div className="md:col-span-1 relative" ref={templateMenuRef}>
+              <label className={labelClass}>Template</label>
+              <button
+                type="button"
+                onClick={() => setTemplateMenuOpen(o => !o)}
+                aria-haspopup="menu"
+                aria-expanded={templateMenuOpen}
+                title={template ? template.label : 'Apply a post template'}
+                className="w-full truncate text-left px-3 py-2 rounded-lg border border-stone-300 dark:border-[#322d5a] bg-[#efead8] dark:bg-[#0f0d24] text-xs text-stone-700 dark:text-[#c9beed] hover:border-[#dd0000] dark:hover:border-amber-400 transition-colors"
+              >
+                {template ? template.label : 'Choose'}
+              </button>
+              {templateMenuOpen && (
+                <div
+                  role="menu"
+                  className="absolute z-20 left-0 mt-1 w-64 max-h-80 overflow-y-auto rounded-lg border border-stone-300 dark:border-[#322d5a] bg-[#faf6ee] dark:bg-[#1a1735] shadow-lg py-1"
+                >
+                  {POST_TEMPLATE_GROUPS.map(g => (
+                    <div key={g.label} className="py-1">
+                      <p className="px-3 pt-1 pb-0.5 text-[10px] uppercase tracking-widest text-stone-400 dark:text-[#8b7db8]">
+                        {g.label}
+                      </p>
+                      {g.templates.map(t => (
+                        <button
+                          key={t.id}
+                          type="button"
+                          role="menuitem"
+                          disabled={!t.body}
+                          onClick={() => applyTemplate(t)}
+                          className={
+                            'w-full text-left px-3 py-1 text-xs flex items-center justify-between gap-2 transition-colors ' +
+                            (t.body
+                              ? 'text-stone-700 dark:text-[#c9beed] hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60'
+                              : 'text-stone-400 dark:text-[#5f5690] cursor-not-allowed') +
+                            (template?.id === t.id ? ' font-semibold' : '')
+                          }
+                        >
+                          <span className="truncate">{t.label}</span>
+                          {!t.body && <span className="shrink-0 text-[10px] italic">soon</span>}
+                        </button>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="md:col-span-1">
               <label className={labelClass}>Cover image</label>
@@ -316,9 +399,10 @@ export default function AdminNewPost() {
                   onChange={e => setTagFilter(e.target.value)}
                   className={`${inputClass} mb-3`}
                 />
-                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto pr-1">
+                <div className="flex flex-wrap gap-2 max-h-80 overflow-y-auto pr-1">
                   {availableTags.map(t => {
                     const selected = selectedTags.includes(t)
+                    const highlighted = !selected && highlightedTags.has(t)
                     return (
                       <button
                         key={t}
@@ -328,6 +412,8 @@ export default function AdminNewPost() {
                           'px-2.5 py-1 rounded-full text-xs transition-colors border ' +
                           (selected
                             ? 'bg-[#798777] dark:bg-amber-500 text-white dark:text-stone-900 border-[#798777] dark:border-amber-500'
+                            : highlighted
+                            ? 'bg-[#c829040d] dark:bg-amber-500/10 text-[#b72007] dark:text-amber-300 border-dashed border-[#c82904] dark:border-amber-400 hover:bg-[#c829041a] dark:hover:bg-amber-500/20'
                             : 'bg-[#efead8] dark:bg-[#0f0d24] text-stone-600 dark:text-[#c9beed] border-stone-300 dark:border-[#322d5a] hover:border-[#798777] dark:hover:border-amber-400')
                         }
                       >
@@ -339,9 +425,11 @@ export default function AdminNewPost() {
                     <p className="text-stone-500 dark:text-[#8b7db8] text-xs italic py-1">No tags match that filter.</p>
                   )}
                 </div>
-                {selectedTags.length > 0 && (
+                {(selectedTags.length > 0 || template) && (
                   <p className="text-stone-500 dark:text-[#8b7db8] text-xs mt-2">
-                    {selectedTags.length} selected
+                    {selectedTags.length > 0 && `${selectedTags.length} selected`}
+                    {selectedTags.length > 0 && template && ' · '}
+                    {template && `dashed tags are suggested by the ${template.label} template`}
                   </p>
                 )}
               </>
