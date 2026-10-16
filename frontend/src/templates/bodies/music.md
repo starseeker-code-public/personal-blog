@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The piece and the question, in one sentence. What the experiment showed, in one sentence. What I'll do differently, in one sentence.]
 >
-> **Context:** [Piece and composer] · [Instrument] · [Your level, e.g. years playing] · [Period of the experiment]
+> **At a glance:** bars [n–n] · ♩ = [n] → [n] · clean runs: [n] of 5 → [n] of 5 · [n] minutes a day for [n] days
+>
+> **Context:** [Piece and composer] · [Your level, e.g. years playing] · [Period of the experiment] · The instrument and recording setup are listed under Gear, at the end
 
 ## The question
+
+[Open on the exact spot where it falls apart. e.g. Bar 17, beat 3. My thumb arrives a fraction late, the left hand hesitates, and the whole phrase collapses. Again.]
 
 [The musical difficulty, listening observation or assumption about learning. e.g. Bars 17–20 have defeated me for three weeks. I've played them hundreds of times, and they still fall apart at tempo.]
 
@@ -110,7 +114,11 @@ I defined this before starting, so I couldn't move the goalposts later.
 | Tension | | |
 | After two days without practice | | |
 
-**Before and after, same tempo and same piano:** [links]
+**Before and after, same tempo and same instrument:** [links]
+
+### What the recording revealed
+
+[What you could only hear when listening back, not while playing: a rushed beat, an accent you didn't intend, dynamics flatter than they felt, a pause you didn't know you took.]
 
 ## The analysis
 
@@ -136,14 +144,17 @@ I defined this before starting, so I couldn't move the goalposts later.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The week showed **[the result]**.
+| I predicted | What the week showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. the tempo I'd reach by day 7] | | |
 
 ## The limits of this experiment
 
 - **One player:** [my level, my hands, my habits]
 - **One passage:** [what might differ with another kind of difficulty]
 - **Time:** [a week shows short-term progress; long-term retention needs longer]
-- **Recordings:** [the microphone, the room and the piano affect what you hear]
+- **Recordings:** [the microphone, the room and the instrument affect what you hear]
 
 ## Verdict
 
@@ -153,13 +164,31 @@ I expected **[restate the bet]**. The week showed **[the result]**.
 
 **I'll stop:** [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+The two bars you always stumble on, over two days:
+
+- **Day 1:** [five runs at full tempo, and count the clean ones. Then ten minutes at half tempo, with no mistakes allowed]
+- **Day 2, cold:** [five runs at full tempo again, before any warm-up]
+- **Compare:** [the clean runs on both days. The second number is the one that counts]
 
 ## Next experiment
 
 Next I want to try **[the next question or passage]**. My prediction: [what you expect].
 
 [Invite readers to share the passage that took them longest to get right, and what finally worked.]
+
+## Gear
+
+What I played and recorded with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Instrument** | [piano or keyboard · acoustic or digital] | |
+| **Recording setup** | [phone, microphone or audio interface] | |
+| **Metronome** | [device or app] | |
 
 ---
 

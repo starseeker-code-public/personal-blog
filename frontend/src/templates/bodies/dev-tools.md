@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The friction in one sentence. What I tried in one sentence. Whether it was worth it, maintenance included, in one sentence.]
 >
+> **At a glance:** saves [n] min a week · took [n] h to build · pays for itself after [n] weeks, or never
+>
 > **Context:** [My own daily workflow / A contribution to [project] / An evaluation of [tool or dependency]] · **Tested for:** [how long, in real work]
 
 ## The friction
+
+[Open on the annoyance itself, step by tedious step. e.g. Find the failed job. Copy the commit hash. Switch to the terminal. Paste it. Typo. Again. Fourteen times a day.]
 
 [The real problem, before any tool enters the story: a repetitive task, a slow feedback loop, a confusing repository, a dependency you're not sure you can trust.]
 
@@ -63,6 +67,16 @@ $ [tool] [bad input]
 
 $ echo $?
 [exit code]
+```
+
+### The same task, before and after
+
+```bash
+# Before
+[the five commands, two context switches and one copy-paste it used to take]
+
+# After
+$ [tool] [arguments]
 ```
 
 ### Design decisions
@@ -179,7 +193,10 @@ I used it for [period] in real work, not just in a demo.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what the evidence and the maintenance bill showed]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | [what the evidence and the maintenance bill showed] | [right / wrong / partly right] |
+| [e.g. where the benefit would come from] | | |
 
 [Where the real benefit turned out to be, if it wasn't where you expected.]
 
@@ -191,13 +208,32 @@ I expected **[restate the bet]**. The result: **[what the evidence and the maint
 
 **Who shouldn't bother:** [...]
 
-**The threshold I'll use next time:** [e.g. "build a tool when a task happens more than n times a week and is easy to get wrong, not just slow"]
+> **If you remember one thing:** [the threshold you'll use next time, e.g. "build a tool when a task happens more than n times a week and is easy to get wrong, not just slow"]
+
+## Try it yourself
+
+One day, one sheet of paper:
+
+- **Tally it:** [every time you do the same small thing twice, add a mark next to it]
+- **Next morning:** [look at the item with the most marks]
+- **Decide:** [an alias, a script, an existing tool, or leave it alone, and write down why]
 
 ## Next experiment
 
 Next I want to try **[the next friction, tool or project]**. My prediction: [what you expect to find].
 
 [Invite readers to share the tiny tool, or the contribution, that changed how they work.]
+
+## Gear
+
+My development setup, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU · RAM · OS] | |
+| **Editor or IDE** | [and the extensions that matter here] | |
+| **Terminal and shell** | | |
+| **Keyboard and monitors** | [optional] | |
 
 ---
 

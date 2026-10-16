@@ -1,8 +1,12 @@
 > **Series:** [Programming Lab · Same Problem, Different Language · Thinking in Code] — **Part [n]**
 >
 > **TL;DR:** [One sentence with the question. One sentence with the answer. One sentence with the catch.]
+>
+> **At a glance:** [n] implementations · [n] lines each · fastest: [which] · easiest to change: [which]
 
 ## The question
+
+[Open on the moment that made you doubt something: a number, an error message, a line of code. e.g. The Rust version was 40 times faster. I was delighted for about ten minutes, until I noticed the Python version spent 90% of its time reading the file.]
 
 I've always assumed that [common belief about a language, a pattern or a practice]. It sounds reasonable: [why people, including me, believe it]. But while [what you were building or fixing], I noticed [the detail that didn't fit].
 
@@ -39,9 +43,10 @@ Before running anything, here's my bet: **[your prediction, and the reasoning be
 | **Problem** | [one-sentence description of the program] |
 | **Input** | [size, shape and origin of the data] |
 | **Languages** | [e.g. Python 3.12 · Go 1.23 · Rust 1.82] |
-| **Machine** | [CPU · RAM · OS] |
 | **Tools** | [benchmark and profiling tools, e.g. hyperfine, /usr/bin/time -v] |
 | **Code** | [link to the repository] |
+
+The computer everything ran on is listed under Gear, at the end.
 
 ### Fairness rules
 
@@ -79,6 +84,7 @@ Before running anything, here's my bet: **[your prediction, and the reasoning be
 # [Only the lines that carry the idea. Link the full file in the repository.]
 ```
 
+- **The line that sums it up:** `[the single line that best shows how this language thinks]`
 - **What it made easy:** [...]
 - **What it made hard:** [...]
 - **Where I had to fight it:** [...]
@@ -92,6 +98,7 @@ Before running anything, here's my bet: **[your prediction, and the reasoning be
 // [Only the lines that carry the idea.]
 ```
 
+- **The line that sums it up:** `[...]`
 - **What it made easy:** [...]
 - **What it made hard:** [...]
 - **Where I had to fight it:** [...]
@@ -105,6 +112,7 @@ Before running anything, here's my bet: **[your prediction, and the reasoning be
 // [Only the lines that carry the idea.]
 ```
 
+- **The line that sums it up:** `[...]`
 - **What it made easy:** [...]
 - **What it made hard:** [...]
 - **Where I had to fight it:** [...]
@@ -146,9 +154,9 @@ Once every version worked, I added a new requirement: **[e.g. also report the 10
 | Very large input | | | |
 | Problem caught at | [compile time / runtime / never] | | |
 
-## What I didn't expect
+## The plot twist
 
-[The most valuable section of the post. The failed attempt, the number that made no sense, the trade-off nobody warns you about.]
+[The most valuable section of the post: the failed attempt, the number that made no sense, the trade-off nobody warns you about.]
 
 ### [Surprise 1, written as a headline]
 
@@ -160,7 +168,10 @@ Once every version worked, I added a new requirement: **[e.g. also report the 10
 
 ## Was my bet right?
 
-My prediction was **[restate the bet]**. It turned out to be **[right / wrong / right for the wrong reasons]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / right for the wrong reasons] |
+| [a smaller prediction you made along the way] | | |
 
 [What changed in how you think about the problem. This is where the reader sees your judgment move, which is the real takeaway of the post.]
 
@@ -187,11 +198,31 @@ My prediction was **[restate the bet]**. It turned out to be **[right / wrong / 
 
 **What I'd tell myself before starting:** [one sentence]
 
+> **If you remember one thing:** [the one sentence a reader should take away, with the conditions under which it holds]
+
+## Try it yourself
+
+A version of this experiment you can run in an evening.
+
+- **You'll need:** [a small program you've already written, and a second language you're curious about]
+- **Do this:** [rewrite only the core loop, time both with hyperfine, then add one new requirement to each]
+- **Look for:** [not just which is faster, but which one fought the new requirement harder]
+
 ## Next experiment
 
 This left me with one open question: **[the question]**. That's the next part of the series.
 
 [Invite readers to suggest a variation, a better implementation, or a flaw in the method.]
+
+## Gear
+
+What I used, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU and cores · RAM · storage] | |
+| **Operating system** | | |
+| **Editor and terminal** | | |
 
 ---
 

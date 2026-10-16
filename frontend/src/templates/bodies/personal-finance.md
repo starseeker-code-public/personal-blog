@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What the numbers show, in one sentence. What they can't tell you, in one sentence.]
 >
+> **At a glance:** [n] scenarios · biggest difference: [amount] over [n] years · the assumption that matters most: [which]
+>
 > **Context:** [Country and the date rules and figures were checked] · [A real situation, anonymized / a hypothetical example, labelled as such] · [Currency]
 
 ## The question
+
+[Open on the number. e.g. €4,622: what a 1% yearly fee cost over twenty years on €10,000 growing at 5%, with the fee taken off the return each year.]
 
 [A financial dilemma readers will recognise. e.g. A 1% annual fee sounds tiny. Over twenty years, is it?]
 
@@ -105,6 +109,8 @@ Comparisons use the same period. One investment's best five years against anothe
 | [Inflation] | | | | |
 | [Fees or rates] | | | | |
 
+**The assumption that matters most:** [the one input that moves the answer furthest, and why readers should check their own value for it]
+
 ## Risk versus uncertainty
 
 - **What the history or model describes:** [...]
@@ -140,13 +146,24 @@ Questions to ask about your own situation, not rules to follow:
 
 ## Was my intuition right?
 
-I expected **[restate the prediction]**. The numbers showed **[the result]**.
+| I expected | What the numbers showed | Verdict |
+|---|---|---|
+| [restate the prediction] | [the result] | [right / wrong / partly right] |
+| [e.g. which assumption would matter most] | | |
 
 ## Verdict
 
 [What the analysis shows, what it doesn't, and what's worth understanding before a similar decision.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+One account or fund you already have, and ten minutes:
+
+- **Find its yearly cost:** [the ongoing charge or fee, from its official documents]
+- **Run the formula twice:** [over your own time horizon, once with that fee and once with none]
+- **The difference:** [is what the product costs you, before deciding whether it's worth it]
 
 ## Next question
 

@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [What I believed in one sentence. What the evidence showed in one sentence. How much confidence the fix really adds, in one sentence.]
 >
+> **At a glance:** [n] tests, all green · defects caught: [before] → [after] of [n] · mutation score: [before] → [after]
+>
 > **Context:** [A controlled experiment on a small example built for this post / A real incident, anonymized] · **Tools:** [e.g. pytest · Hypothesis · mutmut · OpenTelemetry]
 
 ## The assumption
+
+[Open on the bug report, not the code: e.g. "Your app charged me −€4." Every test was green.]
 
 I believed **[the assumption, e.g. "this function handles every valid input" / "the service is healthy when it returns 200" / "our tests would catch a reversed comparison"]**. The evidence agreed with me: [green test suite, 94% coverage, healthy dashboard, no alerts].
 
@@ -21,6 +25,8 @@ My bet before challenging it: **[your prediction, e.g. "the suite will catch at 
 ```python
 # [The implementation under test]
 ```
+
+**Before you scroll:** the bug is in the code above, and [n] tests missed it. See if you can find it first.
 
 ### What correct means
 
@@ -89,6 +95,8 @@ The tests: **[still green / one failure out of n]**.
 
 ## Why it was missed
 
+**The bug, in one sentence:** [e.g. a discount applied twice when the cart contains exactly one item]
+
 [The missing assumption, stated precisely. Every test was an example the author already thought of; which case did nobody think of, and why?]
 
 > **The tests checked [what they actually verified]. The bug lived in [the combination, boundary or condition they never reached].**
@@ -129,7 +137,9 @@ Activity isn't confidence. Test count and coverage go in the table, but the row 
 | Suite run time | | |
 | Tests that broke on a harmless refactor | | |
 
-### The defects that still survive
+### The survivors
+
+The deliberate defects the improved suite still doesn't catch.
 
 | Defect | Why the suite misses it | Worth catching? |
 |---|---|---|
@@ -159,7 +169,10 @@ Activity isn't confidence. Test count and coverage go in the table, but the row 
 
 ## Was my bet right?
 
-I predicted **[restate the bet]**. The result: **[the number or outcome]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | [the number or outcome] | [right / wrong / partly right] |
+| [e.g. which kind of defect would survive] | | |
 
 [How your sense of what "tested" means changed.]
 
@@ -186,13 +199,29 @@ I predicted **[restate the bet]**. The result: **[the number or outcome]**.
 - [e.g. the logic is trivial and a failure is cheap and visible]
 - [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Ten minutes, any codebase with tests:
+
+- **Do this:** [pick a well-tested function and flip one comparison, `<` to `<=`]
+- **Run the suite:** [if it stays green, you've found a gap]
+- **Go further:** [let a mutation tool such as mutmut run for ten minutes and read the survivors]
 
 ## Next experiment
 
 Next I want to break **[the next assumption]**. My prediction: [what you expect to find].
 
 [Invite readers to share the bug that hid behind their greenest test suite.]
+
+## Gear
+
+What I used, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU · RAM · OS] | |
 
 ---
 

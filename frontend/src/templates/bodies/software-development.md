@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The situation in one sentence. The decision in one sentence. What it cost, in one sentence.]
 >
+> **At a glance:** [n] versions · [n] files touched by the last "small" change · chose: [option]
+>
 > **Context:** [A real project, anonymized where needed / A small example built for this post, presented as a case study rather than production experience]
 
 ## The situation
+
+[Open on the moment it hurt: the "small" change that touched fourteen files, the bug that came back for the third time, the question in code review nobody could answer.]
 
 [The feature] looked like [an afternoon of work / a small ticket]. The requirement, in the words it reached me:
 
@@ -17,6 +21,8 @@ Then [what happened: a new requirement, a second use case, a bug report, more us
 So this post is about one decision:
 
 > **[Should this logic live in the frontend or the backend? / When should this become its own module? / Is this abstraction still earning its keep?]**
+
+My guess before changing anything: **[your prediction, e.g. "splitting it into a module will make the next change twice as fast"]**.
 
 ## The constraints
 
@@ -41,6 +47,18 @@ A design decision is only right under certain conditions. These were mine:
 | v2 | [the first new requirement] | [what had to be added or bent] | |
 | v3 | [the next one] | [...] | |
 | v4 | [the change that hurt] | [...] | |
+
+### What the git history says
+
+The commit log remembers what everyone forgets.
+
+```text
+[e.g.
+commits touching pricing/ in the last 6 months:   47
+commits that also touched another module:         31
+most frequently changed file:                     services/pricing.py (29)
+average files per "small" change:                 5.4]
+```
 
 ### The first change
 
@@ -152,10 +170,6 @@ I chose **[option]**, because [the reason that tipped it, tied back to the const
 - [the cost of my own solution: every honest refactor has one]
 - [...]
 
-### What surprised me
-
-[The thing you didn't predict: a benefit you didn't plan for, a problem that moved somewhere else, a teammate's reaction.]
-
 ### Before and after, measured
 
 | | Before | After |
@@ -165,6 +179,16 @@ I chose **[option]**, because [the reason that tipped it, tied back to the const
 | Time to implement the next requirement | | |
 | Tests / test suite run time | | |
 | Bugs reported in [period] | | |
+
+## What I didn't see coming
+
+### [Surprise 1, written as a headline]
+
+[What happened.] [What I first thought it meant.] [What it actually meant: a benefit I didn't plan for, a problem that moved somewhere else, a teammate's reaction.]
+
+### [Surprise 2, written as a headline]
+
+[What happened.] [What I first thought it meant.] [What it actually meant.]
 
 ## Is it actually finished?
 
@@ -179,6 +203,13 @@ Working code isn't the same as shipped software. Here's where this landed:
 | Documentation | [...] |
 | Who owns it now | [...] |
 
+## Was my guess right?
+
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the guess] | [the result] | [right / wrong / partly right] |
+| [a smaller prediction along the way] | | |
+
 ## Verdict
 
 Under these constraints, I'd choose **[option]** again. [Why, in two sentences.]
@@ -191,11 +222,28 @@ Under these constraints, I'd choose **[option]** again. [Why, in two sentences.]
 
 **Would I start with this design next time?** [Usually no, and why the simpler first version was still the right call. Or yes, and what signal should have told you earlier.]
 
-**The rule of thumb I'm taking away:** [one sentence, including the condition under which it applies]
+> **If you remember one thing:** [one sentence, including the condition under which it applies]
+
+## Try it yourself
+
+Ten minutes with your own repository:
+
+- **Find your hotspot:** [e.g. `git log --format= --name-only | sort | uniq -c | sort -rn | head` lists the files that change most]
+- **Check the blast radius:** [for the last five "small" changes to that file, how many other files changed with it?]
+- **Ask the question:** [is that coupling intended, or did it grow while nobody was looking?]
 
 ## What's next
 
 [The next change on the horizon, or the question this left open. Invite readers to share how they would have structured it.]
+
+## Gear
+
+What I used, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU · RAM · OS] | |
+| **Editor or IDE** | | |
 
 ---
 

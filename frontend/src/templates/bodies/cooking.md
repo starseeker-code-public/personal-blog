@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The dish and the question, in one sentence. What the experiment showed, in one sentence. The change I'm keeping, in one sentence.]
 >
-> **Context:** [Dish] · [Kitchen: hob, oven, key equipment] · [Your experience] · [Number of test batches]
+> **At a glance:** [n] batches · [n] steps questioned · [n] turned out to be optional · serves [n] in [time]
+>
+> **Context:** [Dish] · [Your experience] · [Number of test batches] · The kitchen equipment is listed under Gear, at the end
 
 ## The question
+
+[Open on a sensory moment. e.g. The second batch hissed when it hit the pan. The first one hadn't. That sound turned out to be the whole story.]
 
 [The cooking problem, assumption or characteristic you want to improve. e.g. I've made this dish the same way for years. I couldn't tell you why half the steps are there.]
 
@@ -27,8 +31,6 @@ My bet: **[your prediction]**.
 1. [Step, with temperature, time and the visual cue that tells you it's done]
 2. [...]
 3. [...]
-
-**Equipment:** [pan material and size, oven type, thermometer, scales]
 
 ## Why each step exists
 
@@ -57,6 +59,12 @@ Described as specifically as I could. "Tasted better" isn't evidence.
 | A | [e.g. pale gold, a few dark edges] | | [e.g. soft centre, no crust] | [salt, acid, sweetness, bitterness, umami, richness] | |
 | B | | | | | |
 | C | | | | | |
+
+**All the batches, side by side:** [link]
+
+### The batch that failed
+
+[The one that went wrong: what you saw, smelled or tasted, and what it taught you that the good batches didn't.]
 
 ### Measurements
 
@@ -132,7 +140,10 @@ Described as specifically as I could. "Tasted better" isn't evidence.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The batches showed **[the result]**.
+| I predicted | What the batches showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which step I could drop] | | |
 
 ## The limits of this experiment
 
@@ -145,13 +156,34 @@ I expected **[restate the bet]**. The batches showed **[the result]**.
 
 [What you learned, and which principles carry over to other dishes.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Tonight, one vegetable, two pans:
+
+- **Pan 1:** [crowded, with the pieces touching]
+- **Pan 2:** [the same amount spread across two batches, with space between the pieces]
+- **Same heat, same time:** [then compare the colour, the texture and the sound each pan made]
 
 ## Next experiment
 
 Next I want to test **[the next dish, step or variable]**. My prediction: [what you expect].
 
 [Invite readers to share the recipe step they've always followed without knowing why.]
+
+## Gear
+
+What I cooked with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Hob** | [gas / induction / electric] | |
+| **Oven** | [fan or conventional · runs hot or cold?] | |
+| **Pans** | [material and size] | |
+| **Knife** | | |
+| **Thermometer** | | |
+| **Kitchen scale** | | |
 
 ---
 

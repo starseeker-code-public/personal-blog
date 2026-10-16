@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What the calculation, observation or simulation showed, in one sentence. What it establishes, and what it doesn't, in one sentence.]
 >
-> **Context:** [Observing location and approximate latitude] · [Dates] · **Equipment:** [naked eye / binoculars / telescope / camera] · **Data and software:** [sources and tools]
+> **At a glance:** target: [object] · [date] · my result versus the reference: [n]% off
+>
+> **Context:** [Observing location and approximate latitude] · [Dates] · **Data:** [sources] · The telescope, camera and software are listed under Gear, at the end
 
 ## The question
+
+[Open under the sky. e.g. 23:40, −2 °C, and Jupiter was exactly where my forty lines of Python said it would be. Saturn wasn't.]
 
 [The phenomenon, observation or apparent contradiction that started this. e.g. Last week [planet] was next to [star]. Tonight it isn't. The stars haven't moved relative to each other, so what did?]
 
@@ -33,12 +37,29 @@ What I expected: **[your prediction]**.
 | **Moon** | [phase, illumination, position] |
 | **Weather** | |
 | **Seeing and transparency** | |
-| **Equipment** | [instrument, eyepieces or camera, mount] |
 | **Targets** | [...] |
+
+### Observing log
+
+| Time (UTC) | Target | Instrument and magnification | What I saw | Notes |
+|---|---|---|---|---|
+| | | | | |
+| | | | | |
 
 ## The method
 
 [The approach: a calculation, an observation, a simulation or an analysis of published data, and why it suits the question.]
+
+### Back of the envelope
+
+Before the real calculation, a rough estimate to know what kind of answer to expect.
+
+```text
+[e.g.
+The Moon orbits once in about 27 days: 360° / 27 ≈ 13° a day.
+A fist at arm's length covers about 10° of sky,
+so the Moon should drift a bit more than a fist east each night.]
+```
 
 ### The math
 
@@ -117,7 +138,10 @@ T  = a^(3/2)]
 
 ## Was my expectation right?
 
-I expected **[restate the prediction]**. The result: **[what the investigation showed]**.
+| I expected | What the investigation showed | Verdict |
+|---|---|---|
+| [restate the prediction] | | [right / wrong / partly right] |
+| [e.g. how far off the simple model would be] | | |
 
 ## What this doesn't establish
 
@@ -125,21 +149,36 @@ I expected **[restate the prediction]**. The result: **[what the investigation s
 - **Scope:** [the conditions, objects or time range the result applies to]
 - **Sources:** [what depends on published values you didn't measure yourself]
 
-## Try it yourself
-
-- **What to change:** [e.g. the date, the location, the initial velocity]
-- **What to look for:** [the pattern readers should be able to see]
-- **When and where to look:** [for observing posts: the dates, the direction, the time]
-
 ## Verdict
 
 [What you learned, and how it changed your understanding of the sky.]
+
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+- **Tonight, with no equipment:** [note where the Moon is relative to a bright star, and look again at the same time tomorrow. It will have moved roughly 13° east, a bit more than a fist at arm's length]
+- **With the code:** [change the date or your location and compare the output with a planetarium app]
+- **For this post's question:** [the dates, direction and time to look, if readers can see it themselves]
 
 ## Next investigation
 
 Next I want to look at **[the next question]**. My prediction: [what you expect].
 
 [Invite readers to run the code for their own location and date, or to point out a flaw in the method.]
+
+## Gear
+
+What I observed, photographed and calculated with, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Telescope** | [aperture · focal length · focal ratio] | |
+| **Mount** | [type · tracking or not] | |
+| **Eyepieces** | | |
+| **Camera** | [for astrophotography] | |
+| **Binoculars** | | |
+| **Software** | [planetarium, image processing, the code environment] | |
 
 ---
 

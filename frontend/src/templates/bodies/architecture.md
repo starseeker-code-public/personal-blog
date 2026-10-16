@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The system in one sentence. What broke under pressure, in one sentence. The design that held up, and its price, in one sentence.]
 >
+> **At a glance:** [n] services · p99 under pressure: [before] → [after] · time to recover: [n] s
+>
 > **Context:** [A production system, anonymized / A small simulation built for this post: n services, a database and injected failures]
 
 ## The problem
+
+[Open on the symptom: the alert that fired, the customer who was charged twice, the graph that went vertical. e.g. The payment went through. The customer saw an error, pressed "Pay" again, and paid twice.]
 
 [The concrete requirement or failure scenario, in plain words. e.g. A client asks a service to charge a card. The charge goes through, but the response never arrives.]
 
@@ -67,7 +71,7 @@ One variable changes; everything else stays the same.
 - **Failure injection:** [e.g. toxiproxy / tc netem / a sleep behind a feature flag]
 - **Load generator:** [e.g. k6 / locust / wrk, and the exact scenario]
 - **Phases:** [warm-up, steady state, injection, recovery, and how long each lasted]
-- **Environment:** [machine, containers, resource limits]
+- **Environment:** [containers and resource limits; the hardware is listed under Gear, at the end]
 - **Code:** [link to the repository]
 
 ```python
@@ -79,6 +83,17 @@ One variable changes; everything else stays the same.
 ### What the user saw
 
 [Describe it from the outside first: slow pages, duplicate charges, stale data, errors. This is the consequence the architecture is ultimately responsible for.]
+
+### What on-call would have seen
+
+[If this had happened in production at 3 a.m.: the alert that fires first, and whether it points at the cause or only at a symptom.]
+
+```text
+[e.g.
+[FIRING] api: error rate > 5% for 2m
+[FIRING] postgres: connection pool 100% utilised
+(nothing fires for payments, the component that actually slowed down)]
+```
 
 ### What happened inside
 
@@ -201,6 +216,23 @@ An architectural decision keeps costing something long after it's deployed.
 | **Data ownership** | [who owns the new state, and how long it's kept] |
 | **On-call** | [new ways to get paged at 3 a.m.] |
 
+## The failure I didn't predict
+
+### [Surprise 1, written as a headline]
+
+[What I saw.] [What I first thought it meant.] [What it actually meant, and how I found out.]
+
+### [Surprise 2, written as a headline]
+
+[What I saw.] [What I first thought it meant.] [What it actually meant, and how I found out.]
+
+## Was my expectation right?
+
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the expectation] | [the result] | [right / wrong / partly right] |
+| [e.g. which component would fail first] | | |
+
 ## Verdict
 
 Under these conditions, I'd choose **[option]**. [Why, in two sentences, tied back to the measurements.]
@@ -215,13 +247,30 @@ Under these conditions, I'd choose **[option]**. [Why, in two sentences, tied ba
 
 **How hard is this to reverse?** [What it would cost to undo this decision a year from now.]
 
-**The principle I'm taking away:** [one sentence, including the conditions under which it holds]
+> **If you remember one thing:** [one sentence, including the conditions under which it holds]
+
+## Try it yourself
+
+You can reproduce the core of this on a laptop in an afternoon:
+
+- **You'll need:** [two small services, a database, and a fault injector such as toxiproxy]
+- **Do this:** [add 2 s of latency to one dependency while a load generator runs, with and without client retries]
+- **Look for:** [what fails first, which alert would have fired, and how many operations ran twice]
 
 ## Next pressure
 
 The next variable I want to change is **[e.g. ten times the load / a database failover / a network partition]**. My prediction: [what you expect to happen, so readers can bet along].
 
 [Invite readers to share how their systems handle the same failure.]
+
+## Gear
+
+What I used, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU and cores · RAM · OS] | |
+| **Other hardware** | [e.g. a separate machine for the load generator, a home server] | |
 
 ---
 

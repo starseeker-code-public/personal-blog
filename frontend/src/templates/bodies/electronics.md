@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The device and the problem, in one sentence. What the measurements revealed, in one sentence. The fix, and the conditions it holds under, in one sentence.]
 >
-> **Context:** [Board and microcontroller] · [Key components] · **Instruments:** [multimeter, oscilloscope, logic analyzer, USB power meter] · [Low-voltage project]
+> **At a glance:** failed after [n] min · cause: [one phrase] · uptime after the fix: [n] h · sleep current: [n] µA
+>
+> **Context:** [Board and microcontroller] · [Key components] · [Low-voltage project] · Instruments are listed under Gear, at the end
 
 ## The problem
+
+[Open on the symptom exactly as it appeared. e.g. 10:47:03 was the last line in the serial log. Then nothing. Then the boot banner, again.]
 
 [The behavior you want, or the failure you want to understand. e.g. The sensor logger worked perfectly on my desk. After about ten minutes on its own, it started skipping readings, and after an hour it reset.]
 
@@ -81,6 +85,10 @@ Every plausible cause, and the test that could tell it apart from the others.
 | [Timing assumption] | | | | |
 | [Sensor or bus timeout] | | | | |
 | [Overheating] | | | | |
+
+### The red herring
+
+[The hypothesis that cost the most time: why it looked so convincing, how long you chased it, and the measurement that finally ruled it out.]
 
 ## The measurements
 
@@ -172,7 +180,10 @@ Every plausible cause, and the test that could tell it apart from the others.
 
 ## Was my first suspicion right?
 
-I suspected **[restate the hypothesis]**. The measurements showed **[the result]**.
+| I suspected | What the measurements showed | Verdict |
+|---|---|---|
+| [restate the hypothesis] | [the result] | [right / wrong / partly right] |
+| [e.g. how much current it drew asleep] | | |
 
 [How this changes the way you'll debug the next device.]
 
@@ -186,13 +197,35 @@ I suspected **[restate the hypothesis]**. The measurements showed **[the result]
 
 [What works now, what you would redesign, and the conditions the result applies to.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Measure what your own board really draws:
+
+- **You'll need:** [a USB power meter, or a multimeter in series with the supply]
+- **Do this:** [measure the current while running, and again in sleep mode]
+- **Compare:** [with the datasheet. If sleep current is far higher, look for the power LED, the regulator, or a sensor that never sleeps]
 
 ## Next experiment
 
 Next I want to **[the next test, e.g. run it on battery for a week / build a test harness that cycles it through startup and recovery]**. My prediction: [what you expect].
 
 [Invite readers to share the bug that turned out to be electrical, or the other way round.]
+
+## Gear
+
+My bench, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Multimeter** | | |
+| **Oscilloscope** | [bandwidth, channels] | |
+| **Logic analyzer** | | |
+| **Current or USB power meter** | | |
+| **Bench power supply** | | |
+| **Soldering station** | | |
+| **Computer and toolchain** | [model · OS · IDE or toolchain] | |
 
 ---
 

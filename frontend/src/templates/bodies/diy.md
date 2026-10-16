@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The problem in one sentence. What I built, and what failed along the way, in one sentence. Whether it was worth it, in one sentence.]
 >
-> **Context:** [Workshop and tools available] · [Time span of the project] · [Your experience with these materials and techniques]
+> **At a glance:** [cost] in materials · [n] hours · [n] versions · [price] to buy instead
+>
+> **Context:** [Workshop: space, indoors or outdoors] · [Time span of the project] · [Your experience with these materials and techniques]
 
 ## The problem
+
+[Open on the annoyance, or the moment it broke. e.g. The shelf held for nine days. On the tenth, at 3 a.m., it didn't.]
 
 [The real need, inconvenience, broken object or design question. e.g. Every time I [task], I [the annoyance]. The commercial options were [too big / too expensive / almost right].]
 
@@ -29,7 +33,7 @@ My bet: **[your prediction, e.g. "I can build a better version for half the pric
 | **Load** | [what it must support, and how often] | | |
 | **Environment** | [indoors, outdoors, humidity, heat] | | |
 | **Budget** | | | |
-| **Tools available** | | | |
+| **Tools available** | [what the design had to work with; the full list is under Gear] | | |
 | **Repair and maintenance** | | | |
 | **Appearance** | [how much it matters] | | |
 
@@ -46,6 +50,10 @@ My bet: **[your prediction, e.g. "I can build a better version for half the pric
           ▲ 2 × M4 screws, 180 mm apart]
 ```
 
+### Version 0: the cardboard prototype
+
+[The fastest, ugliest version you could make in under an hour, from cardboard, scrap or tape, and what it revealed before you cut anything expensive.]
+
 ### Key decisions
 
 | Decision | Choice | Alternatives considered | Why |
@@ -55,7 +63,7 @@ My bet: **[your prediction, e.g. "I can build a better version for half the pric
 | **Shape** | | | |
 | **Finish** | | | |
 
-### Materials and tools
+### Materials
 
 | Item | Quantity | Cost | Notes |
 |---|---|---|---|
@@ -63,15 +71,13 @@ My bet: **[your prediction, e.g. "I can build a better version for half the pric
 | | | | |
 | **Total** | | | |
 
-**Tools used:** [...]
-
 ## The build
 
 1. [The important steps only: the ones where a decision or a mistake happened]
 2. [...]
 3. [...]
 
-### The failed attempt
+### The failure that taught me most
 
 [What failed, what the evidence was, and what it revealed about the design. This is often the most useful part of the post.]
 
@@ -133,7 +139,10 @@ I tested it the way it will actually be used, without pushing it past safe limit
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what actually happened]**.
+| I predicted | What actually happened | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. the hours it would take] | | |
 
 ## Version 2
 
@@ -149,13 +158,34 @@ I expected **[restate the bet]**. The result: **[what actually happened]**.
 
 **Buy it if:** [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Thirty minutes and a cardboard box:
+
+- **Pick:** [one object at home that annoys you every day]
+- **Sketch:** [the fix, with real measurements]
+- **Build version 0:** [in cardboard and tape, then use it for a day before deciding whether it deserves wood, metal or a shop-bought replacement]
 
 ## Next project
 
 Next I want to [the next build or question]. My prediction: [what you expect].
 
 [Invite readers to share their version, or a project where buying turned out to be the better engineering decision.]
+
+## Gear
+
+The tools I used, and why.
+
+| Tool | Model | Why this one | Bought for this project? |
+|---|---|---|---|
+| **Measuring and marking** | [tape, square, calipers] | | |
+| **Cutting** | | | |
+| **Drilling and driving** | | | |
+| **Clamping** | | | |
+| **Finishing** | | | |
+| **Safety equipment** | [glasses, hearing protection, dust mask] | | |
 
 ---
 

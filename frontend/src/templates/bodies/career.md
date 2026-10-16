@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The situation in one sentence. What the investigation showed, in one sentence. The lesson, and where it doesn't apply, in one sentence.]
 >
+> **At a glance:** [role] · [n] months · my hypothesis: [held / didn't hold] · the biggest factor: [individual / system]
+>
 > **Context:** [Role and level] · [Kind of organization and team size] · [Period] · [A situation I lived / a composite or hypothetical case, labelled as such] · Company and colleagues anonymized; nothing confidential
 
 ## The problem
+
+[Open on the moment it landed. e.g. "Great quarter," my manager said, and listed three things. None of them was the project I'd spent four months on.]
 
 [A concrete professional situation, and why it matters. e.g. The project I'm proudest of from last year barely came up in my performance review. Something I spent two days on did.]
 
@@ -99,6 +103,10 @@
 | | | | |
 | | | | |
 
+### The conversation that changed my mind
+
+[One specific exchange, anonymized: what was said, what you'd assumed until then, and what you understood afterwards.]
+
 ## Individual or system?
 
 Workplace outcomes depend on the environment as well as on effort.
@@ -142,7 +150,10 @@ Workplace outcomes depend on the environment as well as on effort.
 
 ## Was my hypothesis right?
 
-I expected **[restate the hypothesis]**. The investigation showed **[the result]**.
+| I expected | What the investigation showed | Verdict |
+|---|---|---|
+| [restate the hypothesis] | [the result] | [right / wrong / partly right] |
+| [e.g. how the other people involved would see it] | | |
 
 ## What this doesn't prove
 
@@ -152,11 +163,27 @@ I expected **[restate the hypothesis]**. The investigation showed **[the result]
 
 Colleagues and the company are anonymized, and no private conversation appears here without permission. Serious problems such as misconduct, harassment or retaliation need formal procedures or specialist support, not a blog-post experiment.
 
+## If you're in the same spot
+
+Questions worth asking about your own situation, not rules to follow:
+
+- [e.g. Who decides how my work is evaluated, and do they know what I did?]
+- [...]
+- [...]
+
 ## Verdict
 
 [What you learned, and how a reader could assess their own situation.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Fifteen minutes, on paper:
+
+- **List your three most valuable contributions** [from the last quarter]
+- **Next to each:** [who benefited, and who actually knew about it]
+- **Look at the gaps:** [where the value was real but invisible, the problem may be visibility, not effort]
 
 ## Next investigation
 

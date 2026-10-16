@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The miniature and the question, in one sentence. What the comparison showed, in one sentence. Where the extra time paid off and where it didn't, in one sentence.]
 >
+> **At a glance:** version A: [n] h · version B: [n] h · at one metre, [n] of [n] people could tell which took longer
+>
 > **Context:** [Miniature, manufacturer and scale] · [Your experience] · [Tabletop / display] · [Period]
 
 ## The question
+
+[Open on the moment of comparison. e.g. I put both versions on the gaming table, stepped back a metre, and asked my group which one took five times longer. Two of the four guessed wrong.]
 
 [The painting challenge, design decision or assumption. e.g. My detailed models take five times longer than my tabletop ones. From across the table, I'm not sure anyone can tell.]
 
@@ -27,20 +31,7 @@ My bet: **[your prediction]**.
 | A | [e.g. tabletop] | [clean, readable at arm's length] | |
 | B | [e.g. display] | [smooth transitions, refined details] | |
 
-## Materials
-
-| Item | Product | Notes |
-|---|---|---|
-| **Primer** | [colour, brand, spray or brush] | |
-| **Paints** | [ranges used] | |
-| **Contrast or speed paints** | | |
-| **Washes and glazes** | | |
-| **Brushes** | [sizes, brands] | |
-| **Palette** | [wet / dry] | |
-| **Basing** | | |
-| **Varnish** | [matte / satin / gloss] | |
-
-A method that works on one primer or sculpt may need adjusting on another, so these are the exact materials.
+The paints, brushes and primer are listed under Gear, at the end. A method that works on one primer or sculpt may need adjusting on another, so they're the exact materials.
 
 ## The plan
 
@@ -86,6 +77,16 @@ A method that works on one primer or sculpt may need adjusting on another, so th
 
 **Both versions, same lighting and angles:** [link]
 
+### The one-metre test
+
+Both models on the table, viewed from where players actually sit.
+
+| Viewer | Picked the slower version? | What they noticed first |
+|---|---|---|
+| [1] | | |
+| [2] | | |
+| [3] | | |
+
 ### Where the time went, and what it bought
 
 | Step | Extra time in B | Visible at tabletop distance? | Visible up close? | Worth it? |
@@ -123,7 +124,10 @@ A method that works on one primer or sculpt may need adjusting on another, so th
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what the comparison showed]**.
+| I predicted | What the comparison showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. how many people would spot the difference] | | |
 
 ## What this doesn't prove
 
@@ -135,13 +139,38 @@ I expected **[restate the bet]**. The result: **[what the comparison showed]**.
 
 [Which version fits which purpose, and when you'll stop refining next time.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Your last finished model, and your phone:
+
+- **Photograph it in black and white:** [most phone cameras have a mono mode, or desaturate it afterwards]
+- **Look at the greys:** [if the face, the weapon and the armour are all the same grey, the model needs contrast, not more detail]
+- **Fix one area:** [darken the shadows or lift the focal point, then take the same photo again]
 
 ## Next experiment
 
 Next I want to try **[the next technique, scheme or question]**. My prediction: [what you expect].
 
 [Invite readers to share the one change that improved their models most.]
+
+## Gear
+
+What I painted with, and why.
+
+| Item | Product | Why this one |
+|---|---|---|
+| **Primer** | [colour, brand, spray or brush] | |
+| **Paints** | [ranges used] | |
+| **Contrast or speed paints** | | |
+| **Washes and glazes** | | |
+| **Brushes** | [sizes, brands] | |
+| **Palette** | [wet / dry] | |
+| **Basing** | | |
+| **Varnish** | [matte / satin / gloss] | |
+| **Lamp and magnification** | | |
+| **Photo setup** | [camera or phone, lighting, backdrop] | |
 
 ---
 

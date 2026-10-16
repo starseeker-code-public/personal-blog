@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The workload in one sentence. What the infrastructure really cost, in one sentence. The layer that was or wasn't worth it, in one sentence.]
 >
+> **At a glance:** [cost] per month · [n] layers tested · survived [n] of [n] failure tests
+>
 > **Context:** [Provider and region] · [Deployed and measured / Modelled from public pricing on [date]] · [Measurement period]
 
 ## The question
+
+[Open on a number: the bill, the minutes of downtime, the quota error. e.g. The invoice said €312. My estimate had said €40, and I couldn't explain half the lines on it.]
 
 The usual advice is [common recommendation, e.g. "use a managed database" / "always deploy across three availability zones" / "serverless is cheaper for small apps"]. It's convenient, and for many teams it's right. But for [your workload], I wanted to know what it actually buys, and what it costs in money, performance, reliability, security and operational effort.
 
@@ -98,7 +102,9 @@ I started with the smallest deployment that works, then added one layer at a tim
 
 **Assumptions:** [region, pricing date, currency, whether free tiers, discounts, taxes and support plans are included]
 
-**Where the estimate was wrong:** [the line item that surprised you, and the assumption behind the mistake]
+### The line I couldn't explain
+
+[The line item that surprised you, how you traced it back to a design decision, and the assumption behind the mistake.]
 
 ## Under load
 
@@ -126,6 +132,20 @@ A redundant resource is only useful if the application actually survives without
 | [DNS stops resolving] | | | | | |
 | [a service quota is reached] | | | | | |
 | [restore from backup into a fresh environment] | | | | | |
+
+### The restore drill, minute by minute
+
+A backup is only as good as the restore nobody has practised.
+
+```text
+[e.g.
+t+0      start: restore last night's snapshot into a new environment
+t+4 min  snapshot found, restore started
+t+12 min realised the database password only existed on the old instance
+t+31 min credentials recovered from the secrets manager
+t+38 min application up, DNS still pointing at the old address
+t+52 min first successful request]
+```
 
 ### Hidden dependencies I found
 
@@ -164,7 +184,7 @@ A redundant resource is only useful if the application actually survives without
 | [e.g. automatic scaling] | [...] |
 | [e.g. zero-maintenance operations] | [...] |
 
-## What I didn't expect
+## What surprised me
 
 ### [Surprise 1, written as a headline]
 
@@ -176,7 +196,11 @@ A redundant resource is only useful if the application actually survives without
 
 ## Was my estimate right?
 
-I predicted **[restate the estimate]**. The real figure was **[the measured or modelled result]**.
+| | Estimated | Actual | Verdict |
+|---|---|---|---|
+| Monthly cost | [restate the estimate] | | [close / off by [n]×] |
+| Biggest line item | | | |
+| The layer worth paying for | | | |
 
 [What you misjudged, and what you'd now check first when estimating a similar setup.]
 
@@ -199,13 +223,29 @@ For this workload, the right amount of infrastructure is **[the step or option y
 
 **I'd choose differently if:** [the change in traffic, team, budget or recovery targets that would flip the decision]
 
-**The rule of thumb I'm taking away:** [one sentence, including the conditions under which it holds]
+> **If you remember one thing:** [one sentence, including the conditions under which it holds]
+
+## Try it yourself
+
+Fifteen minutes with your own last bill:
+
+- **Group it:** [compute, storage, data transfer, everything else]
+- **Find the stranger:** [the line you can't explain without looking it up]
+- **Trace it:** [which design decision created it, and whether you'd make that decision again]
 
 ## Next experiment
 
 Next I want to test **[e.g. what happens when traffic suddenly increases tenfold / whether a cross-region restore meets the RTO]**. My prediction: [what you expect, so readers can bet along].
 
 [Invite readers to share their own bills, setups or recovery stories.]
+
+## Gear
+
+What I used, and why. The cloud resources themselves are listed under The setup.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU · RAM · OS] | [e.g. ran the load generator and the provisioning] |
 
 ---
 

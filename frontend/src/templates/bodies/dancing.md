@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What changed, in one sentence. What I'll practise next, in one sentence.]
 >
+> **At a glance:** [n] sessions · [n] songs · attention on the music: [n]% → [n]% · [n] socials
+>
 > **Context:** [Style, e.g. salsa On1 / bachata] · [How long you've been dancing] · [Period of the experiment] · [Classes / socials / solo practice]
 
 ## The question
+
+[Open on a moment on the floor. e.g. The break hit, the whole room paused, and I was halfway through a cross-body lead, still counting.]
 
 [The dance difficulty, musical observation or assumption about learning. e.g. In class I can do the whole combination. At a social, I spend the song thinking about what comes next and barely hear the music.]
 
@@ -44,6 +48,19 @@ My bet: **[your prediction]**.
 | [Verse] | | | [e.g. the bongó carries the rhythm] | |
 | [Break] | | | | [a pause, a held position] |
 | [Montuno / derecho] | | | | |
+
+### One eight-count, in slow motion
+
+| Count | In the music | Feet | Weight | Upper body | Partner |
+|---|---|---|---|---|---|
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+| 4 | [e.g. pause] | | | | |
+| 5 | | | | | |
+| 6 | | | | | |
+| 7 | | | | | |
+| 8 | [e.g. pause] | | | | |
 
 ## What I'm evaluating
 
@@ -122,7 +139,10 @@ Class and practice are one thing; a crowded social floor with different partners
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what happened]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. where the change would show first] | | |
 
 ## What this doesn't prove
 
@@ -139,13 +159,30 @@ I expected **[restate the bet]**. The result: **[what happened]**.
 
 **This might help if:** [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+One song you already know, before your next social:
+
+- **Listen three times, without dancing:** [tap the pulse, mark every break, hum the bass line]
+- **Then dance it alone:** [basic step only, and hold still on every break]
+- **Notice:** [how much of the song you'd been missing while thinking about the next move]
 
 ## Next experiment
 
 Next I want to try **[the next question, song or style]**. My prediction: [what you expect].
 
 [Invite readers to share what changed their dancing more than any new move.]
+
+## Gear
+
+[Optional; remove if nothing here mattered.] What I danced and recorded with.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Dance shoes** | [and sole type] | |
+| **Recording setup** | [phone, tripod] | |
 
 ---
 

@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The problem in one sentence. What I tried and what happened, in one sentence. Whether I'm keeping it, and why, in one sentence.]
 >
+> **At a glance:** [n] days · done on [n] of them · cost: [amount] · keeping it: [yes / no / a smaller version]
+>
 > **Context:** A personal, low-risk experiment · [Period] · [Circumstances that shaped it: work schedule, responsibilities]
 
 ## The problem
+
+[Open on the evening it broke. e.g. Thursday, 22:40, laptop still open on the sofa. The routine I'd kept for eleven days quietly didn't happen. Neither did it on Friday.]
 
 [The recurring difficulty, inconvenience or assumption about everyday wellbeing. e.g. My evening routine works beautifully, right up until the first busy week. Then it disappears completely, and it takes me a month to restart it.]
 
@@ -40,6 +44,7 @@ What's realistic for me depends on these, and they'll be different for you.
 - **What I'm changing:** [one or two things, not everything at once]
 - **Why:** [...]
 - **What I hope it improves:** [...]
+- **The two-minute version:** [the smallest form of the change that still counts on a terrible day]
 - **Worth keeping if:** [decided before starting, e.g. "I still do it in a busy week, and it takes less than ten minutes"]
 - **Duration:** [...]
 
@@ -74,6 +79,10 @@ Only what helps me decide whether to keep the change.
 | 2 | | | |
 | 3 | | | |
 | … | | | |
+
+### The week that tested it
+
+[The busiest or messiest stretch of the experiment: what survived, what you dropped, and whether the two-minute version was enough.]
 
 ## What changed
 
@@ -123,7 +132,10 @@ Only what helps me decide whether to keep the change.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what happened]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. the day it would first break] | | |
 
 ## What this doesn't establish
 
@@ -137,13 +149,31 @@ This was a low-risk everyday change. Persistent sleep problems, significant stre
 
 [Whether the change was worth it for you, who might try something similar, and when a different approach would make more sense.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Ten minutes with a pen:
+
+- **Write down your routine as it is:** [one step per line]
+- **Next to each step:** [write the version you'd still do on your worst day of the year]
+- **Look at what's left:** [the steps with no worst-day version are the ones that disappear first]
 
 ## Next experiment
 
 Next I want to try **[the next small change]**. My prediction: [what you expect].
 
 [Invite readers to share the smallest change that made their week easier.]
+
+## Gear
+
+[Optional; remove if nothing here mattered.] What I used, and whether it helped.
+
+| Item | Model | Did it matter? |
+|---|---|---|
+| **Tracker or wearable** | | |
+| **App or notebook** | | |
+| **Anything I bought for this** | [or "nothing"] | |
 
 ---
 

@@ -2,25 +2,19 @@
 >
 > **TL;DR:** [The question in one sentence. What the flights showed, in one sentence. How it changes the way I plan, in one sentence.]
 >
-> **Context:** [Drone model and firmware] · [Type of location] · [Dates] · [Your experience, e.g. hours flown] · All flights within the manufacturer's limits and local rules
+> **At a glance:** [n] flights · same route, [n]% to [n]% of the battery · flights cancelled: [n]
+>
+> **Context:** [Type of location] · [Dates] · [Your experience, e.g. hours flown] · All flights within the manufacturer's limits and local rules · The drone and equipment are listed under Gear, at the end
 
 ## The question
+
+[Open on a moment in the air. e.g. 380 metres out, 31% battery, return-to-home engaged, and the drone barely moving against the wind.]
 
 [The concrete problem, technical curiosity or creative goal. e.g. The same 2 km route used 38% of the battery one evening and 61% the next morning. Same drone, same battery, same route.]
 
 > **[How much does wind really change a flight? / Why was the flight risky with plenty of battery left? / Why did my footage look worse than the place deserved?]**
 
 My bet: **[your prediction]**.
-
-## The equipment
-
-| | |
-|---|---|
-| **Drone** | [model, weight, firmware version] |
-| **Propellers** | [type, condition] |
-| **Batteries** | [how many, charge cycles, health] |
-| **Payload or accessories** | [filters, lights, nothing] |
-| **Camera settings** | [for photography posts: mode, shutter, ISO, profile] |
 
 ## The location
 
@@ -67,6 +61,14 @@ launch → climb to 60 m → 400 m north → hover 30 s → return → land]
 | 1 | | | | | | |
 | 2 | | | | | | |
 | 3 | | | | | | |
+
+### The abort log
+
+The flights I didn't take, or cut short, and why. Knowing when not to fly is part of the result.
+
+| Date | What I planned | Why I cancelled or landed early | Right call, in hindsight? |
+|---|---|---|---|
+| | | | |
 
 ## The observations
 
@@ -139,7 +141,10 @@ What I measured and how I explain it are kept apart, because several things chan
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The flights showed **[the result]**.
+| I predicted | What the flights showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. battery left at landing] | | |
 
 ## What this doesn't prove
 
@@ -155,13 +160,33 @@ I expected **[restate the bet]**. The flights showed **[the result]**.
 
 [What you learned, in two or three sentences, and how it changes future flights.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+On your next legal, low-wind-to-moderate day, at a familiar spot:
+
+- **Fly:** [a short out-and-back, with the outbound leg into the wind]
+- **Note:** [battery at the turning point, and battery at landing]
+- **Compare:** [the outbound and return legs. The difference is your personal wind margin; stay well inside your drone's limits and your own experience]
 
 ## Next flight
 
 Next I want to test **[the next question]**. My prediction: [what you expect].
 
 [Invite readers to compare with their own logs, or share how they plan battery reserve.]
+
+## Gear
+
+What I flew with, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Drone** | [model · weight · firmware version] | |
+| **Batteries** | [how many · charge cycles · health] | |
+| **Propellers** | [type · condition] | |
+| **Controller and app** | | |
+| **Filters and accessories** | [ND filters, landing pad, spares] | |
 
 ---
 

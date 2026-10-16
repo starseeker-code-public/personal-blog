@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The destination and the question, in one sentence. What happened, in one sentence. The decision that made the biggest difference, in one sentence.]
 >
+> **At a glance:** [n] days · [n] km walked · [cost] per day · famous sights visited: [n] of [n]
+>
 > **Context:** [Destination] · [Dates and season] · [n days] · [Solo / couple / group] · [Budget level] · [A trip I took / A planning experiment for a trip I haven't taken yet]
 
 ## The question
+
+[Open on a scene, not a summary. e.g. 7:10 a.m. The market was still setting up, the café had no menu, and nothing about it appeared in any guide I'd read.]
 
 [The travel decision, assumption or curiosity behind this trip. e.g. Every guide to [city] starts with the same five landmarks. I wanted to know what the city looks like if you start from somewhere else.]
 
@@ -60,6 +64,10 @@ These are the attractions that normally define a visit:
 
 [...]
 
+### The moment I'd go back for
+
+[The one moment that would make you return, described closely enough that a reader could find it, or something like it.]
+
 ### Planned versus what happened
 
 | Day | Planned | What actually happened | Why it changed |
@@ -75,7 +83,13 @@ These are the attractions that normally define a visit:
 | [...] | | [recommendation, wandering, a map, a conversation] | |
 | [...] | | | |
 
-[What these places revealed about everyday life there. Keep to what you observed, rather than broad claims about the people or the culture.]
+### Small things I noticed
+
+- [e.g. what breakfast costs, and where people eat it]
+- [e.g. the sound of the street at 11 p.m.]
+- [e.g. how people queue, greet, or pay]
+
+[What these details revealed about everyday life there. Keep to what you observed, rather than broad claims about the people or the culture.]
 
 ## The less glamorous details
 
@@ -112,10 +126,11 @@ These are the attractions that normally define a visit:
 
 ## Expectations versus reality
 
-| I expected | What I found |
-|---|---|
-| [...] | [...] |
-| [...] | [...] |
+| I expected | What I found | Verdict |
+|---|---|---|
+| [restate your prediction] | | [right / wrong / partly right] |
+| [...] | | |
+| [...] | | |
 
 ## What made the difference
 
@@ -130,6 +145,8 @@ These are the attractions that normally define a visit:
 **Not for:** [who would be disappointed, and why]
 
 **Famous sights still worth including:** [...]
+
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
 
 ## If you go
 
@@ -156,11 +173,29 @@ These are the attractions that normally define a visit:
 - **Preferences:** [this itinerary reflects my interests and pace, not everyone's]
 - **Circumstances:** [budget, mobility, language, travel companions]
 
+## Try it yourself
+
+You don't need a plane. Half a day in your own city:
+
+- **Pick:** [one neighbourhood you never go to, one market, one café]
+- **Rule:** [no famous sights, and no map on your phone for the first hour]
+- **Afterwards:** [write down three things you'd show a visitor that no guide mentions]
+
 ## Next trip
 
 Next I want to try **[the next experiment, e.g. returning in a different season / the same trip by train instead of plane]**. My prediction: [what you expect].
 
 [Invite readers to share a place that surprised them, or a travel decision they'd make differently.]
+
+## Gear
+
+[Optional; remove if nothing here mattered.] What I travelled with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Bag** | [type and volume] | |
+| **Phone or camera** | | |
+| **The item that earned its place** | | |
 
 ---
 

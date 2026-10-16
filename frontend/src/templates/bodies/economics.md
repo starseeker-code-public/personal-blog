@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What the data shows, in one sentence. What it can't settle, in one sentence.]
 >
+> **At a glance:** [indicator]: official [value] versus mine [value] · period: [dates] · biggest driver: [item]
+>
 > **Context:** [Country or region] · [Period covered] · [Data sources] · Data retrieved on [date]
 
 ## The question
+
+[Open on the headline, and on your own receipt. e.g. "Inflation falls to 2.4%," said the radio. The receipt in my hand said olive oil had doubled.]
 
 [An everyday puzzle or a headline worth unpacking. e.g. Official inflation was 3% last year. My weekly shopping felt at least 15% more expensive. Which one is wrong, if either?]
 
@@ -68,11 +72,14 @@ real change = (1 + nominal change) / (1 + inflation) − 1]
 
 [What the numbers show, described plainly.]
 
-| | | |
-|---|---|---|
-| | | |
+| Measure | [Official / series A] | [Mine / series B] | Difference |
+|---|---|---|---|
+| | | | |
+| | | | |
 
 **Chart:** [link]
+
+**The chart in one sentence:** [what it shows, in words a reader could repeat to a friend, before any interpretation]
 
 ## What the data shows, why, and what should be done
 
@@ -118,7 +125,10 @@ Three different kinds of claim, kept apart:
 
 ## Was my guess right?
 
-I expected **[restate the guess]**. The data showed **[the result]**.
+| I guessed | What the data showed | Verdict |
+|---|---|---|
+| [restate the guess] | [the result] | [right / wrong / partly right] |
+| [e.g. which item drove the difference] | | |
 
 ## What this doesn't settle
 
@@ -132,7 +142,15 @@ I expected **[restate the guess]**. The data showed **[the result]**.
 
 [What can be said with confidence, what remains open, and how readers can check the same thing for their own situation.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Last month's bank statement, and twenty minutes:
+
+- **Group your spending:** [food, housing, transport, energy, everything else]
+- **Turn it into shares:** [each group as a percentage of the total]
+- **Compare:** [with the official basket weights your statistics office publishes. The bigger the gap, the more your personal inflation can differ from the headline]
 
 ## Next question
 

@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What the trips showed, in one sentence. What I'd keep, change or drop, in one sentence.]
 >
+> **At a glance:** [n] nights · base weight [n] kg · coldest night [n] °C · cost per night so far: [n]
+>
 > **Context:** [n trips, n nights] · [Season and range of conditions] · [Car camping / backpacking / bikepacking] · [Your experience]
 
 ## The question
+
+[Open on the night that tested the setup. e.g. 2:40 a.m., 3 °C, and the cold was coming up through the pad, not through the bag.]
 
 [The practical problem, assumption or decision. e.g. When I chose this setup, I obsessed over the tent's weight. After a season, the tent was the last thing I thought about.]
 
@@ -14,17 +18,12 @@ My bet: **[your prediction]**.
 
 ## The setup
 
-| System | Item | Weight | Cost | Why I chose it |
-|---|---|---|---|---|
-| **Shelter** | | | | |
-| **Sleep** | [bag or quilt, pad, pillow] | | | |
-| **Kitchen** | [stove, fuel, pot, utensils] | | | |
-| **Water** | [storage, treatment] | | | |
-| **Light** | | | | |
-| **Camp clothing** | | | | |
-| **Organization** | [bags, packing system] | | | |
-| **Repair and first aid** | | | | |
-| **Total** | | | | |
+The full list, with weights, prices and why I chose each item, is under Gear at the end. In short:
+
+- **Shelter:** [...]
+- **Sleep:** [...]
+- **Kitchen:** [...]
+- **Base weight:** [everything except food, water and fuel]
 
 ### What I expected to matter
 
@@ -49,6 +48,10 @@ My bet: **[your prediction]**.
 - **Safety:** [e.g. tested only in conditions I was prepared for, following the manufacturers' guidance; nothing pushed to failure in severe weather]
 
 ## The evidence
+
+### The night that tested it
+
+[The hardest night of the season, told as a story: what woke you, what you tried at 2 a.m., what finally worked, and what you changed the next day.]
 
 ### Sleep and comfort
 
@@ -122,7 +125,10 @@ An item I never used isn't automatically unnecessary. Some things are carried fo
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The season showed **[the result]**.
+| I predicted | What the season showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. the item I'd use most] | | |
 
 ## What changes
 
@@ -136,17 +142,43 @@ I expected **[restate the bet]**. The season showed **[the result]**.
 
 **Look elsewhere if:** [the needs that would justify different equipment]
 
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
 ## What this doesn't prove
 
 - **Conditions:** [what I didn't experience, e.g. days of rain, freezing nights, strong wind]
 - **Time:** [n nights isn't enough to judge long-term durability]
 - **Body and preferences:** [some people sleep warm, some cold; comfort is personal]
 
+## Try it yourself
+
+Before your next trip, an evening at home or in the garden:
+
+- **Do this:** [pitch, unpack, cook and pack up the whole setup, timed, by headlamp only]
+- **Notice:** [every item you reach for, and every item you never touch]
+- **Fix:** [one thing that was awkward, before it's awkward in the rain]
+
 ## Next experiment
 
 Next I want to test **[the next question]**. My prediction: [what you expect].
 
 [Invite readers to share the piece of gear that mattered least, or most, after a full season.]
+
+## Gear
+
+Everything I took, and why.
+
+| System | Item | Weight | Cost | Why I chose it |
+|---|---|---|---|---|
+| **Shelter** | | | | |
+| **Sleep** | [bag or quilt, pad, pillow] | | | |
+| **Kitchen** | [stove, fuel, pot, utensils] | | | |
+| **Water** | [storage, treatment] | | | |
+| **Light** | | | | |
+| **Camp clothing** | | | | |
+| **Organization** | [bags, packing system] | | | |
+| **Repair and first aid** | | | | |
+| **Total** | | | | |
 
 ---
 

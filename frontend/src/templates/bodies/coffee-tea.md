@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The coffee or tea and the question, in one sentence. What the cups showed, in one sentence. What I'll brew from now on, and why, in one sentence.]
 >
-> **Context:** [Coffee or tea, roaster or producer] · [Equipment] · [Water] · [Number of brews, and over how many days]
+> **At a glance:** [n] brews · [n] methods · blind favourite: [method] · what I'd have guessed: [method]
+>
+> **Context:** [Coffee or tea, roaster or producer] · [Water] · [Number of brews, and over how many days] · The grinder and brewers are listed under Gear, at the end
 
 ## The question
+
+[Open on the sip that surprised you. e.g. Cup C tasted of blackcurrant. I'd have bet anything it was the pour-over. It was the French press.]
 
 [The brewing problem, flavour characteristic or assumption about equipment or ingredients. e.g. Everyone says the pour-over brings out this coffee's acidity. I've only ever made it in a French press, and I like it.]
 
@@ -32,10 +36,6 @@ My bet: **[your prediction]**.
 | **Source** | [tap / filtered / bottled brand / prepared recipe] |
 | **Hardness and minerals** | [measured / from the label / unknown] |
 | **Temperature** | [and how it was measured] |
-
-## The equipment
-
-[Grinder, brewers, kettle, scale, filters, whisk.]
 
 ## The baseline recipes
 
@@ -88,6 +88,13 @@ Words first, scores second. A number alone says nothing about the cup.
 | | | | | | | | |
 | | | | | | | | |
 | | | | | | | | |
+
+### Before and after reading the bag
+
+| My notes, written blind | What the roaster says | Did they match? |
+|---|---|---|
+| | | |
+| | | |
 
 ### As it cooled
 
@@ -162,7 +169,10 @@ Words first, scores second. A number alone says nothing about the cup.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The cups showed **[the result]**.
+| I predicted | What the cups showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which cup I'd identify blind] | | |
 
 ## The limits of this experiment
 
@@ -175,13 +185,34 @@ I expected **[restate the bet]**. The cups showed **[the result]**.
 
 [Which method or approach you'd choose, and for which situation: convenience, clarity, body, consistency.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Same coffee, same water, two cups:
+
+- **Change one thing:** [grind one step finer for the second cup, and keep everything else identical]
+- **Taste side by side:** [blind, if someone can shuffle the cups for you]
+- **Write it down first:** [which one is sweeter, which is more bitter, before you know which is which]
 
 ## Next experiment
 
 Next I want to **[repeat the comparison with a different coffee or tea / test the next variable]**. My prediction: [what you expect].
 
 [Invite readers to brew along and share which method won for them.]
+
+## Gear
+
+What I brewed with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Grinder** | [burr type · setting range] | |
+| **Brewers** | [French press, pour-over, AeroPress, espresso machine] | |
+| **Kettle** | [gooseneck? temperature control?] | |
+| **Scale** | [resolution · timer] | |
+| **Filters** | [paper / metal / cloth] | |
+| **Matcha bowl and whisk** | [for matcha posts] | |
 
 ---
 

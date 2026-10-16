@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The workflow in one sentence. What happened when it failed, in one sentence. What the improvement fixed, and what it still doesn't, in one sentence.]
 >
+> **At a glance:** pipeline [before] → [after] · broken releases caught: [n] of [n] injected · time to detect: [before] → [after]
+>
 > **Context:** [A real project, anonymized where needed / A small reproducible pipeline built for this post] · **Tools:** [e.g. GitHub Actions · Docker · Terraform]
 
 ## The question
+
+[Open on the green checkmark: e.g. The pipeline went green at 17:42. At 17:44 the first user wrote to say nothing loaded.]
 
 [The workflow] had been running for [weeks / months] and every run was green. I trusted it the way you trust anything that has never failed in front of you. Then [the moment trust broke: a broken release, a slow build, a drifted environment, a script that did the wrong thing].
 
@@ -38,6 +42,16 @@ My bet before changing anything: **[your prediction, e.g. "a readiness check wil
 ### What happened
 
 [The concrete event: what changed, what broke, and who noticed first. If it was a user, say so.]
+
+```text
+[The incident, minute by minute, e.g.
+17:38  commit merged: "tidy up config"
+17:42  pipeline green, deploy succeeded
+17:44  first user report: blank page
+17:51  someone checks the logs: DATABASE_URL is empty
+17:58  rollback started
+18:03  service healthy again]
+```
 
 ```text
 [The log, pipeline output or error that showed it]
@@ -152,7 +166,10 @@ Every safety mechanism can fail too.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. It turned out **[right / wrong / partly right]**: [what the failure test and the measurements showed].
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | [what the failure test and the measurements showed] | [right / wrong / partly right] |
+| [e.g. how much slower the pipeline would get] | | |
 
 ## What this doesn't solve
 
@@ -170,13 +187,30 @@ The improvement is worth its complexity **[when / only when]** [the condition, t
 
 **I'd decide differently if:** [the change in team size, deploy frequency or risk that would flip it]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Break your own pipeline on purpose, somewhere safe:
+
+- **Do this:** [deploy a build to staging with one environment variable deliberately emptied]
+- **Watch:** [does anything turn red before a human notices? How long until someone would?]
+- **Then ask:** [which stage should have caught it, and what would it need to check?]
 
 ## Next experiment
 
 Next I want to break **[the next part of the workflow, e.g. the database migration step / concurrent deploys]**. My prediction: [what you expect to happen].
 
 [Invite readers to share the failure that taught them to distrust a green pipeline.]
+
+## Gear
+
+What I used, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU · RAM · OS] | |
+| **CI runners** | [hosted / self-hosted · CPU · RAM] | [their speed affects every pipeline timing above] |
 
 ---
 

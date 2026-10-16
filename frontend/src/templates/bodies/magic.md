@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The move, effect or routine and the question, in one sentence. What changed, in one sentence. What it taught me about technique versus performance, in one sentence.]
 >
+> **At a glance:** [n] days · clean executions: [n] of 10 → [n] of 10 · angles it holds up at: [n] → [n]
+>
 > **Context:** [Sleight / effect / flourish / routine] · [How long you've been practising] · [Period] · [Practice only / friends / strangers]
 
 ## The question
+
+[Open on the spectator's face, not your hands. e.g. She looked at the card, then at me, then at the card again, and laughed the way people laugh when something isn't supposed to be possible.]
 
 [The technical difficulty, performance problem or question about why an effect works. e.g. I can do this sleight. I just can't do it the same way twice, and when someone is watching, I can feel my hands tense.]
 
@@ -73,6 +77,10 @@ My bet: **[your prediction, e.g. "the biggest improvement will be speed"]**.
 | **What they remember** | | |
 | **What they conclude** | | |
 
+### The reaction I'll remember
+
+[The best moment of astonishment, described without identifying the person: what they said or did, and which part of the presentation produced it.]
+
 ## The sequence
 
 [For cardistry posts; remove otherwise.]
@@ -131,7 +139,10 @@ After [n] days without practising: [what held, and what had to be rebuilt].
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The month showed **[the result]**.
+| I predicted | What the month showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which part would take longest] | | |
 
 ## What this doesn't prove
 
@@ -143,13 +154,31 @@ I expected **[restate the bet]**. The month showed **[the result]**.
 
 [What the experiment taught you about practice, technique and presentation.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+A move you already know, and five minutes with a phone:
+
+- **Film it from three angles:** [front, 45 degrees and the side]
+- **Watch with the sound off:** [mark where your hands tense, pause or change rhythm]
+- **Fix only the transitions:** [into and out of the move, then film it again]
 
 ## Next experiment
 
 Next I want to work on **[the next move, effect or question]**. My prediction: [what you expect].
 
 [Invite readers to share the move that took them longest to make look natural.]
+
+## Gear
+
+What I practised and performed with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Decks** | [brand · stock or finish] | |
+| **Close-up mat** | | |
+| **Recording setup** | [phone or camera, tripod] | |
 
 ---
 

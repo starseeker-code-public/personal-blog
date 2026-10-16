@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What the log or the evidence showed, in one sentence. What I'm keeping, and why, in one sentence.]
 >
+> **At a glance:** [n] days logged · [measure]: [before] → [after] · cost per day: [amount] · keeping it: [yes / no]
+>
 > **Context:** [Your goal: training, energy, health, budget] · [Period] · [How you tracked: food scale / app / photos / notes] · A personal experiment, not dietary advice
 
 ## The question
+
+[Open on the number that surprised you. e.g. 62 grams. That was my average protein on the days I'd have sworn I ate loads of it.]
 
 [The everyday eating question, assumption or claim. e.g. I assumed I was eating plenty of protein for the amount I train. I'd never actually checked.]
 
@@ -41,6 +45,17 @@ My bet: **[your prediction]**.
 | Lunch | | | | | |
 | Dinner | | | | | |
 | Snacks | | | | | |
+
+### A plate, decoded
+
+One ordinary meal, taken apart.
+
+| Component | Weight | Protein | Fibre | Cost | What I'd have guessed |
+|---|---|---|---|---|---|
+| [e.g. pasta] | | | | | |
+| [e.g. sauce] | | | | | |
+| [e.g. cheese on top] | | | | | |
+| **Total** | | | | | |
 
 ### Weekly averages
 
@@ -139,7 +154,10 @@ Subjective, and labelled as such.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what happened]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. my average for the measure I cared about] | | |
 
 ## What this doesn't prove
 
@@ -153,13 +171,30 @@ This is a personal experiment, not dietary advice. Medical conditions, pregnancy
 
 [What you learned, what you'll keep, and who might find a similar change useful.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Three ordinary days, one thing on the scale:
+
+- **Guess first:** [write down how much of one thing you eat in a day, e.g. protein, or fruit and vegetables]
+- **Weigh only that:** [not everything; one thing is enough to learn something]
+- **Compare:** [your guess with the real number. Most people are surprised in one direction or the other]
 
 ## Next experiment
 
 Next I want to look at **[the next question]**. My prediction: [what you expect].
 
 [Invite readers to share the one change to their eating that actually lasted.]
+
+## Gear
+
+What I measured with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Kitchen scale** | [resolution] | |
+| **Tracking app or notebook** | [and the food database it uses] | |
 
 ---
 

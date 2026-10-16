@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What the experiment showed, in one sentence. What I'll keep doing, and the one real gap left, in one sentence.]
 >
+> **At a glance:** [n] items owned · [n]% worn in [period] · new outfits found: [n] · spent: [amount]
+>
 > **Context:** [Wardrobe / everyday carry / a room] · [Period] · [Daily life: work dress code, climate, activities] · [Budget for this experiment, e.g. €0]
 
 ## The question
+
+[Open in front of the wardrobe. e.g. 7:42 a.m., forty-odd things on the rail, and I reached for the same grey jumper for the fourth day running.]
 
 [The purchasing decision, wardrobe problem, aesthetic preference or everyday inconvenience. e.g. My wardrobe is full and I still wear the same four things. Every time I feel badly dressed, my first thought is to buy something.]
 
@@ -28,6 +32,8 @@ Clothes and objects only make sense against the life they're used in, not the on
 Decided before starting: **[more coherent / more versatile / more comfortable / more confident / better suited to where I actually go]**.
 
 ## The audit
+
+**How I counted:** [e.g. the hanger trick: every hanger turned backwards at the start, and turned the right way round after the piece was worn]
 
 | Item | Times worn in [period] | Works with | Why I reach for it, or don't |
 |---|---|---|---|
@@ -63,6 +69,10 @@ Decided before starting: **[more coherent / more versatile / more comfortable / 
 | 3 | | | | | |
 
 **Photos, same light and same place:** [link]
+
+### The outfit that surprised me
+
+[The combination you'd never have tried before this experiment, why it works, and what it taught you about pieces you'd written off.]
 
 ### Two garments compared
 
@@ -152,7 +162,10 @@ A flexible reference for future choices, to revisit in a few months.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what happened]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. the share of my wardrobe I actually wear] | | |
 
 ## What this doesn't prove
 
@@ -164,7 +177,15 @@ I expected **[restate the bet]**. The result: **[what happened]**.
 
 [What you learned, what you'll keep, and when a different approach would make more sense.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+The hanger test, starting tonight:
+
+- **Turn every hanger backwards** [in your wardrobe]
+- **After wearing something:** [hang it back the right way round]
+- **In a month:** [count the backwards hangers. Those clothes belong to a life you don't actually live, or are waiting for the right combination]
 
 ## Next experiment
 

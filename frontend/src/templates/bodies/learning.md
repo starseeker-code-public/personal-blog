@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [What I was learning and the question, in one sentence. What the test showed, in one sentence. What I'll change in how I study, in one sentence.]
 >
-> **Context:** [Subject or language, and current level] · [Time available per week] · [Period] · [Materials]
+> **At a glance:** [n] sessions · felt familiar: [n]% · actually recalled after [delay]: [n]%
+>
+> **Context:** [Subject or language, and current level] · [Time available per week] · [Period] · The materials are listed under Resources, at the end
 
 ## The question
+
+[Open on the blank page. e.g. I closed my notes, took a blank sheet and wrote down everything I could remember about [topic]. It took four minutes. I'd studied it for six hours.]
 
 [The learning difficulty, assumption about study methods, or skill you want to develop. e.g. I studied for a week and felt I knew the material. I'd never actually checked what I could do without my notes.]
 
@@ -67,6 +71,16 @@ Kept light, so the log doesn't become the project.
 | 3 | | | | |
 
 ## The results
+
+### The blank-page test
+
+What I could write down from memory after [delay], before opening anything.
+
+```text
+[What you actually wrote, unedited, mistakes included]
+```
+
+**What was missing, or wrong:** [...]
 
 | Measure | Immediately | After [delay] |
 |---|---|---|
@@ -142,7 +156,10 @@ Kept light, so the log doesn't become the project.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The test showed **[the result]**.
+| I predicted | What the test showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which part I'd forget first] | | |
 
 ## What this doesn't prove
 
@@ -154,13 +171,30 @@ I expected **[restate the bet]**. The test showed **[the result]**.
 
 [What you learned about learning, and where the approach might be useful.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+The blank-page test, on anything you studied last week:
+
+- **Close everything:** [notes, books, tabs]
+- **Write for five minutes:** [everything you remember, as if explaining it to a friend]
+- **Then open your notes:** [what's missing is what you'd only recognised, never actually learned]
 
 ## Next experiment
 
 Next I want to test **[e.g. the same material with spaced review / speaking about familiar topics without translating]**. My prediction: [what you expect].
 
 [Invite readers to run the same test on something they're learning.]
+
+## Resources
+
+What I learned from, and why.
+
+| Resource | Kind | Why this one |
+|---|---|---|
+| | [book / course / app / tutor / podcast] | |
+| | | |
 
 ---
 

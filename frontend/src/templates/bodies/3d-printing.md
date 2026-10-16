@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The part and the problem, in one sentence. What the measurements showed, in one sentence. The design change that fixed it, and its trade-off, in one sentence.]
 >
-> **Context:** [Printer and nozzle] · [Material, brand and colour] · [Slicer and version] · [CAD tool]
+> **At a glance:** off by [n] mm at first · [n] test prints · fit on attempt [n] · [print time] per part
+>
+> **Context:** [Material, brand and colour] · [What the part is for] · The printer, slicer and tools are listed under Gear, at the end
 
 ## The problem
+
+[Open on the moment of truth. e.g. The lid stopped two millimetres short of closing. The CAD model said it fitted perfectly. The calipers agreed with the CAD. The lid didn't.]
 
 [The functional requirement, print failure, design constraint or manufacturing question. e.g. I designed a cover for [object]. In CAD it fitted perfectly. In my hand it didn't fit at all.]
 
@@ -63,6 +67,15 @@ My first guess: **[your hypothesis, e.g. "the printer's steps per mm are off"]**
 **Fit:** [what happened when you tried it]
 
 **Measured with:** [calipers, how many measurements, where on the part]
+
+### The failed-prints shelf
+
+Every print that didn't make it, and what it taught me.
+
+| Print | What went wrong | Why | What I changed |
+|---|---|---|---|
+| [e.g. #2] | [e.g. corner lifted off the bed] | [e.g. draft from an open window] | |
+| | | | |
 
 ## The experiment
 
@@ -156,7 +169,10 @@ One variable at a time; everything else stays the same.
 
 ## Was my first guess right?
 
-I suspected **[restate the hypothesis]**. The measurements showed **[the result]**.
+| I suspected | What the measurements showed | Verdict |
+|---|---|---|
+| [restate the hypothesis] | [the result] | [right / wrong / partly right] |
+| [e.g. how many attempts it would take] | | |
 
 ## Verdict
 
@@ -166,13 +182,35 @@ I suspected **[restate the hypothesis]**. The measurements showed **[the result]
 
 **Buy it or make it another way when:** [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+One small print you'll use for years:
+
+- **Print:** [a clearance test: pins in holes from 0.1 to 0.5 mm, in your usual material]
+- **Label:** [which pins are stuck, snug, sliding or loose]
+- **Keep it:** [next to the printer, and design every future fit from it instead of from the default]
 
 ## Next experiment
 
 Next I want to test **[the next variable or part]**. My prediction: [what you expect].
 
 [Invite readers to share their clearance results, or a part that taught them something about tolerances.]
+
+## Gear
+
+What I printed and measured with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Printer** | [model · firmware · any modifications] | |
+| **Nozzle** | [size · material] | |
+| **Build plate** | | |
+| **Slicer** | [and version] | |
+| **CAD tool** | | |
+| **Calipers** | | |
+| **Filament storage or dryer** | [optional] | |
 
 ---
 

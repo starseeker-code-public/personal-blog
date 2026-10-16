@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The book and the question, in one sentence. What the investigation showed, in one sentence. What stayed with me, and what didn't hold up, in one sentence.]
 >
+> **At a glance:** [n] pages · read in [n] days · ideas I could still explain a month later: [n] · would I reread it: [yes / no]
+>
 > **Context:** [Title, author, year] · [Fiction / nonfiction, and genre] · [When I read it] · [Why: a question, pleasure, work]
 
 ## The question
+
+[Open on the sentence that stayed with you. e.g. A single line on page 143 is the only thing I could quote a month later, and it isn't even the book's main point.]
 
 [The idea, argument, narrative choice or reading problem you want to investigate. e.g. I finished this book a month ago and recommended it to three people. I'm not sure I could explain its argument.]
 
@@ -16,7 +20,15 @@ My bet: **[your prediction]**.
 
 [Why you chose it, the question the author is trying to answer, and which parts matter for this post.]
 
+### The sentence that stayed
+
+> [One short quotation, with the page]
+
+[Why this line, of all of them, is the one that stuck.]
+
 ## The argument, fairly
+
+**In one paragraph, without looking:** [the central argument in your own words, written before checking it against the book]
 
 What the author actually argues, kept separate from my reading of it.
 
@@ -122,7 +134,10 @@ What the author actually argues, kept separate from my reading of it.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what the investigation showed]**.
+| I predicted | What the investigation showed | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. which idea I'd remember best] | | |
 
 ## The limits of my reading
 
@@ -134,7 +149,15 @@ I expected **[restate the bet]**. The result: **[what the investigation showed]*
 
 [What remains valuable after the last page, and who should read it. A book can be worth reading for pleasure alone; it doesn't need to become a technique.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+The last book you finished, and five minutes:
+
+- **Without opening it:** [write its central argument in three sentences, plus one example the author used]
+- **Then check:** [what did you get right, what did you forget, and what did you quietly change?]
+- **Notice:** [the parts you distorted often say more about you than about the book]
 
 ## Next book
 

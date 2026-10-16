@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The route and the question, in one sentence. What happened on the trail, in one sentence. The lesson, in one sentence.]
 >
+> **At a glance:** [distance] · [ascent] up, [descent] down · [time] (planned [time]) · my difficulty rating: [n]/5
+>
 > **Context:** [Region] · [Date and season] · [Solo / with n people] · [Your experience on this kind of terrain]
 
 ## The question
+
+[Open on the moment that mattered. e.g. 13:40, three hundred metres below the summit, cloud sitting on the ridge. My turnaround time had been 13:30.]
 
 [The practical problem, assumption or decision behind this hike. e.g. On paper, both routes were 14 km. One left me pleasantly tired; the other left me wrecked.]
 
@@ -28,6 +32,19 @@ What I expected before setting off: **[your prediction, e.g. "Route B, with more
 | **Shade and exposure** | | |
 | **Escape routes** | | |
 | **Map and track** | [map or app used, link to the track] | |
+
+### The profile
+
+```text
+[A rough elevation profile, e.g.
+
+ 1,850 m                  ▲ summit
+                        ╱   ╲
+ 1,400 m      ╱‾‾‾‾‾‾‾‾      ╲___ pass
+            ╱                     ╲
+   900 m __╱  car park              ╲__ village
+         0 km      4        8        12      14 km]
+```
 
 ### Section by section
 
@@ -69,7 +86,7 @@ This is my own rough scale, not an official grading: 1 is easy, 5 is very demand
 - **Start time:** [and why]
 - **Turnaround rule, decided at home:** [e.g. "turn back if I'm not at the pass by 13:00, if cloud drops below the ridge, or if I lose the path for more than 10 minutes"]
 - **Bail-out options:** [...]
-- **What I carried, and why:** [the items that mattered for this route in these conditions]
+- **Gear:** [what this route and these conditions called for; the full list, and what I actually used, is at the end]
 
 ## The hike
 
@@ -121,11 +138,12 @@ This is my own rough scale, not an official grading: 1 is easy, 5 is very demand
 
 > **The hardest part wasn't [what you expected]. It was [what actually made it demanding].**
 
-### Gear check
+## Was my prediction right?
 
-- **Used, and glad I had it:** [...]
-- **Carried but not needed, and I'd still carry it:** [...]
-- **Missed:** [...]
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the prediction] | | [right / wrong / partly right] |
+| [e.g. my total time] | | |
 
 ## What I'd do differently
 
@@ -140,6 +158,8 @@ This is my own rough scale, not an official grading: 1 is easy, 5 is very demand
 
 **Best season:** [...]
 
+> **If you remember one thing:** [the lesson from this route, and the conditions under which it holds]
+
 ## The limits of one hike
 
 - **Conditions:** [this was one day in [season]; in rain, heat, snow or fog it's a different route]
@@ -148,11 +168,36 @@ This is my own rough scale, not an official grading: 1 is easy, 5 is very demand
 
 This is an account of my own outing, not a safety guarantee. Check current conditions, official local guidance and a reliable map before you go.
 
+## Try it yourself
+
+On your next three hikes, calibrate your own clock:
+
+- **Before:** [estimate the total time with Naismith's rule, and write it down]
+- **After:** [compare it with your actual moving time and breaks]
+- **After three hikes:** [work out your personal correction, e.g. "+20% on descents", and use it to set turnaround times]
+
 ## Next trail
 
 Next I want to [the next route or question, e.g. hike Route A in winter / test my time estimate on a route with more descent]. My prediction: [what you expect].
 
 [Invite readers to share a route that surprised them, or how they judge difficulty.]
+
+## Gear
+
+What I carried, why, and whether I needed it.
+
+| Item | Model | Why I took it | Used it? |
+|---|---|---|---|
+| **Boots** | | | |
+| **Backpack** | [and its volume] | | |
+| **Navigation** | [app, GPS device, paper map, compass] | | |
+| **Layers** | [base, insulation, waterproof shell] | | |
+| **Water and food** | | | |
+| **Poles** | | | |
+| **First aid and emergency** | | | |
+
+- **Carried but not needed, and I'd still carry it:** [...]
+- **Missed:** [...]
 
 ---
 

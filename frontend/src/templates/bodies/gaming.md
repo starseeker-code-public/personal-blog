@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The game and the question, in one sentence. What the analysis revealed, in one sentence. What other games could learn from it, in one sentence.]
 >
+> **At a glance:** [n] hours or games · what keeps me coming back: [mechanism] · what wears thin: [element]
+>
 > **Context:** [Game, with edition, version or patch] · [Video game / board game / tabletop wargame] · [Hours or games played] · [Solo / player count] · [Period]
 
 ## The question
+
+[Open on the moment the game had you. e.g. 1:14 a.m. "One more turn." It was the fourth time I'd said it.]
 
 [The mechanic, strategic problem, design choice or recurring experience you want to understand. e.g. I've put [n] hours into [game]. I keep coming back, and I've never been able to explain why.]
 
@@ -43,7 +47,7 @@ explore → fight → loot → upgrade → explore somewhere harder]
 | | | | | |
 | | | | | |
 
-## One moment, in detail
+## The turn that decided it
 
 [A specific turn, encounter, battle or session that shows the design at work.]
 
@@ -120,6 +124,10 @@ Not everything that keeps you playing is something you enjoy.
 - [...]
 - [...]
 
+### If I could change one rule
+
+[The one change you'd make as the designer, what you think it would fix, and what it might break.]
+
 ## What I didn't expect
 
 ### [Surprise 1, written as a headline]
@@ -132,7 +140,10 @@ Not everything that keeps you playing is something you enjoy.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The analysis showed **[the result]**.
+| I predicted | What the analysis showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which mechanic mattered most] | | |
 
 ## What this doesn't prove
 
@@ -144,13 +155,31 @@ I expected **[restate the bet]**. The analysis showed **[the result]**.
 
 [What makes the game work, and who will appreciate it.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Your next session, with a notebook next to you:
+
+- **Before each big decision:** [write down what you expect to happen, in one line]
+- **After the session:** [mark each one: good decision and good result, good decision and bad luck, bad decision that got lucky, or just a bad decision]
+- **Look at the pattern:** [most players are surprised how often "bad luck" was actually the third or fourth kind]
 
 ## Next experiment
 
 Next I want to look at **[the next game, mechanic or question]**. My prediction: [what you expect].
 
 [Invite readers to share the game they can't put down, and why they think that is.]
+
+## Gear
+
+[Optional; remove if nothing here mattered.] What I played on or with.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Platform** | [PC specs or console; for video games] | |
+| **Controller or peripherals** | | |
+| **Tabletop kit** | [dice, measuring tools, terrain; for wargames] | |
 
 ---
 

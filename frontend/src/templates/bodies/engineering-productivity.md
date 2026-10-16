@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The friction in one sentence. What the evidence showed, in one sentence. What the change improved, and what it cost, in one sentence.]
 >
+> **At a glance:** [n] days tracked · biggest surprise: [activity] took [n]% (I'd guessed [n]%) · cycle time: [before] → [after]
+>
 > **Context:** [A personal case study / My team's workflow, anonymized and shared with consent] · **Period:** [dates] · **Work:** [role, and the kind of work during the period]
 
 ## The friction
+
+[Open on the end of a typical day. e.g. 18:30. Eleven chat threads, four meetings, two half-finished branches, and nothing actually done.]
 
 [The recurring problem, in concrete terms. e.g. Most days ended with the feeling that I'd been busy all day and finished nothing.]
 
@@ -40,6 +44,19 @@ The tracking had to be light enough not to become a productivity problem of its 
 - **Template:** [link to the format, so readers can copy it]
 
 ## The baseline
+
+### One day, as it actually happened
+
+```text
+[A representative day from the log, e.g.
+09:00  start feature X
+09:12  build running (6 min) → check chat
+09:41  back to feature X; what was I doing?
+10:00  stand-up
+10:25  review request arrives, review it "quickly"
+11:10  back to feature X
+...]
+```
 
 ### Where the time went
 
@@ -139,7 +156,10 @@ Activity isn't progress. These numbers help explain the outcomes above; they don
 
 ## Was my bet right?
 
-I expected **[restate the hypothesis]**. The data showed **[what it actually showed]**.
+| I predicted | What the data showed | Verdict |
+|---|---|---|
+| [restate the hypothesis] | [what it actually showed] | [right / wrong / partly right] |
+| [e.g. the share of time spent waiting] | | |
 
 [What you'll pay attention to now that you know where the time really goes.]
 
@@ -164,13 +184,31 @@ I expected **[restate the hypothesis]**. The data showed **[what it actually sho
 - [...]
 - [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Tomorrow, one plain text file:
+
+- **Every time you switch tasks:** [write the time, the new task and why you switched]
+- **At the end of the day:** [count the switches, and find your longest uninterrupted stretch]
+- **Compare:** [with what you'd have guessed that morning]
 
 ## Next experiment
 
 Next I want to look at **[the next source of friction]**. My prediction: [what you expect to find].
 
 [Invite readers to keep the same log for two weeks and share what surprised them.]
+
+## Gear
+
+What I used, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU · RAM · OS] | |
+| **Desk setup** | [monitors, keyboard; optional] | |
+| **Tracking tool** | [the app, file or notebook used for the log] | |
 
 ---
 

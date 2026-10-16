@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The situation in one sentence. What I tried and noticed, in one sentence. What I learned, and what remains uncertain, in one sentence.]
 >
+> **At a glance:** [n] weeks · [n] conversations noticed · what changed most: [one phrase]
+>
 > **Context:** [Everyday conversations / a friendship / a group / a disagreement] · [Period] · People are anonymized, and nothing private is shared without permission
 
 ## The situation
+
+[Open on the moment you caught yourself. e.g. They were halfway through a story about their brother when I realised I'd stopped listening three sentences earlier, busy polishing a clever reply.]
 
 [The recurring social difficulty, misunderstanding or assumption about relationships. e.g. In conversations with people I don't know well, I spend half the time looking for something clever to say. I'm not sure I'm listening.]
 
@@ -52,6 +56,10 @@ I can't read minds, so what I saw is kept apart from what I guessed.
 |---|---|---|
 | [e.g. a short reply, hours later] | [e.g. they're annoyed] | [busy, tired, prefer to talk in person] |
 | | | |
+
+### The conversation I replayed
+
+[The one you kept replaying afterwards, anonymized: what was said, what you wish you'd said, and whether the replaying taught you anything or just went round in circles.]
 
 ### A disagreement, mapped
 
@@ -110,7 +118,10 @@ I can't read minds, so what I saw is kept apart from what I guessed.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what happened]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. where it would feel most unnatural] | | |
 
 ## What this doesn't prove
 
@@ -124,7 +135,15 @@ Names and details have been changed or left out. If a relationship involves abus
 
 [What you learned, what remains uncertain, and where the approach might not apply.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Your next three conversations:
+
+- **Before you reply:** [ask one follow-up question about what the other person just said]
+- **Don't plan it:** [the question should come from what you heard, not from a list]
+- **Afterwards:** [notice what you learned that you'd otherwise have talked over]
 
 ## Next experiment
 

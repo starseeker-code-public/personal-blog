@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The photograph and the question, in one sentence. What the versions showed, in one sentence. What I'd choose and why, in one sentence.]
 >
-> **Context:** [Camera and lens] · [Subject and location] · [Editing software and version] · [RAW / JPEG]
+> **At a glance:** one photograph · [n] versions · [n] adjustments in the strongest edit · readers' favourite: [version]
+>
+> **Context:** [Subject and location] · [RAW / JPEG] · The camera, lenses and software are listed under Gear, at the end
 
 ## The question
+
+[Open on the moment before the shutter. e.g. The light lasted maybe forty seconds. I took eleven frames; this is the only one where the cyclist was in the gap.]
 
 [The visual problem, creative constraint or assumption. e.g. I've always edited this kind of scene the same way. I wanted to know whether that's a choice or a habit.]
 
@@ -18,11 +22,16 @@ My bet: **[your prediction, e.g. "the restrained edit will be the strongest"]**.
 
 **The original:** [link to the unedited image]
 
+### The frames around it
+
+[The other frames from the same moment, and what made this one the keeper: timing, a gesture, a gap in the crowd, the edge of the frame.]
+
+**Contact sheet:** [link]
+
 ### How it was captured
 
 | | |
 |---|---|
-| **Camera and lens** | |
 | **Focal length** | |
 | **Aperture / shutter / ISO** | |
 | **White balance** | |
@@ -130,7 +139,10 @@ Which version communicates the scene best to you, and why? [Ask readers, then co
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what you concluded]**.
+| I predicted | What I concluded | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. which version readers would choose] | | |
 
 ## The limits of this experiment
 
@@ -142,11 +154,32 @@ I expected **[restate the bet]**. The result: **[what you concluded]**.
 
 [Which version you'd choose for this purpose, and what changes in your approach to editing.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+One RAW file, thirty minutes:
+
+- **Give yourself ten minutes per version:** [restrained, dramatic, and monochrome or muted]
+- **Rule:** [don't look at the previous version while you edit the next one]
+- **Then:** [put all three side by side and ask someone which one says the most. Their answer is rarely the one you expect]
 
 ## Next experiment
 
 Next I want to try **[the next question or constraint]**. My prediction: [what you expect].
+
+## Gear
+
+What I shot and edited with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Camera** | | |
+| **Lens** | [focal length · maximum aperture] | |
+| **Tripod or support** | | |
+| **Filters** | [optional] | |
+| **Editing software** | [and version] | |
+| **Monitor** | [calibrated or not] | |
 
 ---
 

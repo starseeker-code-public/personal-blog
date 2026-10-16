@@ -2,11 +2,15 @@
 >
 > **TL;DR:** [The symptom or the assumption in one sentence. The mechanism behind it in one sentence. The fix and its trade-off in one sentence.]
 >
+> **At a glance:** [before] → [after] · the real bottleneck: [where] · the price: [one phrase]
+>
 > **Context:** [A small reproducible application built for this post / A real system, anonymized] · **Scope:** [All experiments ran locally, in an isolated environment, against software I own]
 
 ## The question
 
-[The measurable problem or the security assumption, stated concretely. e.g. Generating the monthly report takes 14 seconds, and users expect it in under 2. / Every endpoint checks that the user is logged in, but does every endpoint check that the user may see *this* record?]
+[Open on the number, or the request that shouldn't have worked. e.g. 14.2 seconds, for a report users expect in under 2. / I changed /invoices/41 to /invoices/42 in the address bar and saw someone else's invoice.]
+
+[The measurable problem or the security assumption, stated concretely. e.g. Every endpoint checks that the user is logged in, but does every endpoint check that the user may see *this* record?]
 
 > **[Why is this slow? / Is this function really the bottleneck? / Can a user reach data that isn't theirs? / What does this security control cost under load?]**
 
@@ -26,12 +30,13 @@ Intuition is a good way to form a hypothesis and a poor way to confirm one, so e
 
 | | |
 |---|---|
-| **Hardware** | [CPU, cores, RAM] |
 | **OS and runtime** | [e.g. Ubuntu 24.04 · Python 3.12] |
 | **Workload** | [input size, data distribution, request mix, concurrency] |
 | **Measured with** | [e.g. hyperfine · py-spy · cProfile · memray · k6] |
 | **Existing safeguards** | [authentication, authorization, validation, rate limits, encryption] |
 | **Code** | [link to the repository] |
+
+The hardware is listed under Gear, at the end.
 
 ### Baseline numbers
 
@@ -44,9 +49,9 @@ Intuition is a good way to form a hypothesis and a poor way to confirm one, so e
 | CPU utilization | |
 | Allocations / GC time | |
 
-## The first attempt
+## The red herring
 
-[Performance: the optimization your hypothesis pointed to. Security: the control you assumed was enough.]
+[Performance: the optimization your hypothesis pointed to, and why that code looked so guilty. Security: the control you assumed was enough.]
 
 ```python
 # [The change]
@@ -91,6 +96,16 @@ Intuition is a good way to form a hypothesis and a poor way to confirm one, so e
 | [e.g. invoices] | [GET /invoices/{id}] | [the owner] | [another user changes the id] | [login required] | [no ownership check] |
 | [...] | | | | | |
 
+### The attacker's notebook
+
+[For security posts; remove otherwise. Everything here was tried against my own local copy of the application.]
+
+| Attempt | What I tried | What happened | What stopped it, if anything |
+|---|---|---|---|
+| 1 | [e.g. another user's invoice id] | | |
+| 2 | [e.g. the same request through the mobile API] | | |
+| 3 | | | |
+
 ### The mechanism
 
 [Explain why, not just where: the cache misses, the allocation pattern, the lock contention, the N+1 query, the false trust assumption, the alternative execution path that skipped the check.]
@@ -114,7 +129,7 @@ One significant variable changes; everything else stays the same.
 - **Warm-up:** [runs discarded before measuring]
 - **Runs:** [how many measured runs, and how outliers were handled]
 - **Inputs:** [realistic sizes and distributions, including at least one where the result might flip]
-- **Noise control:** [same machine, background processes stopped, CPU frequency pinned]
+- **Noise control:** [plugged in, background processes stopped, CPU frequency pinned]
 - **Dead code:** [how you made sure the work wasn't optimized away]
 
 ### Results
@@ -168,7 +183,10 @@ One significant variable changes; everything else stays the same.
 
 ## Was my hypothesis right?
 
-I suspected **[restate the hypothesis]**. The evidence showed **[what it actually showed]**.
+| I suspected | What the evidence showed | Verdict |
+|---|---|---|
+| [restate the hypothesis] | [what it actually showed] | [right / wrong / partly right] |
+| [e.g. how much the fix would gain] | | |
 
 [How this changes the way you'll form the next hypothesis.]
 
@@ -193,13 +211,28 @@ I suspected **[restate the hypothesis]**. The evidence showed **[what it actuall
 - [e.g. the gain is below the measurement noise, or it widens the attack surface]
 - [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+- **Performance, in ten minutes:** [write down which function you think is slowest, then profile the program; py-spy or cProfile will do. How far off was your guess?]
+- **Security, in five minutes:** [log into your own local app as one user and change an id in the address bar to one that belongs to another user]
+- **Either way:** [the gap between what you expected and what you measured is the post]
 
 ## Next experiment
 
 Next I want to test **[the next assumption, e.g. how the result changes with ten times the data / whether the fix holds under concurrent load]**. My prediction: [what you expect to find].
 
 [Invite readers to rerun the benchmark on their own hardware, or to point out a flaw in the method.]
+
+## Gear
+
+What I used, and why. Benchmark numbers only mean something next to the machine that produced them.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU and cores · RAM · storage] | |
+| **Operating system** | | |
 
 ---
 

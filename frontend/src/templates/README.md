@@ -33,3 +33,19 @@ file `bodies/<bodyId>.md`. Each entry keeps its own label and highlighted tags.
   publishing, searching for `[` finds anything left unfilled.
 - Write the surrounding prose in the author's voice, so a filled-in template
   reads as a finished post without rewriting.
+
+Every template shares the same shape, so posts feel like one blog:
+
+- **Header box:** series, a three-sentence TL;DR, an "At a glance" line with
+  the post's key numbers, and the context.
+- **Opening:** a prompt to start on one concrete moment (a number, an error, a
+  scene), then the question and a written-down prediction.
+- **Something only this category has:** e.g. "The red herring" in Electronics,
+  "The one-metre test" in Miniature painting, "The abort log" in Drones.
+- **Was my bet right?:** a scorecard table, not a sentence.
+- **Verdict:** ends with an `> **If you remember one thing:**` callout.
+- **Try it yourself:** a small version of the experiment readers can run.
+- **Gear:** the last section, before the footer, for templates that use
+  equipment: each item, its model and specs, and why it was chosen. Gear
+  mentioned in the body points here instead of being listed inline. Templates
+  without equipment leave it out (Learning uses "Resources" instead).

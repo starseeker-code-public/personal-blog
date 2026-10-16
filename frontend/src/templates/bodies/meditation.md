@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What I noticed, in one sentence. What I'm taking from it, and what's still uncertain, in one sentence.]
 >
+> **At a glance:** [n] days · [n] minutes a session · practice: [what] · keeping it: [yes / no / differently]
+>
 > **Context:** [Formal meditation / an ordinary activity] · [How long, how often] · [Period] · [Your experience with meditation]
 
 ## The question
+
+[Open inside a minute of practice. e.g. Breathe in. The email I forgot to send. Breathe out. Is the oven off? Back to the breath. That was the first eight seconds.]
 
 [The ordinary experience, recurring reaction or assumption about mindfulness. e.g. I always thought being present meant having a quiet mind. Mine is never quiet, so I assumed I was doing it wrong.]
 
@@ -39,6 +43,20 @@ Words only, no scores. "Nothing much happened" counts as an observation.
 | 2 | | | | |
 | 3 | | | | |
 | … | | | | |
+
+### One minute, transcribed
+
+Everything my mind did in one minute, written down straight afterwards, in order, without tidying it up.
+
+```text
+[e.g.
+breath, cold air at the nose
+the meeting tomorrow, what I'll say
+noticed I was rehearsing; back to the breath
+a dog outside
+wondering whether this counts as doing it right
+breath]
+```
 
 ### What happened, and the story I added
 
@@ -82,10 +100,6 @@ Mindfulness isn't the same as relaxation, and none of these decides whether the 
 
 > **The difference wasn't [what I expected, e.g. fewer thoughts]. It was [what actually changed, e.g. that noticing a thought and acting on it turned out to be different things].**
 
-## Would I do it again?
-
-[Yes, no, or differently, and why.]
-
 ## What I didn't expect
 
 ### [Surprise 1, written as a headline]
@@ -98,7 +112,16 @@ Mindfulness isn't the same as relaxation, and none of these decides whether the 
 
 ## Was my expectation right?
 
-I expected **[restate the expectation]**. What happened: **[the result]**.
+| I expected | What happened | Verdict |
+|---|---|---|
+| [restate the expectation] | | [right / wrong / partly right] |
+| [e.g. what would be hardest] | | |
+
+## Would I do it again?
+
+[Yes, no, or differently, and why.]
+
+> **If you remember one thing:** [one sentence, kept modest: what you noticed, and when it seems to apply]
 
 ## The limits of this
 
@@ -108,11 +131,29 @@ I expected **[restate the expectation]**. What happened: **[the result]**.
 
 Practices like this can sometimes bring up discomfort. If you're dealing with persistent distress, professional support matters more than any exercise.
 
+## Try it yourself
+
+Two minutes, a pen, and no expectations:
+
+- **Sit for one minute:** [with a timer, doing nothing in particular]
+- **Write it down straight away:** [everything your mind did, in order, as plainly as you can. No judging, no counting]
+- **Then repeat it:** [for one minute while drinking a coffee or washing a cup, and compare the two lists]
+
 ## Next experiment
 
 Next I want to try **[the next practice or question]**. What I expect: [your prediction].
 
 [Invite readers to share an ordinary moment they started noticing differently.]
+
+## Gear
+
+[Optional; remove if nothing here mattered.] What I used.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Cushion or chair** | | |
+| **Timer or app** | | |
+| **Guided recordings** | [if any, and who made them] | |
 
 ---
 

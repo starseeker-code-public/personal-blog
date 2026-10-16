@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The skill or route and the question, in one sentence. What changed, in one sentence. What actually limited me, in one sentence.]
 >
+> **At a glance:** [n] sessions or runs · clean repetitions: [n] of 10 → [n] of 10, or pace: [before] → [after] · the real limit: [one phrase]
+>
 > **Context:** [Activity: running / trail running / martial art and style] · [Your experience] · [Period] · [Coached / self-directed]
 
 ## The question
+
+[Open on the moment it failed. e.g. Second round, the same entry I'd drilled two hundred times. My partner shifted their weight a few centimetres and it simply wasn't there.]
 
 [The practical difficulty, performance problem or assumption about movement. e.g. I've drilled this technique for months. It works on a cooperative partner and disappears the moment anyone resists.]
 
@@ -36,6 +40,17 @@ My bet: **[your prediction, e.g. "it's a speed problem"]**.
 | Tension | | |
 | Consistency | [clean repetitions out of 10] | |
 | Speed | | [one dimension, not the goal] |
+
+### Frame by frame
+
+[For techniques; remove for runs. Watch the recording at quarter speed.]
+
+| Moment | What should happen | What actually happens |
+|---|---|---|
+| [Setup] | | |
+| [Entry] | | |
+| [Transition] | | |
+| [Finish] | | |
 
 ### For runs
 
@@ -142,7 +157,10 @@ My bet: **[your prediction, e.g. "it's a speed problem"]**.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The month showed **[the result]**.
+| I predicted | What the month showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which part would improve first] | | |
 
 ## What this doesn't prove
 
@@ -154,13 +172,32 @@ I expected **[restate the bet]**. The month showed **[the result]**.
 
 [What you learned about the skill and about practising it.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+One phone, propped up sideways:
+
+- **Film:** [one technique you know, or 200 metres of your usual run, from the side]
+- **Watch at quarter speed:** [find the moment your balance or posture changes before the movement goes wrong]
+- **Practise only that moment:** [slowly, for one session, then film it again]
 
 ## Next experiment
 
 Next I want to **[revisit the technique in a more realistic setting / test the route in different conditions / try the next skill]**. My prediction: [what you expect].
 
 [Invite readers to share the skill where the real problem turned out to be something other than speed.]
+
+## Gear
+
+What I trained with, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Running shoes** | [for runs] | |
+| **Watch** | [GPS · heart rate] | |
+| **Martial-arts equipment** | [uniform, gloves, protective gear] | |
+| **Recording setup** | [phone, tripod] | |
 
 ---
 

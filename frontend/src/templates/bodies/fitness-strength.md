@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The training question, in one sentence. What the log showed, in one sentence. What I'll keep or change in the next block, in one sentence.]
 >
+> **At a glance:** [n] weeks · [n] of [n] sessions done · [main lift]: [start] → [end]
+>
 > **Context:** [Training experience] · [Program and block length] · [Sessions per week] · [Main goal: strength / muscle / work capacity / consistency]
 
 ## The question
+
+[Open on a moment mid-set. e.g. Week 9, third set. The weight that felt impossible in week 1 moved easily, and I almost didn't notice.]
 
 [The training problem, assumption or goal. e.g. I've changed programs four times this year. I couldn't tell you whether any of them worked.]
 
@@ -20,7 +24,7 @@ My bet: **[your prediction]**.
 | **Current routine** | |
 | **Main goal** | |
 | **Secondary goal** | |
-| **Constraints** | [time per session, equipment, schedule] |
+| **Constraints** | [time per session, schedule, and the equipment available, which is listed under Gear] |
 
 ## What I'll measure
 
@@ -71,6 +75,10 @@ The plan and the reality, side by side.
 | … | | | | |
 
 [Missed sessions, changes made along the way, and why. The plan wasn't followed perfectly, and the results should be read with that in mind.]
+
+### The week everything went wrong
+
+[The week when work, sleep, travel or illness got in the way: what you did instead, what you skipped, and whether the block survived it.]
 
 ## The results
 
@@ -136,7 +144,10 @@ The plan and the reality, side by side.
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The log showed **[the result]**.
+| I predicted | What the log showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. the lift that would improve most] | | |
 
 ## What this doesn't prove
 
@@ -151,13 +162,34 @@ Pain, injury or medical concerns need a qualified professional, not a training e
 
 [What you learned about training, and about how to judge a program.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Four weeks, one exercise, one line per set:
+
+- **Pick:** [one main exercise you already do]
+- **Log every working set:** [load × reps × how many more reps you could have done]
+- **At week 4:** [compare the first and last weeks. You'll know whether you're progressing, without guessing]
 
 ## Next block
 
 Next I'll change **[one element]** and keep everything else. My prediction: [what you expect].
 
 [Invite readers to share what their own training log taught them.]
+
+## Gear
+
+Where and with what I trained, and why.
+
+| Item | Model | Why this one |
+|---|---|---|
+| **Where** | [gym / home / both] | |
+| **Key equipment** | [barbell and rack, dumbbells, machines, bands] | |
+| **Shoes** | | |
+| **Belt, straps or other accessories** | [optional] | |
+| **Logging app or notebook** | | |
+| **Scale and tape measure** | [for the measurements above] | |
 
 ---
 

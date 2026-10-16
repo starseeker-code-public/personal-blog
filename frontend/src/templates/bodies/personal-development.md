@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The problem in one sentence. What I tried and what happened, in one sentence. What I'm keeping, changing or dropping, in one sentence.]
 >
+> **At a glance:** [n] weeks · time maintaining the system: [n] h → [n] h a week · things that mattered, finished: [n] → [n]
+>
 > **Context:** [A personal experiment / A look back at records from [period]] · [Period] · [Circumstances that shaped it]
 
 ## The problem
+
+[Open on the moment the system became the work. e.g. Sunday evening, fifty minutes into my weekly review, I realised I was carefully reorganising a list of things I was never going to do.]
 
 [The recurring difficulty, unhelpful habit or assumption. e.g. I track everything: tasks, hours, habits, streaks. I'm no longer sure the tracking helps me decide anything.]
 
@@ -26,6 +30,15 @@ My bet: **[your prediction]**.
 | [Habit tracker] | | | | |
 | [Weekly review] | | | | |
 | [Time tracking] | | | | |
+
+### The graveyard
+
+[Optional: the habits, apps and systems that didn't survive.]
+
+| What it was | How long it lasted | Why it died | Do I miss it? |
+|---|---|---|---|
+| | | | |
+| | | | |
 
 ## The experiment
 
@@ -116,7 +129,10 @@ A three-question review each week: what moved forward, what got in the way, what
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The result: **[what happened]**.
+| I predicted | What happened | Verdict |
+|---|---|---|
+| [restate the bet] | | [right / wrong / partly right] |
+| [e.g. what I'd miss most] | | |
 
 ## What this doesn't prove
 
@@ -124,11 +140,23 @@ I expected **[restate the bet]**. The result: **[what happened]**.
 - **Conditions:** [what made it work, or fail, this time]
 - **Time:** [how long it ran, and what a longer test might show]
 
+## A note to my past self
+
+[What you'd tell yourself on the day you started, in two or three sentences. Kind, and specific.]
+
 ## Verdict
 
 [What you learned, whether you'll keep the change, and which circumstances might give a different result.]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Five minutes this Sunday, and the next two:
+
+- **Answer only three questions:** [what moved forward, what got in the way, what deserves attention next]
+- **No lists, no scores:** [a few lines each]
+- **After three weeks:** [read them together. The thing that keeps getting in the way is your next experiment]
 
 ## Next experiment
 

@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [What I built or tested, in one sentence. How it really performed, in one sentence. What made the difference, and what's still unreliable, in one sentence.]
 >
+> **At a glance:** demo: [n] of [n] · real cases: [n]% · after the fix: [n]% · cost per successful task: [x]
+>
 > **Context:** [Models and versions] · **Tested on:** [date; models and prices change quickly] · [A small application built for this post / A real feature, anonymized] · [Sandboxed: no real users, data or permissions]
 
 ## The question
+
+[Open on the demo that looked perfect, or the one answer that was confidently, spectacularly wrong. e.g. It invented an order number, formatted it beautifully, and apologised for the delay.]
 
 [The concrete problem, hypothesis or surprising behavior. e.g. I built a feature that turns support emails into structured tickets. On the five emails I tried, it was perfect.]
 
@@ -116,6 +120,16 @@ These are the hand-picked examples that made it look finished.
 | [e.g. ignored relevant context] | | [context selection] |
 | [e.g. right answer, invalid JSON] | | [output parsing] |
 | [e.g. called the wrong tool] | | [tool description] |
+
+### The hall of failures
+
+The three mistakes that taught me the most.
+
+| Input, shortened | What it returned | What it reveals |
+|---|---|---|
+| [...] | [...] | [e.g. it treats a missing field as permission to guess] |
+| [...] | [...] | |
+| [...] | [...] | |
 
 ### One failure, in full
 
@@ -234,7 +248,10 @@ A change that fixes one behavior often breaks another.
 
 ## Was my bet right?
 
-I predicted **[restate the bet]**. The evaluation showed **[the result]**.
+| I predicted | What the evaluation showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which category would fail most] | | |
 
 [How your sense of "it works" changed once success had a definition.]
 
@@ -258,13 +275,31 @@ I predicted **[restate the bet]**. The evaluation showed **[the result]**.
 
 **Where plain code does better:** [...]
 
-**The rule of thumb I'm taking away:** [one sentence, with the conditions under which it holds]
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Take any prompt you rely on and give it an hour:
+
+- **Write twenty cases:** [twelve typical, five ambiguous, three it shouldn't be able to answer]
+- **Run each one three times:** [and count, rather than eyeballing the best answers]
+- **Look for:** [the cases where it's wrong with total confidence; they're the ones users will believe]
 
 ## Next experiment
 
 Next I want to test **[e.g. a smaller model on the same dataset / the same feature with retrieval / the agent with fewer tools]**. My prediction: [what you expect to find].
 
 [Invite readers to run the dataset against their own models or prompts, or to suggest cases it's missing.]
+
+## Gear
+
+What I used, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Computer** | [model · CPU · RAM · OS] | |
+| **GPU** | [for local models: model · VRAM; or "none, hosted models only"] | |
+| **Local runtime** | [e.g. Ollama / llama.cpp / vLLM, if any] | |
 
 ---
 

@@ -2,9 +2,13 @@
 >
 > **TL;DR:** [The question in one sentence. What the rides showed, in one sentence. What I'd change, and what it costs, in one sentence.]
 >
-> **Context:** [Bike and type of riding] · [Region and route] · [Period] · [Your current fitness and experience]
+> **At a glance:** [n] rides · [distance] · [elevation] · fastest: ride [n] · best: ride [n]
+>
+> **Context:** [Type of riding] · [Region and route] · [Period] · [Your current fitness and experience]
 
 ## The question
+
+[Open on a moment on the bike. e.g. Kilometre 31, headwind, legs empty, and the computer insisting I was on course for my best time ever.]
 
 [The curiosity, problem or assumption. e.g. I've ridden this loop dozens of times, and my fastest ride on it was one of my least enjoyable.]
 
@@ -12,15 +16,15 @@
 
 My bet before riding: **[your prediction]**.
 
-## The context
+## The rider
 
 | | |
 |---|---|
-| **Rider** | [experience, typical weekly riding, current fitness] |
-| **Bike** | [type, model, weight] |
-| **Tires and pressure** | [model, width, front / rear pressure] |
-| **Gearing** | [...] |
-| **Devices** | [cycling computer, heart-rate monitor, power meter] |
+| **Experience** | |
+| **Typical week** | [rides, hours or distance] |
+| **Current fitness** | |
+
+The bike, tires and devices are listed under Gear, at the end. Anything that changed between rides is in the experiment table.
 
 ## The route
 
@@ -71,6 +75,10 @@ One thing changed between rides; I kept everything else as close as I could.
 | Average cadence | | | |
 | Stops | | | |
 
+### The stretch that told the truth
+
+[The one climb, headwind section or descent where the rides really differed: what the numbers said, and what your legs said.]
+
 ### The calculation
 
 [For The Engineering of Cycling posts; remove otherwise.]
@@ -109,15 +117,18 @@ Measurements and impressions answer different questions, so they get their own t
 
 ### [Surprise 1, written as a headline]
 
-[What I saw.] [What I first thought it meant.] [What it actually meant, and how I found out.]
+[What I saw or felt.] [What I first thought it meant.] [What it actually meant, and how I found out.]
 
 ### [Surprise 2, written as a headline]
 
-[What I saw.] [What I first thought it meant.] [What it actually meant, and how I found out.]
+[What I saw or felt.] [What I first thought it meant.] [What it actually meant, and how I found out.]
 
 ## Was my bet right?
 
-I expected **[restate the bet]**. The rides showed **[the result]**.
+| I predicted | What the rides showed | Verdict |
+|---|---|---|
+| [restate the bet] | [the result] | [right / wrong / partly right] |
+| [e.g. which ride I'd enjoy most] | | |
 
 [Whether your idea of a good ride changed.]
 
@@ -138,11 +149,34 @@ I expected **[restate the bet]**. The rides showed **[the result]**.
 
 **Who this might help:** [...]
 
+> **If you remember one thing:** [one sentence, with the conditions under which it holds]
+
+## Try it yourself
+
+Your regular loop, twice in one week:
+
+- **Ride 1:** [by feel, at an effort you could hold all day]
+- **Ride 2:** [chasing your best time]
+- **Compare:** [the time difference, your heart rate, and how your legs feel the next morning. Was the gap worth it?]
+
 ## Next ride
 
 Next I want to test **[the next question, e.g. the same loop in three months / a different tire pressure]**. My prediction: [what you expect].
 
 [Invite readers to try the same comparison on their own regular route.]
+
+## Gear
+
+What I rode with, and why.
+
+| Item | Model and specs | Why this one |
+|---|---|---|
+| **Bike** | [type · model · size · weight] | |
+| **Tires and pressure** | [model · width · front / rear pressure] | |
+| **Gearing** | [chainrings and cassette] | |
+| **Bike computer** | | |
+| **Heart-rate monitor or power meter** | | |
+| **Spares and tools** | [tube, pump, multitool] | |
 
 ---
 
