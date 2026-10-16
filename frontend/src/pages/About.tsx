@@ -15,6 +15,7 @@ import astronomyImage from '../../image/astronomy.jpg'
 import warhammerImage from '../../image/warhammer.jpg'
 import coffeeImage from '../../image/coffee.jpg'
 import greeceImage from '../../image/greece.jpg'
+import pianoSheetsImage from '../../image/me-with-piano-sheets.webp'
 
 // The page's text lives in i18n/locales/<lang>.ts, under `about`.
 
@@ -42,8 +43,8 @@ const GALLERY: { key: keyof AboutText['gallery']['captions']; image: string; pos
 
 const FEATURES: { key: keyof AboutText['features']; image: string; position?: string }[] = [
   { key: 'engineering', image: engineeringImage },
-  // Placeholder until the photo of me playing the piano is in.
-  { key: 'hobbies',     image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=80' },
+  // Portrait photo in a landscape frame: the chandeliers' glow above me and the sheet music.
+  { key: 'hobbies',     image: pianoSheetsImage, position: 'object-[50%_40%]' },
   // A portrait photo in a landscape frame: aim a little above the middle, at our faces.
   { key: 'life',        image: meAndMyLoveImage, position: 'object-[50%_30%]' },
 ]

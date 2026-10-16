@@ -240,7 +240,7 @@ const es: Messages = {
         subtitle: 'Aficiones',
         title: 'Un pedacito de mi vida',
         text: 'Noches de telescopio de una belleza imposible. Warhammer y largas sesiones de pintura con mis Custodes o mis Votann. Café, matcha y latte art. Bailes latinos. Muay thai, correr, senderismo… casi cualquier deporte.',
-        alt: 'Una foto mía tocando el piano',
+        alt: 'Una foto mía leyendo partituras de piano',
       },
       life: {
         subtitle: 'Vida y estilo',

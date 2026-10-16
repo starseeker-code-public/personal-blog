@@ -179,7 +179,7 @@ const en = {
         subtitle: 'Hobbies',
         title: 'A little piece of my life',
         text: 'Impossibly beautiful nights with a telescope. Warhammer and long painting sessions with my Custodes or Votann. Coffee, matcha and latte art. Latin dancing. Muay Thai, running, hiking… almost any sport.',
-        alt: 'A picture of me playing the piano',
+        alt: 'A picture of me reading piano sheet music',
       },
       life: {
         subtitle: 'Life & Lifestyle',
