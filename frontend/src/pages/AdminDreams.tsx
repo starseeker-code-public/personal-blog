@@ -3,14 +3,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_ADMIN_INFO, PATH_LOGIN } from '../data'
-import { getCookie, setCookie, getJsonCookie } from '../utils/cookies'
+import { readJson, readText, store } from '../utils/browserStore'
 import { isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoStar, IcoChart } from '../components/icons'
+import { CharCount } from '../components/admin/CharCount'
 
-const COOKIE_PRIMUS  = 'blog_primus'
-const COOKIE_DREAMS  = 'blog_dreams'
-const COOKIE_SANCTUM = 'blog_sanctum'
+// localStorage keys: everything here stays in this browser (utils/browserStore.ts).
+const KEY_PRIMUS  = 'blog_primus'
+const KEY_DREAMS  = 'blog_dreams'
+const KEY_SANCTUM = 'blog_sanctum'
 
 type ListItem = { text: string; checked: boolean }
 
@@ -46,15 +48,14 @@ export default function AdminDreams() {
 
   // ── Primus Inter Pares ────────────────────────────────────────────────────
   const [primus, setPrimus] = useState<ListItem[]>(() =>
-    parseItems(getJsonCookie<unknown[]>(COOKIE_PRIMUS, [])),
+    parseItems(readJson<unknown[]>(KEY_PRIMUS, [])),
   )
   const [editingPrimus, setEditingPrimus] = useState(false)
   const [primusDraft, setPrimusDraft] = useState('')
 
   function togglePrimus(i: number) {
     const next = primus.map((item, idx) => idx === i ? { ...item, checked: !item.checked } : item)
-    setPrimus(next)
-    setCookie(COOKIE_PRIMUS, JSON.stringify(next))
+    if (store(KEY_PRIMUS, JSON.stringify(next))) setPrimus(next)
   }
   function startEditPrimus() {
     setPrimusDraft(primus.map(item => item.text).join('\n'))
@@ -65,22 +66,21 @@ export default function AdminDreams() {
     const next: ListItem[] = primusDraft
       .split('\n').map(l => l.trim()).filter(Boolean)
       .map(text => ({ text, checked: existing.get(text) ?? false }))
+    if (!store(KEY_PRIMUS, JSON.stringify(next))) return
     setPrimus(next)
-    setCookie(COOKIE_PRIMUS, JSON.stringify(next))
     setEditingPrimus(false)
   }
 
   // ── Dreams ────────────────────────────────────────────────────────────────
   const [dreams, setDreams] = useState<ListItem[]>(() =>
-    parseItems(getJsonCookie<unknown[]>(COOKIE_DREAMS, [])),
+    parseItems(readJson<unknown[]>(KEY_DREAMS, [])),
   )
   const [editingDreams, setEditingDreams] = useState(false)
   const [dreamsDraft, setDreamsDraft] = useState('')
 
   function toggleDream(i: number) {
     const next = dreams.map((item, idx) => idx === i ? { ...item, checked: !item.checked } : item)
-    setDreams(next)
-    setCookie(COOKIE_DREAMS, JSON.stringify(next))
+    if (store(KEY_DREAMS, JSON.stringify(next))) setDreams(next)
   }
   function startEditDreams() {
     setDreamsDraft(dreams.map(item => item.text).join('\n'))
@@ -91,19 +91,19 @@ export default function AdminDreams() {
     const next: ListItem[] = dreamsDraft
       .split('\n').map(l => l.trim()).filter(Boolean)
       .map(text => ({ text, checked: existing.get(text) ?? false }))
+    if (!store(KEY_DREAMS, JSON.stringify(next))) return
     setDreams(next)
-    setCookie(COOKIE_DREAMS, JSON.stringify(next))
     setEditingDreams(false)
   }
 
   // ── Inner Sanctum ─────────────────────────────────────────────────────────
-  const [sanctum, setSanctum] = useState<string>(() => getCookie(COOKIE_SANCTUM) ?? '')
+  const [sanctum, setSanctum] = useState<string>(() => readText(KEY_SANCTUM) ?? '')
   const [editingSanctum, setEditingSanctum] = useState(false)
   const [sanctumDraft, setSanctumDraft] = useState('')
 
   function saveSanctum() {
+    if (!store(KEY_SANCTUM, sanctumDraft)) return
     setSanctum(sanctumDraft)
-    setCookie(COOKIE_SANCTUM, sanctumDraft)
     setEditingSanctum(false)
   }
 
@@ -163,7 +163,8 @@ export default function AdminDreams() {
                 placeholder="Each line becomes one achievement."
                 className={textarea}
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex items-center gap-2">
+                <CharCount text={primusDraft} items className="mr-auto" />
                 <button
                   onClick={() => setEditingPrimus(false)}
                   className="px-4 py-1.5 rounded-lg text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
@@ -240,7 +241,8 @@ export default function AdminDreams() {
                 placeholder="Each line becomes one dream."
                 className={textarea}
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex items-center gap-2">
+                <CharCount text={dreamsDraft} items className="mr-auto" />
                 <button
                   onClick={() => setEditingDreams(false)}
                   className="px-4 py-1.5 rounded-lg text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
@@ -321,7 +323,8 @@ export default function AdminDreams() {
                 placeholder="Write freely — markdown supported."
                 className={textarea}
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex items-center gap-2">
+                <CharCount text={sanctumDraft} className="mr-auto" />
                 <button
                   onClick={() => setEditingSanctum(false)}
                   className="px-4 py-1.5 rounded-lg text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"

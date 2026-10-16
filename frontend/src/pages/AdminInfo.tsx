@@ -1,14 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api, PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_LOGIN } from '../data'
-import { getJsonCookie, setCookie } from '../utils/cookies'
+import { readJson, store, storedKeys } from '../utils/browserStore'
 import { isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoDreams, IcoStar } from '../components/icons'
+import { CharCount } from '../components/admin/CharCount'
 import type { Post } from '../types'
 
 const currentYear = new Date().getFullYear()
-const COOKIE_GOALS = `blog_goals_${currentYear}`
+
+// One localStorage key per year: this year's list is editable, earlier ones
+// are read-only in the archive. Everything stays in this browser (utils/browserStore.ts).
+const goalsKey = (year: number) => `blog_goals_${year}`
+const GOALS_KEY_PATTERN = /^blog_goals_(\d{4})$/
 
 type ListItem = { text: string; checked: boolean }
 
@@ -50,25 +55,37 @@ export default function AdminInfo() {
 
   // ── Goals ─────────────────────────────────────────────────────────────────
   const [goals, setGoals] = useState<ListItem[]>(() =>
-    parseItems(getJsonCookie<unknown[]>(COOKIE_GOALS, [])),
+    parseItems(readJson<unknown[]>(goalsKey(currentYear), [])),
   )
   const [editingGoals, setEditingGoals] = useState(false)
   const [goalsDraft, setGoalsDraft] = useState('')
 
   function toggleGoal(i: number) {
     const next = goals.map((item, idx) => idx === i ? { ...item, checked: !item.checked } : item)
-    setGoals(next)
-    setCookie(COOKIE_GOALS, JSON.stringify(next))
+    if (store(goalsKey(currentYear), JSON.stringify(next))) setGoals(next)
   }
   function saveGoals() {
     const existing = new Map(goals.map(item => [item.text, item.checked]))
     const next: ListItem[] = goalsDraft
       .split('\n').map(l => l.trim()).filter(Boolean)
       .map(text => ({ text, checked: existing.get(text) ?? false }))
+    if (!store(goalsKey(currentYear), JSON.stringify(next))) return
     setGoals(next)
-    setCookie(COOKIE_GOALS, JSON.stringify(next))
     setEditingGoals(false)
   }
+
+  // ── Archive: earlier years' goals, newest first ───────────────────────────
+  const archive = useMemo(
+    () =>
+      storedKeys(GOALS_KEY_PATTERN)
+        .map(key => ({
+          year: Number(GOALS_KEY_PATTERN.exec(key)?.[1]),
+          goals: parseItems(readJson<unknown[]>(key, [])),
+        }))
+        .filter(entry => entry.year < currentYear && entry.goals.length > 0)
+        .sort((a, b) => b.year - a.year),
+    [],
+  )
 
   // ── Analytics ─────────────────────────────────────────────────────────────
   const [posts, setPosts] = useState<Post[]>([])
@@ -234,7 +251,8 @@ export default function AdminInfo() {
                 placeholder={`Your goals for ${currentYear}, one per line.`}
                 className="w-full px-3 py-2 rounded-lg bg-[#efead8] dark:bg-[#0f0d24] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#dd0000] dark:focus:border-amber-400 transition-colors text-sm leading-relaxed resize-none font-sans"
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex items-center gap-2">
+                <CharCount text={goalsDraft} items className="mr-auto" />
                 <button
                   onClick={() => setEditingGoals(false)}
                   className="px-4 py-1.5 rounded-lg text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
@@ -437,6 +455,56 @@ export default function AdminInfo() {
                 </div>
               </div>
 
+            </div>
+          )}
+        </div>
+
+        {/* ── Archive: earlier years' goals, read-only, one fold-out per year ── */}
+        <div className={sectionCard}>
+          <h2 className={sectionTitle}>
+            <span className="text-[#798777] dark:text-amber-400">❖</span>
+            Archive
+          </h2>
+
+          {archive.length === 0 ? (
+            <p className="text-stone-400 dark:text-[#5a5180] text-sm italic">
+              Each year's goals are archived here once the year is over.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {archive.map(({ year, goals: yearGoals }) => (
+                <details key={year} className="group rounded-xl bg-[#efead8] dark:bg-[#0f0d24]">
+                  <summary className="flex items-center gap-3 px-4 py-3 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
+                    <span className="text-xs text-stone-400 dark:text-[#5a5180] transition-transform group-open:rotate-90">▸</span>
+                    <span className="text-xl text-[#395144] dark:text-[#f0ecfd] leading-none" style={{ fontFamily: 'Caveat' }}>
+                      {year}
+                    </span>
+                    <span className="ml-auto text-xs text-stone-400 dark:text-[#5a5180]">
+                      {yearGoals.filter(g => g.checked).length} / {yearGoals.length} done
+                    </span>
+                  </summary>
+                  <ul className="space-y-2.5 px-4 pb-4 pt-1">
+                    {yearGoals.map((goal, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span
+                          role="img"
+                          aria-label={goal.checked ? 'Done' : 'Not done'}
+                          className={`mt-0.5 shrink-0 ${goal.checked ? 'text-amber-500 dark:text-amber-400' : 'text-stone-300 dark:text-[#3a3462]'}`}
+                        >
+                          <IcoStar />
+                        </span>
+                        <span className={`text-sm leading-relaxed ${
+                          goal.checked
+                            ? 'line-through text-stone-400 dark:text-[#5a5180]'
+                            : 'text-stone-700 dark:text-[#d4cef5]'
+                        }`}>
+                          {goal.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ))}
             </div>
           )}
         </div>
