@@ -162,10 +162,12 @@ What I painted with, and why.
 | Item | Product | Why this one |
 |---|---|---|
 | **Primer** | [colour, brand, spray or brush] | |
-| **Paints** | [ranges used] | |
+| **Paints** | AK Interactive and Citadel · Vallejo for diorama work | |
 | **Contrast or speed paints** | | |
 | **Washes and glazes** | | |
-| **Brushes** | [sizes, brands] | |
+| **Brushes** | Green Stuff World Kolinsky · [sizes] | |
+| **Airbrush** | Harder & Steenbeck Ultra 2024 | |
+| **Compressor** | Green Stuff World | |
 | **Palette** | [wet / dry] | |
 | **Basing** | | |
 | **Varnish** | [matte / satin / gloss] | |

@@ -269,7 +269,7 @@ What I used, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Computer** | [model · CPU and cores · RAM · OS] | |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Intel Core Ultra 9 185H (16 cores, 22 threads) · 32 GB RAM · Pop!_OS | |
 | **Other hardware** | [e.g. a separate machine for the load generator, a home server] | |
 
 ---

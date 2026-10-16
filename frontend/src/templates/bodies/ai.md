@@ -4,7 +4,7 @@
 >
 > **At a glance:** demo: [n] of [n] · real cases: [n]% · after the fix: [n]% · cost per successful task: [x]
 >
-> **Context:** [Models and versions] · **Tested on:** [date; models and prices change quickly] · [A small application built for this post / A real feature, anonymized] · [Sandboxed: no real users, data or permissions]
+> **Context:** Claude [Sonnet / Opus], [exact model IDs] · **Tested on:** [date; models and prices change quickly] · [A small application built for this post / A real feature, anonymized] · [Sandboxed: no real users, data or permissions]
 
 ## The question
 
@@ -40,7 +40,7 @@ The model is one component. What users experience comes from everything around i
 
 | | |
 |---|---|
-| **Model** | [name, version, provider or local runtime] |
+| **Model** | Claude [Sonnet / Opus] · [exact model ID] · Anthropic API |
 | **Parameters** | [temperature, max output tokens, anything else non-default] |
 | **Context and retrieval** | [sources, chunking, embedding model, top-k, or "none"] |
 | **Tools** | [names, and what each one is allowed to do] |
@@ -297,9 +297,10 @@ What I used, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Computer** | [model · CPU · RAM · OS] | |
-| **GPU** | [for local models: model · VRAM; or "none, hosted models only"] | |
-| **Local runtime** | [e.g. Ollama / llama.cpp / vLLM, if any] | |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Intel Core Ultra 9 185H · 32 GB RAM · Pop!_OS | |
+| **Graphics and NPU** | Intel Arc graphics (integrated) · Intel AI Boost NPU | |
+| **Models** | Claude Sonnet and Opus, through the Anthropic API · [exact model IDs used] | |
+| **Local runtime** | [none by default; add it if this post runs a model locally] | |
 
 ---
 

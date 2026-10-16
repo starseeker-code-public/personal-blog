@@ -182,8 +182,8 @@ What I flew with, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Drone** | [model · weight · firmware version] | |
-| **Batteries** | [how many · charge cycles · health] | |
+| **Drone** | Potensic Atom 4K · under 249 g · 3-axis gimbal · 4K/30 fps video, 12 MP photos · [firmware version] | |
+| **Batteries** | 2230 mAh, up to about 32 min each · [how many · charge cycles · health] | |
 | **Propellers** | [type · condition] | |
 | **Controller and app** | | |
 | **Filters and accessories** | [ND filters, landing pad, spares] | |

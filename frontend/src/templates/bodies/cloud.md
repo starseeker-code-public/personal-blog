@@ -245,7 +245,7 @@ What I used, and why. The cloud resources themselves are listed under The setup.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Computer** | [model · CPU · RAM · OS] | [e.g. ran the load generator and the provisioning] |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Intel Core Ultra 9 185H · 32 GB RAM · Pop!_OS | [e.g. ran the load generator and the provisioning] |
 
 ---
 

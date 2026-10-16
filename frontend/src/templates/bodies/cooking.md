@@ -174,16 +174,19 @@ Next I want to test **[the next dish, step or variable]**. My prediction: [what 
 
 ## Gear
 
-What I cooked with, and why.
+What I cooked with, and why. [The hob and oven are mine; the rest is a generic starter set to replace with my actual equipment.]
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Hob** | [gas / induction / electric] | |
-| **Oven** | [fan or conventional · runs hot or cold?] | |
-| **Pans** | [material and size] | |
-| **Knife** | | |
-| **Thermometer** | | |
-| **Kitchen scale** | | |
+| **Hob** | Induction · [model] | |
+| **Oven** | Fan oven · [model · runs hot or cold?] | |
+| **Frying pans** | [Generic: a 28 cm stainless steel or cast-iron pan for searing, and a non-stick pan for eggs and fish; both induction-compatible] | |
+| **Pot and saucepan** | [Generic: a 5 L pot and a 2 L saucepan, induction-compatible] | |
+| **Oven tray and dish** | [Generic: a heavy baking tray and an ovenproof dish] | |
+| **Knives** | [Generic: a 20 cm chef's knife, a paring knife and a bread knife] | |
+| **Chopping board** | [Generic: a large wooden or plastic board] | |
+| **Thermometer** | [Generic: an instant-read probe thermometer, plus an oven thermometer to check whether the oven runs hot or cold] | |
+| **Kitchen scale** | [Generic: digital, 1 g resolution, up to 5 kg] | |
 
 ---
 

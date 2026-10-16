@@ -170,15 +170,16 @@ Next I want to try **[the next question or constraint]**. My prediction: [what y
 
 ## Gear
 
-What I shot and edited with, and why.
+What I shot and edited with, and why. [Keep the lens or lenses used for this post.]
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Camera** | | |
-| **Lens** | [focal length · maximum aperture] | |
-| **Tripod or support** | | |
+| **Camera** | Canon EOS 2000D · APS-C CMOS sensor, 24.1 MP · DIGIC 4+ · 9 autofocus points | |
+| **Lens** | Canon EF 50mm f/1.8 STM · about 80 mm full-frame equivalent on this camera | |
+| **Lens** | Canon EF-S 24mm f/2.8 STM pancake · about 38 mm full-frame equivalent | |
+| **Tripod or support** | K&F Concept D255C4 carbon fibre tripod, up to 172 cm · BH-28L ball head | |
 | **Filters** | [optional] | |
-| **Editing software** | [and version] | |
+| **Editing software** | darktable for RAW development · GIMP for retouching · [versions] | |
 | **Monitor** | [calibrated or not] | |
 
 ---

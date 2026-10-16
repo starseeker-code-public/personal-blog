@@ -173,12 +173,12 @@ What I observed, photographed and calculated with, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Telescope** | [aperture · focal length · focal ratio] | |
-| **Mount** | [type · tracking or not] | |
-| **Eyepieces** | | |
-| **Camera** | [for astrophotography] | |
-| **Binoculars** | | |
-| **Software** | [planetarium, image processing, the code environment] | |
+| **Telescope** | Explore Scientific ED APO 127 FCD-100 · 127 mm aperture · 952 mm focal length · f/7.5 · 7.7 kg | |
+| **Mount** | Sky-Watcher HEQ5-R Pro Go-To · German equatorial · belt drive on both axes · 15 kg payload for astrophotography | |
+| **Camera** | Canon EOS 2000D · APS-C CMOS sensor, 24.1 MP · attached to the telescope with a T-ring adapter | |
+| **Binoculars** | [if used] | |
+| **Software** | [planetarium and stacking software, e.g. Stellarium and Siril, which both run on Linux] · darktable and GIMP for final edits | |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Pop!_OS | |
 
 ---
 

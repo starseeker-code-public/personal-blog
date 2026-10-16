@@ -186,7 +186,7 @@ What I played and recorded with, and why.
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Instrument** | [piano or keyboard · acoustic or digital] | |
+| **Instrument** | Yamaha P-85 · digital piano · 88 weighted keys (Graded Hammer Standard action) · 10 voices | |
 | **Recording setup** | [phone, microphone or audio interface] | |
 | **Metronome** | [device or app] | |
 

@@ -166,18 +166,18 @@ Next I want to test **[the next question]**. My prediction: [what you expect].
 
 ## Gear
 
-Everything I took, and why.
+Everything I took, and why. [I don't have my own camping kit yet. This is a generic recommended three-season setup: replace each item with what I actually take.]
 
 | System | Item | Weight | Cost | Why I chose it |
 |---|---|---|---|---|
-| **Shelter** | | | | |
-| **Sleep** | [bag or quilt, pad, pillow] | | | |
-| **Kitchen** | [stove, fuel, pot, utensils] | | | |
-| **Water** | [storage, treatment] | | | |
-| **Light** | | | | |
-| **Camp clothing** | | | | |
-| **Organization** | [bags, packing system] | | | |
-| **Repair and first aid** | | | | |
+| **Shelter** | [Generic: two-person, three-season tent with a full-coverage rain fly, plus a footprint] | | | |
+| **Sleep** | [Generic: three-season sleeping bag with a comfort rating around 0–5 °C, insulated sleeping pad with an R-value of 3 or more, inflatable pillow] | | | |
+| **Kitchen** | [Generic: canister stove, gas canister, 1 L pot, long-handled spoon, lighter] | | | |
+| **Water** | [Generic: 2 L in bottles or a bladder, plus a squeeze filter] | | | |
+| **Light** | [Generic: headlamp with spare batteries] | | | |
+| **Camp clothing** | [Generic: warm insulated jacket, hat, dry socks kept for sleeping] | | | |
+| **Organization** | [Generic: dry bags or stuff sacks, one per system] | | | |
+| **Repair and first aid** | [Generic: first-aid kit, repair tape, multitool] | | | |
 | **Total** | | | | |
 
 ---

@@ -176,16 +176,25 @@ Next I want to [the next build or question]. My prediction: [what you expect].
 
 ## Gear
 
-The tools I used, and why.
+The tools I used, and why. [A generic, complete workshop set to start from: replace each item with my own as I identify it, and delete the rows a project didn't use.]
 
 | Tool | Model | Why this one | Bought for this project? |
 |---|---|---|---|
-| **Measuring and marking** | [tape, square, calipers] | | |
-| **Cutting** | | | |
-| **Drilling and driving** | | | |
-| **Clamping** | | | |
-| **Finishing** | | | |
-| **Safety equipment** | [glasses, hearing protection, dust mask] | | |
+| **Workbench** | [Generic: a sturdy workbench with a bench vice] | | |
+| **Measuring** | [Generic: 5 m tape measure, 30 cm steel rule, digital calipers] | | |
+| **Marking** | [Generic: combination square, pencils, marking knife] | | |
+| **Hand saws** | [Generic: crosscut saw for wood, hacksaw for metal and plastic] | | |
+| **Power cutting** | [Generic: jigsaw with blades for wood and metal] | | |
+| **Knives** | [Generic: utility knife with spare blades] | | |
+| **Drilling and driving** | [Generic: 18 V cordless drill-driver, with bits for wood, metal and masonry] | | |
+| **Screwdrivers and keys** | [Generic: screwdriver set (flat, Phillips, Pozidriv, Torx) and hex keys] | | |
+| **Clamping** | [Generic: two bar clamps and four spring clamps] | | |
+| **Hammers and pliers** | [Generic: claw hammer, rubber mallet, combination and needle-nose pliers] | | |
+| **Wrenches** | [Generic: adjustable wrench and a socket set] | | |
+| **Shaping** | [Generic: files and rasps] | | |
+| **Sanding and finishing** | [Generic: sanding block, sandpaper from 80 to 240 grit, random-orbit sander] | | |
+| **Glues and fixings** | [Generic: wood glue, two-part epoxy, assorted screws and wall plugs] | | |
+| **Safety equipment** | [Generic: safety glasses, hearing protection, FFP2 dust mask, work gloves] | | |
 
 ---
 

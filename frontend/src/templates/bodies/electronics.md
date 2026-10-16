@@ -215,17 +215,23 @@ Next I want to **[the next test, e.g. run it on battery for a week / build a tes
 
 ## Gear
 
-My bench, and why.
+My bench, and why. [A generic, complete starter bench: replace each item with my own as I get it.]
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Multimeter** | | |
-| **Oscilloscope** | [bandwidth, channels] | |
-| **Logic analyzer** | | |
-| **Current or USB power meter** | | |
-| **Bench power supply** | | |
-| **Soldering station** | | |
-| **Computer and toolchain** | [model · OS · IDE or toolchain] | |
+| **Multimeter** | [Generic: auto-ranging, True RMS, with a continuity beep and a µA current range] | |
+| **Oscilloscope** | [Generic: two-channel digital oscilloscope, 50 MHz or more] | |
+| **Logic analyzer** | [Generic: 8-channel USB analyser supported by sigrok and PulseView, which run on Linux] | |
+| **Current or USB power meter** | [Generic: a USB-C power meter for quick checks, and a meter that reads µA for sleep current] | |
+| **Bench power supply** | [Generic: adjustable 0–30 V, 0–5 A, with current limiting] | |
+| **Soldering station** | [Generic: temperature-controlled, around 60 W, with fine tips] | |
+| **Soldering supplies** | [Generic: solder, flux, desoldering braid, a solder sucker, helping hands] | |
+| **Prototyping** | [Generic: solderless breadboards, jumper wires, perfboard] | |
+| **Hand tools** | [Generic: wire strippers, flush cutters, precision tweezers, small screwdrivers] | |
+| **Development boards** | [Generic: Arduino Uno, ESP32, Raspberry Pi Pico] | |
+| **Components** | [Generic: assorted resistors, capacitors, LEDs, transistors and common sensors] | |
+| **Safety** | [Generic: safety glasses and fume extraction for soldering] | |
+| **Computer and toolchain** | Lenovo IdeaPad Slim 5 Gen 10 · Pop!_OS · VS Code · [toolchain, e.g. PlatformIO or Arduino IDE] | |
 
 ---
 

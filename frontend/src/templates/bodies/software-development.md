@@ -242,8 +242,8 @@ What I used, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Computer** | [model · CPU · RAM · OS] | |
-| **Editor or IDE** | | |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Intel Core Ultra 9 185H · 32 GB RAM · Pop!_OS | |
+| **Editor or IDE** | VS Code | |
 
 ---
 

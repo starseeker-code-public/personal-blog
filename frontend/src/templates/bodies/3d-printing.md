@@ -1,3 +1,5 @@
+[Note: I don't have a 3D printer, slicer or CAD tool yet. Until I do, use this template only for prints made elsewhere (a friend's printer, a makerspace, a print service) and say whose printer it was. Once I have my own, fill in the Gear section and delete this note.]
+
 > **Series:** [Design, Print, Improve · The 3D Printing Lab · Print or Buy?] — **Part [n]**
 >
 > **TL;DR:** [The part and the problem, in one sentence. What the measurements showed, in one sentence. The design change that fixed it, and its trade-off, in one sentence.]
@@ -200,7 +202,7 @@ Next I want to test **[the next variable or part]**. My prediction: [what you ex
 
 ## Gear
 
-What I printed and measured with, and why.
+What I printed and measured with, and why. [No printer, slicer or CAD tool yet: fill these in once there is one.]
 
 | Item | Model | Why this one |
 |---|---|---|

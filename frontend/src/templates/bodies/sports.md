@@ -190,11 +190,11 @@ Next I want to **[revisit the technique in a more realistic setting / test the r
 
 ## Gear
 
-What I trained with, and why.
+What I trained with, and why. [No defaults yet. Once running or martial arts is a regular habit, add the usual shoes, watch and equipment here, so future posts start pre-filled.]
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Running shoes** | [for runs] | |
+| **Running shoes** | [Generic: neutral road running shoes, or trail shoes with grippy soles for trails; replace with mine] | |
 | **Watch** | [GPS · heart rate] | |
 | **Martial-arts equipment** | [uniform, gloves, protective gear] | |
 | **Recording setup** | [phone, tripod] | |

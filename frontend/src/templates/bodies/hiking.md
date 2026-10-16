@@ -184,17 +184,19 @@ Next I want to [the next route or question, e.g. hike Route A in winter / test m
 
 ## Gear
 
-What I carried, why, and whether I needed it.
+What I carried, why, and whether I needed it. [I don't have my own kit yet. This is a generic recommended day-hike kit: replace each item with what I actually carry, and remove what I didn't take.]
 
 | Item | Model | Why I took it | Used it? |
 |---|---|---|---|
-| **Boots** | | | |
-| **Backpack** | [and its volume] | | |
-| **Navigation** | [app, GPS device, paper map, compass] | | |
-| **Layers** | [base, insulation, waterproof shell] | | |
-| **Water and food** | | | |
-| **Poles** | | | |
-| **First aid and emergency** | | | |
+| **Boots** | [Generic: waterproof hiking boots or shoes with grippy soles, broken in before long routes] | | |
+| **Backpack** | [Generic: 20–30 L day pack with a hip belt and a rain cover] | | |
+| **Navigation** | [Generic: an offline map app on the phone, plus a paper map and compass as backup] | | |
+| **Layers** | [Generic: moisture-wicking base layer, fleece or light insulated jacket, waterproof and windproof shell] | | |
+| **Water and food** | [Generic: 1.5–2 L of water, more in summer, and energy-dense snacks] | | |
+| **Poles** | [Generic: adjustable trekking poles, a big help on long descents] | | |
+| **Sun protection** | [Generic: hat, sunglasses and sunscreen] | | |
+| **Light and power** | [Generic: headlamp and a power bank] | | |
+| **First aid and emergency** | [Generic: small first-aid kit, emergency blanket and whistle] | | |
 
 - **Carried but not needed, and I'd still carry it:** [...]
 - **Missed:** [...]

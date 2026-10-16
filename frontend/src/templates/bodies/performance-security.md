@@ -30,7 +30,7 @@ Intuition is a good way to form a hypothesis and a poor way to confirm one, so e
 
 | | |
 |---|---|
-| **OS and runtime** | [e.g. Ubuntu 24.04 · Python 3.12] |
+| **OS and runtime** | Pop!_OS · [runtime and version, e.g. Python 3.12] |
 | **Workload** | [input size, data distribution, request mix, concurrency] |
 | **Measured with** | [e.g. hyperfine · py-spy · cProfile · memray · k6] |
 | **Existing safeguards** | [authentication, authorization, validation, rate limits, encryption] |
@@ -231,8 +231,8 @@ What I used, and why. Benchmark numbers only mean something next to the machine 
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Computer** | [model · CPU and cores · RAM · storage] | |
-| **Operating system** | | |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Intel Core Ultra 9 185H (16 cores, 22 threads) · 32 GB RAM · Intel Arc graphics | |
+| **Operating system** | Pop!_OS (Linux) | |
 
 ---
 

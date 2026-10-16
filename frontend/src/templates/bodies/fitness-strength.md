@@ -184,11 +184,11 @@ Where and with what I trained, and why.
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Where** | [gym / home / both] | |
-| **Key equipment** | [barbell and rack, dumbbells, machines, bands] | |
-| **Shoes** | | |
-| **Belt, straps or other accessories** | [optional] | |
-| **Logging app or notebook** | | |
+| **Where** | A gym, training with a personal trainer | |
+| **Key equipment** | Free weights, cable stations and machines | |
+| **Shoes** | [Generic: flat, stable training shoes; replace with mine] | |
+| **Belt, straps or other accessories** | None yet | |
+| **Logging app** | LiftLog | |
 | **Scale and tape measure** | [for the measurements above] | |
 
 ---

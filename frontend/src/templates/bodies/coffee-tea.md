@@ -4,7 +4,7 @@
 >
 > **At a glance:** [n] brews · [n] methods · blind favourite: [method] · what I'd have guessed: [method]
 >
-> **Context:** [Coffee or tea, roaster or producer] · [Water] · [Number of brews, and over how many days] · The grinder and brewers are listed under Gear, at the end
+> **Context:** [Coffee or tea; default: Lucero Blend, Hola Coffee] · [Number of brews, and over how many days] · The grinder and brewers are listed under Gear, at the end
 
 ## The question
 
@@ -18,23 +18,25 @@ My bet: **[your prediction]**.
 
 ## The coffee or tea
 
+My usual beans. [Replace them if this post uses a different coffee or tea.]
+
 | | |
 |---|---|
-| **Name** | |
-| **Origin and producer** | |
-| **Variety or cultivar** | |
-| **Processing** | [washed / natural / honey; or tea type and oxidation] |
-| **Roast level and roaster** | |
-| **Roast or harvest date** | |
+| **Name** | Lucero Blend, by Hola Coffee |
+| **Origin and producer** | Brazil (Cerrado Mineiro) and Peru (San Martín, Alto Mayo cooperative) |
+| **Variety or cultivar** | [from the bag] |
+| **Processing** | [from the bag; or tea type and oxidation] |
+| **Roast level** | Medium |
+| **Roast or harvest date** | [from the bag] |
 | **Days since roasting when brewed** | |
 | **Storage** | |
 
-## The water
+## The water and milk
 
 | | |
 |---|---|
-| **Source** | [tap / filtered / bottled brand / prepared recipe] |
-| **Hardness and minerals** | [measured / from the label / unknown] |
+| **Water** | Lanjarón bottled mineral water · [hardness and minerals, from the label] |
+| **Milk** | Hacendado fresh milk · [whole / semi-skimmed] |
 | **Temperature** | [and how it was measured] |
 
 ## The baseline recipes
@@ -43,10 +45,11 @@ Each method gets a reasonable recipe of its own. Forcing identical settings on d
 
 | Method | Dose | Water | Ratio | Grind | Temperature | Time | Technique |
 |---|---|---|---|---|---|---|---|
-| [French press] | [g] | [g] | | | | | [stir, steep, plunge] |
-| [Pour-over] | | | | | | | [bloom, pours] |
-| [AeroPress] | | | | | | | |
-| [Espresso] | | | | | | | |
+| Espresso | [e.g. 17 g] | [e.g. 36 g out] | [e.g. 1:2.1] | [e.g. 28 clicks] | | [e.g. 25–27 s] | [pre-infusion?] |
+| AeroPress | [g] | [g] | | | | | [standard / inverted, steep time, press] |
+| [Other method] | | | | | | | |
+
+The espresso examples are Hola Coffee's suggested recipe for the Lucero Blend, with my usual grinder setting.
 
 ## The experiment
 
@@ -93,7 +96,7 @@ Words first, scores second. A number alone says nothing about the cup.
 
 | My notes, written blind | What the roaster says | Did they match? |
 |---|---|---|
-| | | |
+| | [e.g. Lucero Blend: vanilla, milk chocolate, floral] | |
 | | | |
 
 ### As it cooled
@@ -207,11 +210,12 @@ What I brewed with, and why.
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Grinder** | [burr type · setting range] | |
-| **Brewers** | [French press, pour-over, AeroPress, espresso machine] | |
-| **Kettle** | [gooseneck? temperature control?] | |
-| **Scale** | [resolution · timer] | |
-| **Filters** | [paper / metal / cloth] | |
+| **Grinder** | 1Zpresso K-Ultra · hand grinder · usual setting: 28 clicks | |
+| **Espresso machine** | Hibrew H10 Plus · 20 bar · 58 mm portafilter · PID temperature control · pre-infusion · steam wand | |
+| **Filter brewer** | AeroPress | |
+| **Kettle** | Generic electric gooseneck kettle | |
+| **Scale** | Timemore Black Mirror Basic 2 · coffee scale with timer | |
+| **Filters** | [paper / metal] | |
 | **Matcha bowl and whisk** | [for matcha posts] | |
 
 ---

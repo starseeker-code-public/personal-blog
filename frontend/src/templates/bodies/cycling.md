@@ -171,9 +171,9 @@ What I rode with, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Bike** | [type · model · size · weight] | |
-| **Tires and pressure** | [model · width · front / rear pressure] | |
-| **Gearing** | [chainrings and cassette] | |
+| **Bike** | Conor 7200 29" mountain bike · aluminium 6061 frame · Blaze RL fork, 100 mm travel with lockout · hydraulic disc brakes · [size] | |
+| **Tires and pressure** | 29 × 2.20 · [front / rear pressure] | |
+| **Gearing** | 2 × 8: 36/22T chainrings, 11–34T cassette · Shimano Altus shifters and front derailleur, Acera rear derailleur | |
 | **Bike computer** | | |
 | **Heart-rate monitor or power meter** | | |
 | **Spares and tools** | [tube, pump, multitool] | |

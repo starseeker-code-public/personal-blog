@@ -4,7 +4,7 @@
 >
 > **At a glance:** [n] days logged · [measure]: [before] → [after] · cost per day: [amount] · keeping it: [yes / no]
 >
-> **Context:** [Your goal: training, energy, health, budget] · [Period] · [How you tracked: food scale / app / photos / notes] · A personal experiment, not dietary advice
+> **Context:** [Your goal: training, energy, health, budget] · [Period] · Tracked with FatSecret · A personal experiment, not dietary advice
 
 ## The question
 
@@ -29,7 +29,7 @@ My bet: **[your prediction]**.
 
 ## How I measured
 
-- **Method:** [kitchen scale / labels per 100 g / app and its database / photos]
+- **Method:** FatSecret · [kitchen scale / labels per 100 g / photos]
 - **What counted:** [meals, snacks, drinks, cooking oil]
 - **Duration:** [...]
 - **Known errors:** [app database mistakes, estimated portions, meals out]
@@ -193,8 +193,8 @@ What I measured with, and why.
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Kitchen scale** | [resolution] | |
-| **Tracking app or notebook** | [and the food database it uses] | |
+| **Kitchen scale** | [Generic: digital, 1 g resolution, up to 5 kg; replace with mine] | |
+| **Tracking app** | FatSecret | |
 
 ---
 

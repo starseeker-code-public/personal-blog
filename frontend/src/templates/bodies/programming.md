@@ -220,9 +220,9 @@ What I used, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Computer** | [model · CPU and cores · RAM · storage] | |
-| **Operating system** | | |
-| **Editor and terminal** | | |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Intel Core Ultra 9 185H (16 cores, 22 threads) · 32 GB RAM · Intel Arc graphics | |
+| **Operating system** | Pop!_OS (Linux) | |
+| **Editor and terminal** | VS Code · Alacritty | |
 
 ---
 

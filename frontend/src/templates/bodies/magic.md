@@ -176,7 +176,7 @@ What I practised and performed with, and why.
 
 | Item | Model | Why this one |
 |---|---|---|
-| **Decks** | [brand · stock or finish] | |
+| **Decks** | Bicycle Standard (Rider Back) · poker size · Air-Cushion finish | |
 | **Close-up mat** | | |
 | **Recording setup** | [phone or camera, tripod] | |
 

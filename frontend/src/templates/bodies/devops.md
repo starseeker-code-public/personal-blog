@@ -209,7 +209,7 @@ What I used, and why.
 
 | Item | Model and specs | Why this one |
 |---|---|---|
-| **Computer** | [model · CPU · RAM · OS] | |
+| **Computer** | Lenovo IdeaPad Slim 5 Gen 10 · Intel Core Ultra 9 185H · 32 GB RAM · Pop!_OS | |
 | **CI runners** | [hosted / self-hosted · CPU · RAM] | [their speed affects every pipeline timing above] |
 
 ---
