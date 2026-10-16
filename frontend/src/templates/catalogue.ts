@@ -2,8 +2,9 @@ import type { PostCategory } from '../data'
 
 /**
  * Template metadata, grouped by topic as shown in the composer's menu.
- * The Markdown body for an entry lives in `bodies/<id>.md`; entries without
- * one are listed but disabled. Tag names must match the spelling in
+ * The Markdown body for an entry lives in `bodies/<id>.md` (or
+ * `bodies/<bodyId>.md` when several entries share one); entries without a
+ * body are listed but disabled. Tag names must match the spelling in
  * `data/tags.ts` to be highlighted.
  */
 export interface TemplateDefinition {
@@ -11,6 +12,8 @@ export interface TemplateDefinition {
   label: string
   category: PostCategory
   tags: readonly string[]
+  /** Body file shared with other entries; defaults to `id`. */
+  bodyId?: string
 }
 
 export interface TemplateGroupDefinition {
@@ -84,31 +87,31 @@ export const TEMPLATE_CATALOGUE: readonly TemplateGroupDefinition[] = [
   {
     label: 'Fitness',
     templates: [
-      { id: 'fitness', label: 'General fitness', category: 'Personal Life', tags: ['fitness'] },
-      { id: 'strength', label: 'Strength training & bodybuilding', category: 'Personal Life', tags: ['strength training', 'bodybuilding'] },
+      { id: 'fitness', label: 'General fitness', category: 'Personal Life', tags: ['fitness'], bodyId: 'fitness-strength' },
+      { id: 'strength', label: 'Strength training & bodybuilding', category: 'Personal Life', tags: ['strength training', 'bodybuilding'], bodyId: 'fitness-strength' },
       { id: 'nutrition', label: 'Nutrition', category: 'Personal Life', tags: ['nutrition'] },
     ],
   },
   {
     label: 'Sports & Physical Activities',
     templates: [
-      { id: 'martial-arts', label: 'Martial arts', category: 'Hobbies', tags: ['martial arts'] },
-      { id: 'running', label: 'Running & trail running', category: 'Hobbies', tags: ['running', 'trail'] },
+      { id: 'martial-arts', label: 'Martial arts', category: 'Hobbies', tags: ['martial arts'], bodyId: 'sports' },
+      { id: 'running', label: 'Running & trail running', category: 'Hobbies', tags: ['running', 'trail'], bodyId: 'sports' },
     ],
   },
   {
     label: 'Health & Self-care',
     templates: [
-      { id: 'sleep', label: 'Sleep & recovery', category: 'Personal Life', tags: ['sleep'] },
-      { id: 'self-care', label: 'Self-care & wellbeing', category: 'Personal Life', tags: ['self care', 'relax', 'stress management'] },
+      { id: 'sleep', label: 'Sleep & recovery', category: 'Personal Life', tags: ['sleep'], bodyId: 'health' },
+      { id: 'self-care', label: 'Self-care & wellbeing', category: 'Personal Life', tags: ['self care', 'relax', 'stress management'], bodyId: 'health' },
       { id: 'meditation', label: 'Meditation & mindfulness', category: 'Personal Life', tags: ['meditation', 'presence'] },
     ],
   },
   {
     label: 'Personal Development',
     templates: [
-      { id: 'habits', label: 'Habits & productivity', category: 'Personal Life', tags: ['habits', 'productivity'] },
-      { id: 'goals', label: 'Goals & reflection', category: 'Personal Life', tags: ['goals', 'reflection', 'journaling', 'gratefulness'] },
+      { id: 'habits', label: 'Habits & productivity', category: 'Personal Life', tags: ['habits', 'productivity'], bodyId: 'personal-development' },
+      { id: 'goals', label: 'Goals & reflection', category: 'Personal Life', tags: ['goals', 'reflection', 'journaling', 'gratefulness'], bodyId: 'personal-development' },
       { id: 'learning', label: 'Learning & languages', category: 'Personal Life', tags: ['learning', 'language learning'] },
       { id: 'reading', label: 'Reading', category: 'Personal Life', tags: ['books'] },
     ],
@@ -123,7 +126,7 @@ export const TEMPLATE_CATALOGUE: readonly TemplateGroupDefinition[] = [
     label: 'Lifestyle & Relationships',
     templates: [
       { id: 'fashion', label: 'Fashion & personal style', category: 'Personal Life', tags: ['fashion'] },
-      { id: 'social-skills', label: 'Social skills & communication', category: 'Personal Life', tags: ['social skills', 'communication'] },
+      { id: 'social-skills', label: 'Social skills & communication', category: 'Personal Life', tags: ['social skills', 'communication'], bodyId: 'relationships' },
       { id: 'relationships', label: 'Relationships & social life', category: 'Personal Life', tags: ['love', 'friendships', 'social life'] },
     ],
   },

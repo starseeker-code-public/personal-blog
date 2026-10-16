@@ -29,11 +29,11 @@ const BODIES: Record<string, string> = Object.fromEntries(
 
 export const POST_TEMPLATE_GROUPS: readonly PostTemplateGroup[] = TEMPLATE_CATALOGUE.map(g => ({
   label: g.label,
-  templates: g.templates.map(t => ({ ...t, body: BODIES[t.id] })),
+  templates: g.templates.map(t => ({ ...t, body: BODIES[t.bodyId ?? t.id] })),
 }))
 
 if (import.meta.env.DEV) {
-  const ids = new Set(TEMPLATE_CATALOGUE.flatMap(g => g.templates.map(t => t.id)))
+  const ids = new Set(TEMPLATE_CATALOGUE.flatMap(g => g.templates.map(t => t.bodyId ?? t.id)))
   for (const id of Object.keys(BODIES)) {
     if (!ids.has(id)) console.warn(`templates/bodies/${id}.md has no matching entry in templates/catalogue.ts`)
   }

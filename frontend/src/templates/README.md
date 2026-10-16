@@ -19,6 +19,10 @@ templates/
 2. Create `bodies/<id>.md`. The entry turns on in the menu automatically.
    Until then it's shown greyed out as "soon".
 
+When one template serves several menu entries (e.g. "Martial arts" and
+"Running & trail running"), give those entries the same `bodyId` and name the
+file `bodies/<bodyId>.md`. Each entry keeps its own label and highlighted tags.
+
 ## Writing a body
 
 - Write a **complete Markdown post skeleton**: the real headings, tables, code

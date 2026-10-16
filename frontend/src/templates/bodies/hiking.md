@@ -1,0 +1,159 @@
+> **Series:** [Trail Experiments · Better Decisions Outdoors · The Trail Journal] — **Part [n]**
+>
+> **TL;DR:** [The route and the question, in one sentence. What happened on the trail, in one sentence. The lesson, in one sentence.]
+>
+> **Context:** [Region] · [Date and season] · [Solo / with n people] · [Your experience on this kind of terrain]
+
+## The question
+
+[The practical problem, assumption or decision behind this hike. e.g. On paper, both routes were 14 km. One left me pleasantly tired; the other left me wrecked.]
+
+> **[Why did two routes of the same distance feel nothing alike? / How accurate was my time estimate? / When should I have turned around?]**
+
+What I expected before setting off: **[your prediction, e.g. "Route B, with more climbing, will be the harder one"]**.
+
+## The route
+
+| | [Route A] | [Route B] |
+|---|---|---|
+| **Start and finish** | | |
+| **Type** | [loop / out-and-back / point-to-point] | |
+| **Distance** | | |
+| **Elevation gain** | | |
+| **Elevation loss** | | |
+| **Highest point** | | |
+| **Surface** | [forest path, scree, rock, tarmac…] | |
+| **Waymarking** | [clear / patchy / none] | |
+| **Water sources** | | |
+| **Shade and exposure** | | |
+| **Escape routes** | | |
+| **Map and track** | [map or app used, link to the track] | |
+
+### Section by section
+
+| Section | Distance | Gain / loss | Terrain | Notes |
+|---|---|---|---|---|
+| [Start → pass] | | | | |
+| [Pass → summit] | | | | |
+| [Summit → valley] | | | | |
+
+### Difficulty beyond distance
+
+This is my own rough scale, not an official grading: 1 is easy, 5 is very demanding.
+
+| Factor | [Route A] | [Route B] | Notes |
+|---|---|---|---|
+| Ascent | | | |
+| Descent | | | |
+| Surface | | | |
+| Exposure (drops, sun, wind) | | | |
+| Technical sections | | | |
+| Navigation | | | |
+| Water and shade | | | |
+
+## The conditions
+
+| | Forecast | What I found |
+|---|---|---|
+| Temperature | | |
+| Wind | | |
+| Rain | | |
+| Visibility | | |
+| Trail surface | [dry / muddy / snow / ice] | |
+| Daylight | [sunrise – sunset] | |
+| People on the trail | | |
+
+## The plan
+
+- **Estimated time:** [and how you worked it out, e.g. Naismith's rule (5 km per hour plus 1 hour per 600 m of ascent), adjusted to your own pace]
+- **Start time:** [and why]
+- **Turnaround rule, decided at home:** [e.g. "turn back if I'm not at the pass by 13:00, if cloud drops below the ridge, or if I lose the path for more than 10 minutes"]
+- **Bail-out options:** [...]
+- **What I carried, and why:** [the items that mattered for this route in these conditions]
+
+## The hike
+
+[The story of the day: what it felt like, not only what happened.]
+
+### [The climb / the first section]
+
+[...]
+
+### [The moment that tested the plan]
+
+[...]
+
+### [The descent / the last section]
+
+[...]
+
+### Timeline
+
+| Time | Where | What happened | Decision |
+|---|---|---|---|
+| [08:15] | [Car park] | [Started 20 minutes late] | [Kept the original turnaround time] |
+| | | | |
+| | | | |
+
+## The decisions
+
+| Where | What I knew | Options | What I chose | Why | In hindsight |
+|---|---|---|---|---|---|
+| [...] | | | | | |
+| [...] | | | | | |
+
+## Expectations versus reality
+
+| | Planned | Actual | Main reason for the difference |
+|---|---|---|---|
+| Total time | | | |
+| Moving time | | | |
+| Breaks | | | |
+| Pace on climbs | | | |
+| Pace on descents | | | |
+| Water drunk | | | |
+| Food eaten | | | |
+| Energy at the end | | | |
+
+## What I learned
+
+[Which factors mattered most, and why.]
+
+> **The hardest part wasn't [what you expected]. It was [what actually made it demanding].**
+
+### Gear check
+
+- **Used, and glad I had it:** [...]
+- **Carried but not needed, and I'd still carry it:** [...]
+- **Missed:** [...]
+
+## What I'd do differently
+
+- [...]
+- [...]
+
+## Who this route suits
+
+**A good choice for:** [...]
+
+**Think twice if:** [...]
+
+**Best season:** [...]
+
+## The limits of one hike
+
+- **Conditions:** [this was one day in [season]; in rain, heat, snow or fog it's a different route]
+- **Fitness and experience:** [how yours shaped what felt hard]
+- **Change over time:** [paths erode, markings fade, access rules change]
+
+This is an account of my own outing, not a safety guarantee. Check current conditions, official local guidance and a reliable map before you go.
+
+## Next trail
+
+Next I want to [the next route or question, e.g. hike Route A in winter / test my time estimate on a route with more descent]. My prediction: [what you expect].
+
+[Invite readers to share a route that surprised them, or how they judge difficulty.]
+
+---
+
+*Map, GPX track and elevation profile: [link].*
