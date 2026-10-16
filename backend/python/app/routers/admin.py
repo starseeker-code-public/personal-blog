@@ -16,7 +16,7 @@ from sqlalchemy.orm import selectinload
 from app.config import settings
 from app.database import get_db
 from app.models.post import Post
-from app.schemas.post import PostOut
+from app.schemas.post import PostAdminOut
 from app.security import require_admin
 
 # Rolling window for the admin post picker. 4 × 365 + 1 accounts for one
@@ -39,12 +39,12 @@ _EXT_FOR_TYPE = {
 _MAX_BYTES = 8 * 1024 * 1024  # 8 MB
 
 
-@router.get("/drafts", response_model=list[PostOut])
+@router.get("/drafts", response_model=list[PostAdminOut])
 async def list_drafts(
     db: AsyncSession = Depends(get_db),
     _admin: str = Depends(require_admin),
 ):
-    """All draft posts in canonical PostOut shape, newest first."""
+    """All draft posts, in both languages, newest first."""
     result = await db.execute(
         select(Post)
         .where(Post.draft.is_(True))
@@ -56,10 +56,10 @@ async def list_drafts(
         )
     )
     drafts = result.scalars().all()
-    return [PostOut.from_orm_post(p) for p in drafts]
+    return [PostAdminOut.from_orm_post_admin(p) for p in drafts]
 
 
-@router.get("/posts", response_model=list[PostOut])
+@router.get("/posts", response_model=list[PostAdminOut])
 async def list_recent_posts(
     db: AsyncSession = Depends(get_db),
     _admin: str = Depends(require_admin),
@@ -78,7 +78,7 @@ async def list_recent_posts(
         )
     )
     posts = result.scalars().all()
-    return [PostOut.from_orm_post(p) for p in posts]
+    return [PostAdminOut.from_orm_post_admin(p) for p in posts]
 
 
 @router.post("/upload-image")

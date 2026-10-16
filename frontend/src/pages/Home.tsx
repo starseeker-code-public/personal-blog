@@ -6,11 +6,13 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { PostCard, Pagination } from '../components/ui'
 import { IcoSearch } from '../components/icons'
+import { useI18n } from '../i18n'
 
 // Fades "Personal Blog" → "Visit my portfolio" after 5s
 function HeaderBadge() {
   const [phase, setPhase] = useState<'blog' | 'portfolio'>('blog')
   const [visible, setVisible] = useState(true)
+  const { m } = useI18n()
 
   useEffect(() => {
     const t1 = setTimeout(() => setVisible(false), 4_500)
@@ -28,20 +30,21 @@ function HeaderBadge() {
         rel="noopener noreferrer"
         className={`${base} text-[#dd0000] dark:text-amber-400 hover:text-[#aa0000] dark:hover:text-amber-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
       >
-        Visit my portfolio →
+        {m.home.visitPortfolio}
       </a>
     )
   }
 
   return (
     <p className={`${base} text-[#2a3428] dark:text-amber-400 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-      Personal Blog
+      {m.home.badge}
     </p>
   )
 }
 
 export default function Home() {
   const navigate = useNavigate()
+  const { lang, m, path, category } = useI18n()
   const [searchQuery, setSearchQuery] = useState('')
   const [categories, setCategories] = useState<Category[]>([])
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -55,11 +58,11 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true)
-    api.listPosts(page, 8, { category: activeCategory ?? undefined })
+    api.listPosts(page, 8, { category: activeCategory ?? undefined, lang })
       .then(setData)
       .catch(() => {})
       .finally(() => setLoading(false))
-  }, [page, activeCategory])
+  }, [page, activeCategory, lang])
 
   const handleCategoryChange = (slug: string | null) => {
     setActiveCategory(slug)
@@ -69,7 +72,7 @@ export default function Home() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      navigate(path(`/search?q=${encodeURIComponent(searchQuery.trim())}`))
     }
   }
 
@@ -87,7 +90,7 @@ export default function Home() {
           <h1 className="text-5xl sm:text-6xl text-[#395144] dark:text-[#f0ecfd] mb-3 font-caveat leading-none">
             {SITE.name}
           </h1>
-          <p className="text-stone-500 dark:text-[#8b7db8] text-sm">{SITE.tagline}</p>
+          <p className="text-stone-500 dark:text-[#8b7db8] text-sm">{m.site.tagline}</p>
         </header>
 
         {/* ── Search bar ──────────────────────────────────────── */}
@@ -98,7 +101,7 @@ export default function Home() {
           <input
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search posts by title, topic, or keyword…"
+            placeholder={m.home.searchPlaceholder}
             className="w-full pl-11 pr-20 py-3.5 bg-[#faf6ee]/70 dark:bg-[#1a1735]/70 border border-stone-300 dark:border-[#322d5a] rounded-xl text-stone-900 dark:text-[#f0ecfd] text-sm placeholder:text-stone-500 dark:placeholder:text-[#8b7db8] outline-none focus:border-[#dd0000] dark:focus:border-amber-500 focus:bg-[#faf6ee]/90 dark:focus:bg-[#1a1735]/90 focus:shadow-[0_0_0_3px_rgba(221,0,0,0.18)] dark:focus:shadow-[0_0_0_3px_rgba(245,158,11,0.15)] transition-all"
           />
           <button
@@ -109,7 +112,7 @@ export default function Home() {
                 : 'bg-stone-300 dark:bg-[#231f42] text-stone-400 opacity-0 pointer-events-none'
             }`}
           >
-            Search
+            {m.home.search}
           </button>
         </form>
 
@@ -124,7 +127,7 @@ export default function Home() {
                   : 'border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#8b7db8] hover:text-[#2a3428] dark:hover:text-[#f0ecfd] hover:border-[#2a3428] dark:hover:border-[#4a4480] bg-transparent'
               }`}
             >
-              All posts
+              {m.common.allPosts}
             </button>
             {categories.map(c => (
               <button
@@ -136,7 +139,7 @@ export default function Home() {
                     : 'border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#8b7db8] hover:text-[#2a3428] dark:hover:text-[#f0ecfd] hover:border-[#2a3428] dark:hover:border-[#4a4480] bg-transparent'
                 }`}
               >
-                {c.name}
+                {category(c.name)}
                 <span className={`ml-1.5 text-[11px] ${activeCategory === c.slug ? 'text-[#c8d4c4] dark:text-amber-900' : 'text-stone-500 dark:text-[#8b7db8]'}`}>
                   {c.postCount}
                 </span>
@@ -148,8 +151,8 @@ export default function Home() {
         {/* ── Post count ──────────────────────────────────────── */}
         {!loading && data && (
           <p className="text-stone-500 dark:text-[#8b7db8] text-xs mb-2">
-            {data.total} {data.total === 1 ? 'post' : 'posts'}
-            {activeCategoryName ? ` in ${activeCategoryName}` : ''}
+            {m.posts.count(data.total)}
+            {activeCategoryName ? m.home.inCategory(category(activeCategoryName)) : ''}
           </p>
         )}
 
@@ -168,7 +171,7 @@ export default function Home() {
         ) : data?.items.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-stone-500 dark:text-[#8b7db8] text-sm">
-              {activeCategory ? `No posts in this category yet.` : `No posts yet.`}
+              {activeCategory ? m.posts.noneInCategory : m.posts.none}
             </p>
           </div>
         ) : (

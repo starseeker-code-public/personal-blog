@@ -98,7 +98,7 @@ async def rss_feed():
 
 @app.get("/sitemap.xml", include_in_schema=False)
 async def sitemap():
-    """Minimal sitemap — lists all published post URLs."""
+    """Minimal sitemap — every published post, in English and, when translated, Spanish."""
     from sqlalchemy import select
 
     from app.database import AsyncSessionLocal
@@ -106,16 +106,20 @@ async def sitemap():
 
     async with AsyncSessionLocal() as db:
         result = await db.execute(
-            select(Post.slug, Post.updated_at)
+            select(Post.slug, Post.updated_at, Post.title_es, Post.body_es)
             .where(Post.draft.is_(False))
             .order_by(Post.published_at.desc())
         )
         rows = result.all()
 
+    def entry(lang: str, row) -> str:
+        lastmod = f"<lastmod>{row.updated_at.date().isoformat()}</lastmod>" if row.updated_at else ""
+        return f"  <url><loc>{settings.site_url}/{lang}/posts/{row.slug}</loc>{lastmod}</url>"
+
     urls = "\n".join(
-        f"  <url><loc>{settings.site_url}/posts/{row.slug}</loc>"
-        f"{'<lastmod>' + row.updated_at.date().isoformat() + '</lastmod>' if row.updated_at else ''}"
-        f"</url>"
+        "\n".join(
+            [entry("en", row)] + ([entry("es", row)] if row.title_es and row.body_es else [])
+        )
         for row in rows
     )
     xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>'

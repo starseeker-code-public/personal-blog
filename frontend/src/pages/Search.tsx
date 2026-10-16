@@ -6,10 +6,12 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { Section, SectionHeading, PostCard } from '../components/ui'
 import { IcoArrowLeft } from '../components/icons'
+import { useI18n } from '../i18n'
 
 export default function Search() {
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q') ?? ''
+  const { lang, m, path } = useI18n()
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -18,11 +20,11 @@ export default function Search() {
     if (!query.trim()) return
     setLoading(true)
     setError(null)
-    api.search(query)
+    api.search(query, lang)
       .then(setPosts)
       .catch(e => setError(e.message))
       .finally(() => setLoading(false))
-  }, [query])
+  }, [query, lang])
 
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
@@ -30,15 +32,15 @@ export default function Search() {
 
       <Section id="search-results">
         <Link
-          to="/"
+          to={path('/')}
           className="inline-flex items-center gap-2 text-stone-500 dark:text-[#8b7db8] hover:text-stone-700 dark:hover:text-[#c9beed] text-sm mb-8 transition-colors"
         >
           <IcoArrowLeft />
-          Back to blog
+          {m.common.backToBlog}
         </Link>
 
         <SectionHeading>
-          {query ? `Results for "${query}"` : 'Search'}
+          {query ? m.search.resultsFor(query) : m.search.title}
         </SectionHeading>
 
         {loading && (
@@ -53,15 +55,15 @@ export default function Search() {
 
         {!loading && !error && posts.length === 0 && query && (
           <div className="text-center py-12">
-            <p className="text-stone-600 dark:text-[#c9beed] text-sm mb-2">No posts found for "{query}"</p>
-            <p className="text-stone-500 dark:text-[#8b7db8] text-xs">Try a different search term.</p>
+            <p className="text-stone-600 dark:text-[#c9beed] text-sm mb-2">{m.search.noResults(query)}</p>
+            <p className="text-stone-500 dark:text-[#8b7db8] text-xs">{m.search.tryAnother}</p>
           </div>
         )}
 
         {!loading && posts.length > 0 && (
           <>
             <p className="text-stone-500 dark:text-[#8b7db8] text-xs mb-6 -mt-6">
-              {posts.length} result{posts.length !== 1 ? 's' : ''}
+              {m.search.resultCount(posts.length)}
             </p>
             <div className="grid gap-5 sm:grid-cols-2">
               {posts.map(p => <PostCard key={p.slug} post={p} />)}

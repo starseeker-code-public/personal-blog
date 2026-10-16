@@ -15,7 +15,7 @@ from sqlalchemy.orm import selectinload
 from app.config import settings
 from app.database import get_db
 from app.models.post import Post
-from app.schemas.post import FeedPage, PortfolioPost, PostOut, WebhookRequest
+from app.schemas.post import FeedPage, Lang, PortfolioPost, PostOut, WebhookRequest
 from app.security import require_admin
 from app.services.cache import cache_delete_pattern, cache_get, cache_set
 
@@ -37,10 +37,11 @@ def _load_options():
 @router.get("", response_model=FeedPage)
 async def get_feed(
     page: int = Query(1, ge=1, le=FEED_MAX_PAGE),
+    lang: Lang = Query(Lang.EN),
     db: AsyncSession = Depends(get_db),
 ):
-    """Last 9 published posts, paginated at 3 per page (max page=3)."""
-    cache_key = f"feed:p{page}"
+    """Last 9 published posts, paginated at 3 per page (max page=3), in `lang`."""
+    cache_key = f"feed:p{page}:{lang.value}"
     if cached := await cache_get(cache_key):
         return cached
 
@@ -61,7 +62,7 @@ async def get_feed(
     page_posts = window_posts[start:end]
 
     response = FeedPage(
-        items=[PostOut.from_orm_post(p) for p in page_posts],
+        items=[PostOut.from_orm_post(p, lang.value) for p in page_posts],
         page=page,
         page_size=FEED_PAGE_SIZE,
         total_pages=total_pages,

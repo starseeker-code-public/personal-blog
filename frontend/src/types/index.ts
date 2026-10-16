@@ -1,3 +1,5 @@
+import type { Lang } from '../i18n/config'
+
 export interface Author {
   name: string
   avatar?: string
@@ -7,6 +9,10 @@ export interface Author {
 
 export interface Post {
   slug: string
+  /** Language of title, excerpt and body: the one asked for, or English when the post has no translation. */
+  lang: Lang
+  /** Languages the post is written in, English first. */
+  availableLangs: Lang[]
   title: string
   excerpt: string
   body: string
@@ -18,6 +24,13 @@ export interface Post {
   tags: string[]
   category: string
   author?: Author
+}
+
+/** A post as the admin endpoints return it: the English fields plus the Spanish translation. */
+export interface AdminPost extends Post {
+  titleEs: string
+  excerptEs: string
+  bodyEs: string
 }
 
 export interface Category {

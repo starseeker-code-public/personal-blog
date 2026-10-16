@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { format } from 'date-fns'
 import type { Post as PostType } from '../types'
 import { api, SITE, resolveImageUrl } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { TagList, Prose } from '../components/ui'
 import { IcoArrowLeft, IcoGithub, IcoGlobe } from '../components/icons'
+import { useI18n } from '../i18n'
 
 function ReadingProgress() {
   const [progress, setProgress] = useState(0)
@@ -34,6 +34,7 @@ function ReadingProgress() {
 
 export default function Post() {
   const { slug } = useParams<{ slug: string }>()
+  const { lang, m, path, date, category } = useI18n()
   const [post, setPost] = useState<PostType | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -41,11 +42,12 @@ export default function Post() {
   useEffect(() => {
     if (!slug) return
     setLoading(true)
-    api.getPost(slug)
+    setError(null)
+    api.getPost(slug, lang)
       .then(setPost)
       .catch(e => setError(e.message))
       .finally(() => setLoading(false))
-  }, [slug])
+  }, [slug, lang])
 
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
@@ -64,42 +66,53 @@ export default function Post() {
 
         {error && (
           <div className="text-center py-20">
-            <p className="text-stone-600 dark:text-[#c9beed] text-lg mb-2">Post not found</p>
+            <p className="text-stone-600 dark:text-[#c9beed] text-lg mb-2">{m.post.notFound}</p>
             <p className="text-stone-500 dark:text-[#8b7db8] text-sm mb-6">{error}</p>
-            <Link to="/" className="text-[#798777] dark:text-amber-400 hover:text-[#798777]/80 dark:hover:text-amber-300 text-sm">
-              ← Back to blog
+            <Link to={path('/')} className="text-[#798777] dark:text-amber-400 hover:text-[#798777]/80 dark:hover:text-amber-300 text-sm">
+              ← {m.common.backToBlog}
             </Link>
           </div>
         )}
 
         {post && (
-          <article>
+          <article lang={post.lang}>
             {/* Back link */}
             <Link
-              to="/"
+              to={path('/')}
+              lang={lang}
               className="inline-flex items-center gap-2 text-stone-500 dark:text-[#8b7db8] hover:text-stone-700 dark:hover:text-[#c9beed] text-sm mb-8 transition-colors"
             >
               <IcoArrowLeft />
-              Back to blog
+              {m.common.backToBlog}
             </Link>
 
+            {/* Not translated into this language yet: say so before the original. */}
+            {post.lang !== lang && (
+              <p
+                lang={lang}
+                className="mb-8 rounded-lg border border-amber-400/50 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm text-stone-700 dark:text-[#c9beed]"
+              >
+                {m.post.untranslated(m.languages[post.lang])}
+              </p>
+            )}
+
             {/* Meta row: category · author · date · read time */}
-            <div className="flex flex-wrap items-center gap-2 text-xs mb-5">
+            <div lang={lang} className="flex flex-wrap items-center gap-2 text-xs mb-5">
               {post.category && (
                 <span className="bg-[#2a3428] border border-[#1a2818] text-[#f0ead8] px-2.5 py-1 rounded-full dark:bg-amber-500/10 dark:border-amber-500/30 dark:text-amber-300 tracking-widest uppercase">
-                  {post.category}
+                  {category(post.category)}
                 </span>
               )}
               {post.category && <span className="text-stone-400 dark:text-[#8b7db8]">·</span>}
               {post.author?.name && <span className="text-stone-600 dark:text-[#c9beed]">{post.author.name}</span>}
               {post.author?.name && <span className="text-stone-400 dark:text-[#8b7db8]">·</span>}
               <time className="text-stone-500 dark:text-[#8b7db8]" dateTime={post.publishedAt}>
-                {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
+                {date(post.publishedAt)}
               </time>
               {post.updatedAt && <span className="text-stone-400 dark:text-[#8b7db8]">·</span>}
-              {post.updatedAt && <span className="text-stone-500 dark:text-[#8b7db8]">Updated {format(new Date(post.updatedAt), 'MMM d, yyyy')}</span>}
+              {post.updatedAt && <span className="text-stone-500 dark:text-[#8b7db8]">{m.posts.updated(date(post.updatedAt, 'short'))}</span>}
               <span className="text-stone-400 dark:text-[#8b7db8]">·</span>
-              <span className="text-[#dd0000] dark:text-orange-400">{post.readTimeMinutes} min read</span>
+              <span className="text-[#dd0000] dark:text-orange-400">{m.posts.readTime(post.readTimeMinutes)}</span>
             </div>
 
             {/* Title */}
@@ -124,7 +137,7 @@ export default function Post() {
 
             {/* Tags — first 5 visible, rest collapse behind a "…" chip. */}
             {post.tags.length > 0 && (
-              <div className="mt-2 mb-8">
+              <div lang={lang} className="mt-2 mb-8">
                 <TagList tags={post.tags} maxVisible={5} linkable />
               </div>
             )}
@@ -135,9 +148,9 @@ export default function Post() {
               {/* Goodbye signature — always present, italic serif + Marck Script
                   sign-off. `clear: both` makes sure it settles below the
                   floated image regardless of how short the body is. */}
-              <div className="clear-both mt-12 pt-8 border-t border-stone-200 dark:border-[#322d5a] text-right">
+              <div lang={lang} className="clear-both mt-12 pt-8 border-t border-stone-200 dark:border-[#322d5a] text-right">
                 <p className="italic text-stone-600 dark:text-[#c9beed] font-serif text-base sm:text-lg leading-relaxed">
-                  So many stories yet to tell… may your sky stay curious, your compass stubborn, and your horizon a bit wider.
+                  {m.post.signOff}
                 </p>
                 <p
                   className="mt-3 text-2xl sm:text-3xl text-[#395144] dark:text-amber-400"

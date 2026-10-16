@@ -10,6 +10,7 @@ import AdminNewPost from './pages/AdminNewPost'
 import AdminUpdatePost from './pages/AdminUpdatePost'
 import AdminDreams from './pages/AdminDreams'
 import AdminInfo from './pages/AdminInfo'
+import { LangLayout, LangRedirect } from './components/i18n/LangLayout'
 import {
   PATH_LOGIN,
   PATH_ADMIN_NEW,
@@ -21,17 +22,26 @@ import {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/posts/:slug" element={<Post />} />
-      <Route path="/categories/:slug" element={<Category />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/search" element={<Search />} />
+      {/* Admin pages: no language prefix, English only. */}
       {PATH_LOGIN        && <Route path={PATH_LOGIN}        element={<Login />} />}
       {PATH_ADMIN_NEW    && <Route path={PATH_ADMIN_NEW}    element={<AdminNewPost />} />}
       {PATH_ADMIN_UPDATE && <Route path={PATH_ADMIN_UPDATE} element={<AdminUpdatePost />} />}
       {PATH_ADMIN_DREAMS && <Route path={PATH_ADMIN_DREAMS} element={<AdminDreams />} />}
       {PATH_ADMIN_INFO   && <Route path={PATH_ADMIN_INFO}   element={<AdminInfo />} />}
-      <Route path="*" element={<NotFound />} />
+
+      {/* Public pages, once per language: /en/..., /es/... */}
+      <Route path=":lang" element={<LangLayout />}>
+        <Route index element={<Home />} />
+        <Route path="posts/:slug" element={<Post />} />
+        <Route path="categories/:slug" element={<Category />} />
+        <Route path="tags/:slug" element={<Category kind="tag" />} />
+        <Route path="about" element={<About />} />
+        <Route path="search" element={<Search />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+
+      {/* `/` and any other path without a language go to the reader's language. */}
+      <Route path="*" element={<LangRedirect />} />
     </Routes>
   )
 }

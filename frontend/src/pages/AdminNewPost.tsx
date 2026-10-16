@@ -6,13 +6,26 @@ import { POST_TEMPLATE_GROUPS, type PostTemplate } from '../templates'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPencil, IcoDreams, IcoChart } from '../components/icons'
-import type { Post } from '../types'
+import { ContentLangBadges, ContentLangToggle, CONTENT_LANG_LABELS } from '../components/i18n/ContentLangToggle'
+import {
+  DEFAULT_LANG, EMPTY_CONTENT, MESSAGES,
+  adminContent, contentStatus, missingTranslationWarning,
+  type ContentStatus, type Lang, type PostContent,
+} from '../i18n'
+import type { AdminPost } from '../types'
 
 const inputClass =
   'w-full px-3 py-2 rounded-lg bg-[#faf6ee] dark:bg-[#1a1735] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#dd0000] dark:focus:border-amber-400 transition-colors'
 
-const labelClass =
-  'block text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] mb-2'
+const labelTextClass =
+  'block text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8]'
+
+const labelClass = `${labelTextClass} mb-2`
+
+const BODY_PLACEHOLDER: Record<Lang, string> = {
+  en: '# Hello\n\nWrite your post in **Markdown**.\n\n```python\nprint("hi")\n```',
+  es: '# Hola\n\nEscribe la versión en español en **Markdown**.\n\n```python\nprint("hola")\n```',
+}
 
 export default function AdminNewPost() {
   const navigate = useNavigate()
@@ -23,7 +36,7 @@ export default function AdminNewPost() {
   }, [navigate])
 
   // ── Drafts panel ──────────────────────────────────────────────────────────
-  const [drafts, setDrafts] = useState<Post[]>([])
+  const [drafts, setDrafts] = useState<AdminPost[]>([])
   const [draftsLoading, setDraftsLoading] = useState(true)
   const [publishingSlug, setPublishingSlug] = useState<string | null>(null)
 
@@ -46,10 +59,12 @@ export default function AdminNewPost() {
     navigate('/', { replace: true })
   }
 
-  async function handlePublishDraft(slug: string) {
-    setPublishingSlug(slug)
+  async function handlePublishDraft(d: AdminPost) {
+    const warning = missingTranslationWarning('es', contentStatus(adminContent(d).es))
+    if (warning && !window.confirm(warning)) return
+    setPublishingSlug(d.slug)
     try {
-      await api.publishDraft(slug)
+      await api.publishDraft(d.slug)
       logoutToBlog()
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Publish failed'
@@ -60,12 +75,14 @@ export default function AdminNewPost() {
   }
 
   // ── Form state ────────────────────────────────────────────────────────────
-  const [title, setTitle] = useState('')
-  const [excerpt, setExcerpt] = useState('')
+  // Title, excerpt and body are kept per language as you type; the ENG / ESP
+  // toggle picks which one the fields show. Everything else is shared.
+  const [content, setContent] = useState<Record<Lang, PostContent>>({ en: EMPTY_CONTENT, es: EMPTY_CONTENT })
+  const [editLang, setEditLang] = useState<Lang>(DEFAULT_LANG)
+  const { title, excerpt, body } = content[editLang]
   const [category, setCategory] = useState<PostCategory | ''>('')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [tagFilter, setTagFilter] = useState('')
-  const [body, setBody] = useState('')
   const [draft, setDraft] = useState(false)
   const [sendToLovedOne, setSendToLovedOne] = useState(false)
   const [coverImage, setCoverImage] = useState<string>('')
@@ -75,6 +92,15 @@ export default function AdminNewPost() {
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const status: Record<Lang, ContentStatus> = {
+    en: contentStatus(content.en),
+    es: contentStatus(content.es),
+  }
+
+  function setField(field: keyof PostContent, value: string) {
+    setContent(prev => ({ ...prev, [editLang]: { ...prev[editLang], [field]: value } }))
+  }
 
   // Reset tag selections + filter if the category changes — tags are scoped.
   useEffect(() => {
@@ -116,10 +142,11 @@ export default function AdminNewPost() {
   function applyTemplate(t: PostTemplate) {
     setTemplateMenuOpen(false)
     if (!t.body) return
-    if (body.trim() && body !== t.body && !window.confirm(`Replace the current body with the "${t.label}" template?`)) return
+    const language = MESSAGES.en.languages[editLang]
+    if (body.trim() && body !== t.body && !window.confirm(`Replace the ${language} body with the "${t.label}" template?`)) return
     setTemplate(t)
     setCategory(t.category)
-    setBody(t.body)
+    setField('body', t.body)
   }
 
   function toggleTag(t: string) {
@@ -142,9 +169,10 @@ export default function AdminNewPost() {
   }
 
   function resetForm() {
-    setTitle(''); setExcerpt(''); setCategory(''); setTemplate(null)
+    setContent({ en: EMPTY_CONTENT, es: EMPTY_CONTENT }); setEditLang(DEFAULT_LANG)
+    setCategory(''); setTemplate(null)
     setSelectedTags([]); setTagFilter('')
-    setBody(''); setDraft(false); setSendToLovedOne(false); setCoverImage('')
+    setDraft(false); setSendToLovedOne(false); setCoverImage('')
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -156,14 +184,25 @@ export default function AdminNewPost() {
       return
     }
 
+    // Drafts are work in progress; only ask once the post goes live.
+    const warning = draft ? null : missingTranslationWarning('es', status.es)
+    if (warning && !window.confirm(warning)) {
+      setEditLang('es')
+      return
+    }
+
     setSubmitting(true)
     const loveTagSelected = selectedTags.includes('love')
+    const { en, es } = content
 
     try {
       await api.createPost({
-        title: title.trim(),
-        excerpt: excerpt.trim(),
-        body,
+        title: en.title.trim(),
+        excerpt: en.excerpt.trim(),
+        body: en.body,
+        titleEs: es.title.trim(),
+        excerptEs: es.excerpt.trim(),
+        bodyEs: es.body,
         category: category || undefined,
         tags: selectedTags,
         draft,
@@ -185,6 +224,16 @@ export default function AdminNewPost() {
       setSubmitting(false)
     }
   }
+
+  // What still blocks saving. English is the primary language, so it's required.
+  const missing = [
+    !content.en.title.trim() && 'English title',
+    !content.en.body.trim() && 'English body',
+    !coverImage && 'cover image',
+  ].filter((x): x is string => Boolean(x))
+
+  // Marks the fields that belong to the language being edited.
+  const langMark = <span className="text-[#b72007] dark:text-amber-300">· {CONTENT_LANG_LABELS[editLang]}</span>
 
   if (!isAuthenticated()) return null
 
@@ -240,21 +289,24 @@ export default function AdminNewPost() {
                   className="rounded-xl border border-stone-200 dark:border-[#322d5a] bg-[#faf6ee] dark:bg-[#1a1735] p-4 flex flex-col gap-3"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-stone-900 dark:text-[#f0ecfd] font-medium text-sm truncate" style={{ fontFamily: 'Capriola' }} title={d.title}>
-                      {d.title || '(untitled)'}
+                    <p className="text-stone-900 dark:text-[#f0ecfd] font-medium text-sm truncate" style={{ fontFamily: 'Capriola' }} title={d.title || d.titleEs}>
+                      {d.title || d.titleEs || '(untitled)'}
                     </p>
-                    {d.excerpt && (
-                      <p className="text-stone-500 dark:text-[#8b7db8] text-xs mt-1 line-clamp-2">{d.excerpt}</p>
+                    {(d.excerpt || d.excerptEs) && (
+                      <p className="text-stone-500 dark:text-[#8b7db8] text-xs mt-1 line-clamp-2">{d.excerpt || d.excerptEs}</p>
                     )}
                   </div>
-                  <button
-                    onClick={() => handlePublishDraft(d.slug)}
-                    disabled={publishingSlug !== null}
-                    className="self-end px-3 py-1.5 rounded-lg bg-[#798777] hover:bg-[#5a6b58] dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-stone-900 text-xs font-medium tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    style={{ fontFamily: 'Capriola' }}
-                  >
-                    {publishingSlug === d.slug ? 'Publishing…' : 'Publish'}
-                  </button>
+                  <div className="flex items-center justify-between gap-2">
+                    <ContentLangBadges content={adminContent(d)} />
+                    <button
+                      onClick={() => handlePublishDraft(d)}
+                      disabled={publishingSlug !== null}
+                      className="px-3 py-1.5 rounded-lg bg-[#798777] hover:bg-[#5a6b58] dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-stone-900 text-xs font-medium tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ fontFamily: 'Capriola' }}
+                    >
+                      {publishingSlug === d.slug ? 'Publishing…' : 'Publish'}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -272,24 +324,34 @@ export default function AdminNewPost() {
           onSubmit={handleSubmit}
           className="rounded-xl border border-stone-200 dark:border-[#322d5a] bg-[#faf6ee] dark:bg-[#1a1735] p-7 space-y-6"
         >
+          {/* Language — title, excerpt and body are written once per language */}
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pb-6 border-b border-stone-200 dark:border-[#322d5a]">
+            <ContentLangToggle value={editLang} onChange={setEditLang} status={status} />
+            <p className="text-stone-500 dark:text-[#8b7db8] text-xs">
+              Title, excerpt and body are saved per language as you type. The rest is shared.
+            </p>
+          </div>
+
           {/* Title */}
           <div>
-            <label htmlFor="title" className={labelClass}>Title</label>
+            <label htmlFor="title" className={labelClass}>Title {langMark}</label>
             <input
-              id="title" type="text" value={title}
-              onChange={e => setTitle(e.target.value)}
-              className={inputClass} required autoFocus
+              id="title" type="text" value={title} lang={editLang}
+              onChange={e => setField('title', e.target.value)}
+              placeholder={editLang === DEFAULT_LANG ? undefined : content[DEFAULT_LANG].title}
+              className={inputClass} autoFocus
             />
           </div>
 
           {/* Excerpt */}
           <div>
             <label htmlFor="excerpt" className={labelClass}>
-              Excerpt <span className="lowercase tracking-normal text-stone-400 dark:text-[#8b7db8]">(short summary)</span>
+              Excerpt {langMark} <span className="lowercase tracking-normal text-stone-400 dark:text-[#8b7db8]">(short summary)</span>
             </label>
             <textarea
-              id="excerpt" rows={2} value={excerpt}
-              onChange={e => setExcerpt(e.target.value)}
+              id="excerpt" rows={2} value={excerpt} lang={editLang}
+              onChange={e => setField('excerpt', e.target.value)}
+              placeholder={editLang === DEFAULT_LANG ? undefined : content[DEFAULT_LANG].excerpt}
               className={`${inputClass} resize-none`}
             />
           </div>
@@ -436,15 +498,17 @@ export default function AdminNewPost() {
             )}
           </div>
 
-          {/* Body — Markdown */}
+          {/* Body — Markdown, per language */}
           <div>
-            <label htmlFor="body" className={labelClass}>Body (Markdown)</label>
+            <div className="flex items-end justify-between gap-3 mb-2">
+              <label htmlFor="body" className={labelTextClass}>Body (Markdown) {langMark}</label>
+              <ContentLangToggle value={editLang} onChange={setEditLang} status={status} />
+            </div>
             <textarea
-              id="body" rows={18} value={body}
-              onChange={e => setBody(e.target.value)}
+              id="body" rows={18} value={body} lang={editLang}
+              onChange={e => setField('body', e.target.value)}
               className={`${inputClass} font-mono text-sm leading-relaxed`}
-              placeholder={'# Hello\n\nWrite your post in **Markdown**.\n\n```python\nprint("hi")\n```'}
-              required
+              placeholder={BODY_PLACEHOLDER[editLang]}
             />
           </div>
 
@@ -477,14 +541,21 @@ export default function AdminNewPost() {
           {error && <p className="text-[#dd0000] dark:text-amber-400 text-sm">{error}</p>}
 
           <div className="flex items-center justify-end gap-4">
-            {selectedTags.length > 5 && (
-              <p className="text-[#dd0000] dark:text-orange-400 text-xs italic text-right">
-                * more than 5 tags selected ({selectedTags.length}) — the blog listings will collapse the extras behind a "…" chip
-              </p>
-            )}
+            <div className="space-y-1 text-right">
+              {missing.length > 0 && (
+                <p className="text-stone-500 dark:text-[#8b7db8] text-xs italic">
+                  Still needed: {missing.join(', ')}
+                </p>
+              )}
+              {selectedTags.length > 5 && (
+                <p className="text-[#dd0000] dark:text-orange-400 text-xs italic">
+                  * more than 5 tags selected ({selectedTags.length}) — the blog listings will collapse the extras behind a "…" chip
+                </p>
+              )}
+            </div>
             <button
               type="submit"
-              disabled={submitting || !title || !body || !coverImage}
+              disabled={submitting || missing.length > 0}
               className="shrink-0 px-6 py-2.5 rounded-lg bg-[#798777] hover:bg-[#5a6b58] dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-stone-900 text-sm font-medium tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ fontFamily: 'Capriola' }}
             >

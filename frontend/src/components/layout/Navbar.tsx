@@ -3,11 +3,13 @@ import { Link, useLocation } from 'react-router-dom'
 import { SITE } from '../../data'
 import { IcoGithub, IcoLinkedin, IcoMail, IcoMenu, IcoClose, IcoSun, IcoMoon } from '../icons'
 import { useTheme } from '../../context/ThemeContext'
+import { stripLang, useI18n } from '../../i18n'
+import { LanguageSwitcher } from '../i18n/LanguageSwitcher'
 
 const NAV_LINKS = [
-  { label: 'Blog', href: '/' },
-  { label: 'About', href: '/about' },
-]
+  { key: 'blog', href: '/' },
+  { key: 'about', href: '/about' },
+] as const
 
 const SOCIAL = [
   { key: 'github',   icon: <IcoGithub />,   href: SITE.social.github },
@@ -19,9 +21,11 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const { theme, toggle } = useTheme()
+  const { m, path } = useI18n()
 
   // Only show the link to the *other* page (not the one you're on)
-  const visibleLinks = NAV_LINKS.filter(l => l.href !== location.pathname)
+  const here = stripLang(location.pathname).replace(/(.)\/+$/, '$1')
+  const visibleLinks = NAV_LINKS.filter(l => l.href !== here)
 
   return (
     <nav
@@ -43,18 +47,18 @@ export default function Navbar() {
         {/* Nav links */}
         <ul className="hidden sm:flex gap-6 flex-1">
           {visibleLinks.map(l => (
-            <li key={l.label}>
+            <li key={l.key}>
               <Link
-                to={l.href}
+                to={path(l.href)}
                 className="text-sm text-stone-600 dark:text-[#c9beed] hover:text-[#4e6c50] dark:hover:text-[#f0ecfd] transition-colors"
               >
-                {l.label}
+                {m.nav[l.key]}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* Right side: social icons + theme toggle */}
+        {/* Right side: social icons + language + theme toggle */}
         <div className="hidden sm:flex items-center gap-3 ml-auto shrink-0">
           {SOCIAL.map(s => (
             <a
@@ -67,10 +71,13 @@ export default function Navbar() {
               {s.icon}
             </a>
           ))}
+          <div className="ml-1">
+            <LanguageSwitcher />
+          </div>
           <button
             onClick={toggle}
-            className="ml-1 p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"
-            aria-label="Toggle theme"
+            className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 hover:bg-[rgba(221,0,0,0.09)] dark:hover:bg-[#2d2855]/60 transition-colors"
+            aria-label={m.nav.toggleTheme}
           >
             {theme === 'dark' ? <IcoSun /> : <IcoMoon />}
           </button>
@@ -78,17 +85,18 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <div className="sm:hidden flex items-center gap-2 ml-auto">
+          <LanguageSwitcher />
           <button
             onClick={toggle}
             className="p-1.5 rounded-lg text-stone-500 dark:text-[#8b7db8] hover:text-[#dd0000] dark:hover:text-amber-400 transition-colors"
-            aria-label="Toggle theme"
+            aria-label={m.nav.toggleTheme}
           >
             {theme === 'dark' ? <IcoSun /> : <IcoMoon />}
           </button>
           <button
             className="text-stone-600 dark:text-[#c9beed]"
             onClick={() => setOpen(o => !o)}
-            aria-label="Toggle menu"
+            aria-label={m.nav.toggleMenu}
           >
             {open ? <IcoClose /> : <IcoMenu />}
           </button>
@@ -103,12 +111,12 @@ export default function Navbar() {
         >
           {visibleLinks.map(l => (
             <Link
-              key={l.label}
-              to={l.href}
+              key={l.key}
+              to={path(l.href)}
               onClick={() => setOpen(false)}
               className="block py-3 text-stone-700 dark:text-[#c9beed] hover:text-[#4e6c50] dark:hover:text-[#f0ecfd] text-sm border-b border-stone-200/70 dark:border-[#2d2855]/70 transition-colors"
             >
-              {l.label}
+              {m.nav[l.key]}
             </Link>
           ))}
 

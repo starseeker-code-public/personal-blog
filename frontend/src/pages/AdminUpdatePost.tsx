@@ -5,13 +5,21 @@ import { TAGS_BY_CATEGORY } from '../data/tags'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPlus, IcoSearch, IcoArrowLeft, IcoDreams, IcoChart } from '../components/icons'
-import type { Post } from '../types'
+import { ContentLangBadges, ContentLangToggle, CONTENT_LANG_LABELS } from '../components/i18n/ContentLangToggle'
+import {
+  DEFAULT_LANG, EMPTY_CONTENT,
+  adminContent, contentStatus, missingTranslationWarning,
+  type ContentStatus, type Lang, type PostContent,
+} from '../i18n'
+import type { AdminPost } from '../types'
 
 const inputClass =
   'w-full px-3 py-2 rounded-lg bg-[#faf6ee] dark:bg-[#1a1735] border border-stone-300 dark:border-[#322d5a] text-stone-900 dark:text-[#f0ecfd] placeholder:text-stone-400 dark:placeholder:text-[#8b7db8] focus:outline-none focus:border-[#dd0000] dark:focus:border-amber-400 transition-colors'
 
-const labelClass =
-  'block text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8] mb-2'
+const labelTextClass =
+  'block text-xs uppercase tracking-widest text-stone-500 dark:text-[#8b7db8]'
+
+const labelClass = `${labelTextClass} mb-2`
 
 /**
  * Admin edit flow — pick a post by title, then edit every field.
@@ -26,10 +34,10 @@ export default function AdminUpdatePost() {
   }, [navigate])
 
   // ── Post picker ────────────────────────────────────────────────────────────
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<AdminPost[]>([])
   const [loadingPosts, setLoadingPosts] = useState(true)
   const [titleQuery, setTitleQuery] = useState('')
-  const [selected, setSelected] = useState<Post | null>(null)
+  const [selected, setSelected] = useState<AdminPost | null>(null)
 
   useEffect(() => {
     if (!isAuthenticated()) return
@@ -43,37 +51,47 @@ export default function AdminUpdatePost() {
   const matches = useMemo(() => {
     const q = titleQuery.trim().toLowerCase()
     if (!q) return posts
-    return posts.filter(p => p.title.toLowerCase().includes(q))
+    return posts.filter(p => [p.title, p.titleEs].some(t => t.toLowerCase().includes(q)))
   }, [posts, titleQuery])
 
   // ── Form state ─────────────────────────────────────────────────────────────
-  const [title, setTitle] = useState('')
-  const [excerpt, setExcerpt] = useState('')
+  // Title, excerpt and body are kept per language as you type; the ENG / ESP
+  // toggle picks which one the fields show. Everything else is shared.
+  const [content, setContent] = useState<Record<Lang, PostContent>>({ en: EMPTY_CONTENT, es: EMPTY_CONTENT })
+  const [editLang, setEditLang] = useState<Lang>(DEFAULT_LANG)
+  const { title, excerpt, body } = content[editLang]
   const [category, setCategory] = useState<PostCategory | ''>('')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [tagFilter, setTagFilter] = useState('')
-  const [body, setBody] = useState('')
   const [draft, setDraft] = useState(false)
   const [coverImage, setCoverImage] = useState<string>('')
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  function hydrateForm(p: Post) {
-    setTitle(p.title)
-    setExcerpt(p.excerpt)
+  const status: Record<Lang, ContentStatus> = {
+    en: contentStatus(content.en),
+    es: contentStatus(content.es),
+  }
+
+  function setField(field: keyof PostContent, value: string) {
+    setContent(prev => ({ ...prev, [editLang]: { ...prev[editLang], [field]: value } }))
+  }
+
+  function hydrateForm(p: AdminPost) {
+    setContent(adminContent(p))
+    setEditLang(DEFAULT_LANG)
     // Category from the wire may be an empty string for the "uncategorised" row.
     const asCategory = POST_CATEGORIES.find(c => c === p.category) as PostCategory | undefined
     setCategory(asCategory ?? '')
     setSelectedTags(p.tags ?? [])
     setTagFilter('')
-    setBody(p.body)
     setDraft(Boolean(p.draft))
     setCoverImage(p.coverImage ?? '')
     setError(null)
   }
 
-  function pickPost(p: Post) {
+  function pickPost(p: AdminPost) {
     setSelected(p)
     hydrateForm(p)
   }
@@ -131,12 +149,24 @@ export default function AdminUpdatePost() {
       return
     }
 
+    // Only a half-written translation is worth asking about here: plenty of
+    // published posts are English-only, and editing them shouldn't nag.
+    const warning = !draft && status.es === 'partial' ? missingTranslationWarning('es', status.es) : null
+    if (warning && !window.confirm(warning)) {
+      setEditLang('es')
+      return
+    }
+
     setSubmitting(true)
+    const { en, es } = content
     try {
       await api.updatePost(selected.slug, {
-        title: title.trim(),
-        excerpt: excerpt.trim(),
-        body,
+        title: en.title.trim(),
+        excerpt: en.excerpt.trim(),
+        body: en.body,
+        titleEs: es.title.trim(),
+        excerptEs: es.excerpt.trim(),
+        bodyEs: es.body,
         category: category || undefined,
         tags: selectedTags,
         draft,
@@ -150,6 +180,16 @@ export default function AdminUpdatePost() {
       setSubmitting(false)
     }
   }
+
+  // What still blocks saving. English is the primary language, so it's required.
+  const missing = [
+    !content.en.title.trim() && 'English title',
+    !content.en.body.trim() && 'English body',
+    !coverImage && 'cover image',
+  ].filter((x): x is string => Boolean(x))
+
+  // Marks the fields that belong to the language being edited.
+  const langMark = <span className="text-[#b72007] dark:text-amber-300">· {CONTENT_LANG_LABELS[editLang]}</span>
 
   if (!isAuthenticated()) return null
 
@@ -232,13 +272,14 @@ export default function AdminUpdatePost() {
                     >
                       <div className="flex-1 min-w-0">
                         <p className="text-stone-900 dark:text-[#f0ecfd] font-medium text-sm truncate" style={{ fontFamily: 'Capriola' }}>
-                          {p.title || '(untitled)'}
+                          {p.title || p.titleEs || '(untitled)'}
                         </p>
                         <p className="text-stone-500 dark:text-[#8b7db8] text-xs mt-0.5">
                           {p.category || 'uncategorised'}
                           {p.draft && <span className="ml-2 text-[#dd0000] dark:text-amber-400">· draft</span>}
                         </p>
                       </div>
+                      <ContentLangBadges content={adminContent(p)} />
                     </button>
                   </li>
                 ))}
@@ -263,24 +304,34 @@ export default function AdminUpdatePost() {
               onSubmit={handleSubmit}
               className="rounded-xl border border-stone-200 dark:border-[#322d5a] bg-[#faf6ee] dark:bg-[#1a1735] p-7 space-y-6"
             >
+              {/* Language — title, excerpt and body are written once per language */}
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pb-6 border-b border-stone-200 dark:border-[#322d5a]">
+                <ContentLangToggle value={editLang} onChange={setEditLang} status={status} />
+                <p className="text-stone-500 dark:text-[#8b7db8] text-xs">
+                  Title, excerpt and body are saved per language as you type. The rest is shared.
+                </p>
+              </div>
+
               {/* Title */}
               <div>
-                <label htmlFor="title" className={labelClass}>Title</label>
+                <label htmlFor="title" className={labelClass}>Title {langMark}</label>
                 <input
-                  id="title" type="text" value={title}
-                  onChange={e => setTitle(e.target.value)}
-                  className={inputClass} required autoFocus
+                  id="title" type="text" value={title} lang={editLang}
+                  onChange={e => setField('title', e.target.value)}
+                  placeholder={editLang === DEFAULT_LANG ? undefined : content[DEFAULT_LANG].title}
+                  className={inputClass} autoFocus
                 />
               </div>
 
               {/* Excerpt */}
               <div>
                 <label htmlFor="excerpt" className={labelClass}>
-                  Excerpt <span className="lowercase tracking-normal text-stone-400 dark:text-[#8b7db8]">(short summary)</span>
+                  Excerpt {langMark} <span className="lowercase tracking-normal text-stone-400 dark:text-[#8b7db8]">(short summary)</span>
                 </label>
                 <textarea
-                  id="excerpt" rows={2} value={excerpt}
-                  onChange={e => setExcerpt(e.target.value)}
+                  id="excerpt" rows={2} value={excerpt} lang={editLang}
+                  onChange={e => setField('excerpt', e.target.value)}
+                  placeholder={editLang === DEFAULT_LANG ? undefined : content[DEFAULT_LANG].excerpt}
                   className={`${inputClass} resize-none`}
                 />
               </div>
@@ -375,14 +426,16 @@ export default function AdminUpdatePost() {
                 )}
               </div>
 
-              {/* Body */}
+              {/* Body — Markdown, per language */}
               <div>
-                <label htmlFor="body" className={labelClass}>Body (Markdown)</label>
+                <div className="flex items-end justify-between gap-3 mb-2">
+                  <label htmlFor="body" className={labelTextClass}>Body (Markdown) {langMark}</label>
+                  <ContentLangToggle value={editLang} onChange={setEditLang} status={status} />
+                </div>
                 <textarea
-                  id="body" rows={18} value={body}
-                  onChange={e => setBody(e.target.value)}
+                  id="body" rows={18} value={body} lang={editLang}
+                  onChange={e => setField('body', e.target.value)}
                   className={`${inputClass} font-mono text-sm leading-relaxed`}
-                  required
                 />
               </div>
 
@@ -401,14 +454,21 @@ export default function AdminUpdatePost() {
               {error && <p className="text-[#dd0000] dark:text-amber-400 text-sm">{error}</p>}
 
               <div className="flex items-center justify-end gap-4">
-                {selectedTags.length > 5 && (
-                  <p className="text-[#dd0000] dark:text-orange-400 text-xs italic text-right">
-                    * more than 5 tags selected ({selectedTags.length}) — the blog listings will collapse the extras behind a "…" chip
-                  </p>
-                )}
+                <div className="space-y-1 text-right">
+                  {missing.length > 0 && (
+                    <p className="text-stone-500 dark:text-[#8b7db8] text-xs italic">
+                      Still needed: {missing.join(', ')}
+                    </p>
+                  )}
+                  {selectedTags.length > 5 && (
+                    <p className="text-[#dd0000] dark:text-orange-400 text-xs italic">
+                      * more than 5 tags selected ({selectedTags.length}) — the blog listings will collapse the extras behind a "…" chip
+                    </p>
+                  )}
+                </div>
                 <button
                   type="submit"
-                  disabled={submitting || !title || !body || !coverImage}
+                  disabled={submitting || missing.length > 0}
                   className="shrink-0 px-6 py-2.5 rounded-lg bg-[#798777] hover:bg-[#5a6b58] dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-stone-900 text-sm font-medium tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ fontFamily: 'Capriola' }}
                 >

@@ -1,3 +1,5 @@
+import { useI18n } from '../../i18n'
+
 interface PaginationProps {
   page: number
   total: number
@@ -6,16 +8,18 @@ interface PaginationProps {
 }
 
 export function Pagination({ page, total, pageSize, onPageChange }: PaginationProps) {
+  const { m } = useI18n()
   const totalPages = Math.ceil(total / pageSize)
   if (totalPages <= 1) return null
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
 
   return (
-    <nav className="flex items-center justify-center gap-2 mt-12" aria-label="Pagination">
+    <nav className="flex items-center justify-center gap-2 mt-12" aria-label={m.pagination.label}>
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
+        aria-label={m.pagination.previous}
         className="px-3 py-1.5 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] text-sm
           hover:border-[#2a3428] hover:text-[#2a3428] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
@@ -26,6 +30,7 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
         <button
           key={p}
           onClick={() => onPageChange(p)}
+          aria-current={p === page ? 'page' : undefined}
           className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
             p === page
               ? 'bg-[#2a3428] dark:bg-amber-500 text-[#f0ead8] dark:text-[#0f0d24] border border-[#2a3428] dark:border-amber-400'
@@ -39,6 +44,7 @@ export function Pagination({ page, total, pageSize, onPageChange }: PaginationPr
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === totalPages}
+        aria-label={m.pagination.next}
         className="px-3 py-1.5 rounded-lg border border-stone-300 dark:border-[#322d5a] text-stone-600 dark:text-[#c9beed] text-sm
           hover:border-[#2a3428] hover:text-[#2a3428] dark:hover:border-amber-500 dark:hover:text-[#f0ecfd] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >

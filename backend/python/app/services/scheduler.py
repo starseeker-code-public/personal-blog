@@ -32,11 +32,17 @@ async def update_search_vectors() -> None:
                 """
                 UPDATE posts
                 SET search_vector = to_tsvector('english',
-                    coalesce(title, '') || ' ' ||
-                    coalesce(excerpt, '') || ' ' ||
-                    coalesce(body, '')
-                )
+                        coalesce(title, '') || ' ' ||
+                        coalesce(excerpt, '') || ' ' ||
+                        coalesce(body, '')
+                    ),
+                    search_vector_es = to_tsvector('spanish',
+                        coalesce(title_es, '') || ' ' ||
+                        coalesce(excerpt_es, '') || ' ' ||
+                        coalesce(body_es, '')
+                    )
                 WHERE search_vector IS NULL
+                   OR search_vector_es IS NULL
                    OR updated_at > now() - interval '10 minutes'
                 """
             )

@@ -1,9 +1,17 @@
-import { SITE } from '../data'
+import { Link } from 'react-router-dom'
+import { differenceInYears } from 'date-fns'
+import { CAREER_START, SITE } from '../data'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import {
   IcoGithub, IcoLinkedin, IcoDevTo, IcoGlobe,
 } from '../components/icons'
+import { useI18n, type Messages } from '../i18n'
+import fiveADayImage from '../../image/five-a-day.png'
+import engineeringImage from '../../image/engineering-rust.svg'
+import meAndMyLoveImage from '../../image/me-and-my-love-web.jpg'
+
+// The page's text lives in i18n/locales/<lang>.ts, under `about`.
 
 const SOCIALS = [
   { key: 'portfolio', label: 'Portfolio', icon: <IcoGlobe />,    href: SITE.portfolio },
@@ -12,40 +20,33 @@ const SOCIALS = [
   { key: 'devto',     label: 'Dev.to',    icon: <IcoDevTo />,    href: SITE.social.devto },
 ]
 
-const GALLERY = [
-  { url: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&q=80', caption: 'The night sky' },
-  { url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80', caption: 'Building things' },
-  { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', caption: 'Spain' },
-  { url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80', caption: 'Teaching' },
-  { url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80', caption: 'Late nights' },
-  { url: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80', caption: 'Traveling' },
+type AboutText = Messages['about']
+
+// Unsplash images are placeholders until the real photos are in frontend/image/.
+const GALLERY: { key: keyof AboutText['gallery']['captions']; image: string; position?: string }[] = [
+  { key: 'me',        image: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&q=80' },
+  { key: 'astronomy', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80' },
+  { key: 'warhammer', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80' },
+  { key: 'barista',   image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80' },
+  { key: 'tourism',   image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80' },
+  // A wide screenshot: keep its left side (logo and heading) in the square tile.
+  { key: 'fiveADay',  image: fiveADayImage, position: 'object-left' },
 ]
 
-const FEATURES = [
-  {
-    subtitle: 'Engineering',
-    title: 'Where Hard Problems Live',
-    text: 'Seven years building distributed systems in Python. APIs, microservices, event-driven architectures — and the particular education that only production failures can give. I write about what worked, what broke, and why.',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
-    alt: 'Circuit board close-up',
-  },
-  {
-    subtitle: 'Hobbies',
-    title: 'After the Terminal Closes',
-    text: 'A Dobsonian telescope, the Messier catalogue, and too many clear nights. Competitive coding to keep the instinct sharp. Learning German — slowly, stubbornly. Teaching Python because explaining it out loud is the only real test of understanding.',
-    image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=80',
-    alt: 'Starry night sky',
-  },
-  {
-    subtitle: 'Life & Lifestyle',
-    title: 'The Human Behind the Code',
-    text: 'Based in Albacete, working remotely. Bilingual in Spanish and English. Opinions formed over years of doing, not just reading. This blog is my honest record — the engineering, the hobbies, and everything in between.',
-    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80',
-    alt: 'Landscape and lifestyle',
-  },
+const FEATURES: { key: keyof AboutText['features']; image: string; position?: string }[] = [
+  { key: 'engineering', image: engineeringImage },
+  // Placeholder until the photo of me playing the piano is in.
+  { key: 'hobbies',     image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=80' },
+  // A portrait photo in a landscape frame: aim a little above the middle, at our faces.
+  { key: 'life',        image: meAndMyLoveImage, position: 'object-[50%_30%]' },
 ]
 
 export default function About() {
+  const { m, path } = useI18n()
+  const a = m.about
+  // Spelled out by each locale: "Eight years…" / "Ocho años…".
+  const years = differenceInYears(new Date(), CAREER_START)
+
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300">
       <Navbar />
@@ -58,23 +59,18 @@ export default function About() {
             className="text-5xl sm:text-6xl text-[#395144] dark:text-[#f0ecfd] mb-7 leading-none"
             style={{ fontFamily: 'Caveat' }}
           >
-            Hey, I'm Joaquín.
+            {a.greeting}
           </h1>
 
           <div className="space-y-4 text-stone-700 dark:text-[#c9beed] text-sm sm:text-base leading-relaxed text-justify">
             <p>
-              By day I'm a senior backend engineer at{' '}
+              {a.intro.workBefore}
               <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-[#dd0000] dark:text-amber-400 hover:underline">Allot</a>
-              , building cybersecurity infrastructure that processes ISP traffic at scale.
-              Seven years of distributed systems, Python, and the particular education you only get from production failures.
+              {a.intro.workAfter(years)}
             </p>
-            <p>
-              By night I point a telescope at the sky and wonder what's out there.
-            </p>
-            <p>
-              This is my personal corner of the internet. Not a portfolio, not a CV — just a place to write honestly
-              about engineering, hobbies, and life in a mid-sized Spanish city.
-            </p>
+            <p>{a.intro.notAll}</p>
+            <p>{a.intro.passions}</p>
+            <p>{a.intro.corner}</p>
           </div>
 
           {/* Social icons carousel — 4 icons, pause on hover */}
@@ -99,51 +95,50 @@ export default function About() {
         {/* ── Currently ─────────────────────────────────────────── */}
         <section>
           <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-4" style={{ fontFamily: 'Capriola' }}>
-            Currently
+            {a.currently.heading}
           </h2>
           <div className="rounded-xl border border-amber-400/50 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 p-5">
             <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
               <div>
-                <span className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium">Senior Python Backend Developer</span>
-                <span className="text-stone-500 dark:text-[#8b7db8] text-sm"> at </span>
+                <span className="text-stone-900 dark:text-[#f0ecfd] text-sm font-medium">{a.currently.role}</span>
+                <span className="text-stone-500 dark:text-[#8b7db8] text-sm">{a.currently.at}</span>
                 <a href="https://www.allot.com" target="_blank" rel="noopener noreferrer" className="text-[#dd0000] dark:text-amber-400 text-sm hover:underline">
                   Allot
                 </a>
               </div>
               <span className="text-[#798777] dark:text-amber-400 text-xs flex items-center gap-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400" />
-                May 2025 – Present
+                {a.currently.period}
               </span>
             </div>
             <p className="text-stone-600 dark:text-[#c9beed] text-xs leading-relaxed text-justify">
-              Part of the ASM team — a cybersecurity SaaS platform sold to ISPs worldwide.
-              Microservices in Python, Kafka, Redis, MongoDB. Processing millions of security events per second.
+              {a.currently.description}
             </p>
           </div>
           <p className="text-stone-500 dark:text-[#8b7db8] text-xs mt-3 pl-1">
-            Also teach advanced Python at{' '}
+            {a.currently.alsoBefore}
             <a href="https://www.tajamar.es" target="_blank" rel="noopener noreferrer" className="hover:text-stone-700 dark:hover:text-[#c9beed] transition-colors">Tajamar</a>
-            {' '}and mentor at PyLadies Madrid.
+            {a.currently.alsoAfter}
           </p>
         </section>
 
         {/* ── Outside the terminal (gallery) ────────────────────── */}
         <section>
           <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-6" style={{ fontFamily: 'Capriola' }}>
-            Outside the terminal
+            {a.gallery.heading}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {GALLERY.map((g, i) => (
-              <div key={i} className="group relative aspect-square overflow-hidden rounded-xl cursor-pointer border border-stone-200 dark:border-[#322d5a]">
+            {GALLERY.map(g => (
+              <div key={g.key} className="group relative aspect-square overflow-hidden rounded-xl cursor-pointer border border-stone-200 dark:border-[#322d5a]">
                 <img
-                  src={g.url}
-                  alt={g.caption}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  src={g.image}
+                  alt={a.gallery.captions[g.key]}
+                  className={`w-full h-full object-cover ${g.position ?? ''} transition-transform duration-500 group-hover:scale-110`}
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <p className="absolute bottom-0 left-0 right-0 px-3 py-2.5 text-stone-100 text-xs font-medium translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                  {g.caption}
+                  {a.gallery.captions[g.key]}
                 </p>
               </div>
             ))}
@@ -151,40 +146,56 @@ export default function About() {
         </section>
 
         {/* ── Feature sections ──────────────────────────────────── */}
-        {FEATURES.map((f, i) => (
-          <section key={f.subtitle}>
-            <div className={`flex flex-col sm:flex-row gap-6 items-center ${i % 2 === 1 ? 'sm:flex-row-reverse' : ''}`}>
-              <div className="w-full sm:w-2/5 aspect-[4/3] overflow-hidden rounded-xl border border-stone-200 dark:border-[#322d5a] shrink-0">
-                <img src={f.image} alt={f.alt} className="w-full h-full object-cover" loading="lazy" />
+        {FEATURES.map((f, i) => {
+          const feature = a.features[f.key]
+          // A feature's text may count the years of experience.
+          const text = feature.text
+          return (
+            <section key={f.key}>
+              <div className={`flex flex-col sm:flex-row gap-6 items-center ${i % 2 === 1 ? 'sm:flex-row-reverse' : ''}`}>
+                <div className="w-full sm:w-2/5 aspect-[4/3] overflow-hidden rounded-xl border border-stone-200 dark:border-[#322d5a] shrink-0">
+                  <img src={f.image} alt={feature.alt} className={`w-full h-full object-cover ${f.position ?? ''}`} loading="lazy" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs text-[#dd0000] dark:text-amber-400 tracking-widest uppercase mb-1">{feature.subtitle}</p>
+                  <h3
+                    className="text-stone-900 dark:text-[#f0ecfd] font-bold text-lg mb-3 leading-snug"
+                    style={{ fontFamily: 'Capriola' }}
+                  >
+                    {feature.title}
+                  </h3>
+                  <p className="text-stone-600 dark:text-[#c9beed] text-sm leading-relaxed text-justify">
+                    {typeof text === 'function' ? text(years) : text}
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="text-xs text-[#dd0000] dark:text-amber-400 tracking-widest uppercase mb-1">{f.subtitle}</p>
-                <h3
-                  className="text-stone-900 dark:text-[#f0ecfd] font-bold text-lg mb-3 leading-snug"
-                  style={{ fontFamily: 'Capriola' }}
-                >
-                  {f.title}
-                </h3>
-                <p className="text-stone-600 dark:text-[#c9beed] text-sm leading-relaxed text-justify">{f.text}</p>
-              </div>
-            </div>
-          </section>
-        ))}
+            </section>
+          )
+        })}
 
         {/* ── Personal project ──────────────────────────────────── */}
         <section>
           <h2 className="text-stone-900 dark:text-[#f0ecfd] font-semibold text-base mb-4" style={{ fontFamily: 'Capriola' }}>
-            A Tool Nobody Asked For
+            {a.project.heading}
           </h2>
           <p className="text-stone-600 dark:text-[#c9beed] text-sm leading-relaxed text-justify">
-            I'm building <span className="text-stone-900 dark:text-[#f0ecfd] font-medium">ObsidianSky</span> — a personal observation log for amateur astronomers. The premise is embarrassingly simple: two years into working through the Messier catalogue, I was still tracking sessions in a spreadsheet. That felt wrong for someone who writes distributed systems for a living. The goal is a lightweight Python backend with a clean interface to log sessions, sky conditions, equipment notes, and deep-sky object data — not for anyone else, just for me. Side projects are how I test ideas without the pressure of production. This one is half-finished and will probably always be.
+            {a.project.before}
+            <a
+              href="https://github.com/starseeker-code-public/joy-ai-rest-journaling-system"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-[#dd0000] dark:text-amber-400 hover:underline"
+            >
+              Joy
+            </a>
+            {a.project.after}
           </p>
         </section>
 
         <div>
-          <a href="/" className="text-[#798777] dark:text-amber-400 text-sm hover:text-[#4e6c50]/80 dark:hover:text-amber-300 transition-colors">
-            ← Read the blog
-          </a>
+          <Link to={path('/')} className="text-[#798777] dark:text-amber-400 text-sm hover:text-[#4e6c50]/80 dark:hover:text-amber-300 transition-colors">
+            {a.readTheBlog}
+          </Link>
         </div>
 
       </div>

@@ -73,6 +73,11 @@ class Post(Base):
     title: Mapped[str] = mapped_column(String(500))
     excerpt: Mapped[str] = mapped_column(Text, default="")
     body: Mapped[str] = mapped_column(Text, default="")
+    # Spanish translation. English (title/excerpt/body above) is the primary
+    # language; these stay empty until a translation is written.
+    title_es: Mapped[str] = mapped_column(String(500), default="", server_default="")
+    excerpt_es: Mapped[str] = mapped_column(Text, default="", server_default="")
+    body_es: Mapped[str] = mapped_column(Text, default="", server_default="")
     published_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -80,10 +85,12 @@ class Post(Base):
         DateTime(timezone=True), nullable=True
     )
     read_time_minutes: Mapped[int] = mapped_column(Integer, default=1)
+    read_time_minutes_es: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
     cover_image: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     draft: Mapped[bool] = mapped_column(Boolean, default=False)
-    # Full-text search vector — rebuilt periodically by APScheduler
+    # Full-text search vectors, one per language — rebuilt periodically by APScheduler
     search_vector = Column(TSVECTOR, nullable=True)
+    search_vector_es = Column(TSVECTOR, nullable=True)
 
     author_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey("authors.id"), nullable=True
@@ -103,5 +110,6 @@ class Post(Base):
     __table_args__ = (
         # GIN index enables fast full-text search queries
         Index("ix_posts_search_vector", "search_vector", postgresql_using="gin"),
+        Index("ix_posts_search_vector_es", "search_vector_es", postgresql_using="gin"),
         Index("ix_posts_published_at", "published_at"),
     )

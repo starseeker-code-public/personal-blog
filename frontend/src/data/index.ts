@@ -1,4 +1,5 @@
-import type { Category, PaginatedResponse, Post, Tag } from '../types'
+import type { AdminPost, Category, PaginatedResponse, Post, Tag } from '../types'
+import type { Lang } from '../i18n/config'
 import { getAuth } from '../utils/auth'
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
@@ -62,9 +63,14 @@ export const POST_CATEGORIES = ['Engineering', 'Hobbies', 'Personal Life'] as co
 export type PostCategory = typeof POST_CATEGORIES[number]
 
 export interface PostCreatePayload {
+  // English, the primary language. The slug is built from this title.
   title: string
   excerpt?: string
   body: string
+  // Spanish translation. A post shows in Spanish once it has a title and a body.
+  titleEs?: string
+  excerptEs?: string
+  bodyEs?: string
   tags?: string[]
   category?: PostCategory
   draft?: boolean
@@ -76,22 +82,26 @@ export const api = {
   listPosts: (
     page = 1,
     pageSize = 10,
-    options: { tag?: string; category?: string } = {},
+    options: { tag?: string; category?: string; lang?: Lang } = {},
   ) => {
     const params = new URLSearchParams({ page: String(page), pageSize: String(pageSize) })
     if (options.tag) params.set('tag', options.tag)
     if (options.category) params.set('category', options.category)
+    if (options.lang) params.set('lang', options.lang)
     return apiGet<PaginatedResponse<Post>>(`/api/posts?${params}`)
   },
 
-  getPost: (slug: string) => apiGet<Post>(`/api/posts/${slug}`),
+  /** A post in `lang`, or in English when it hasn't been translated. */
+  getPost: (slug: string, lang?: Lang) =>
+    apiGet<Post>(`/api/posts/${slug}${lang ? `?lang=${lang}` : ''}`),
 
   listCategories: () => apiGet<Category[]>('/api/categories'),
 
   listTags: () => apiGet<Tag[]>('/api/tags'),
 
-  search: (q: string, limit = 20) =>
-    apiGet<Post[]>(`/api/search?q=${encodeURIComponent(q)}&limit=${limit}`),
+  /** Searches both languages; results come back in `lang` where translated. */
+  search: (q: string, lang?: Lang, limit = 20) =>
+    apiGet<Post[]>(`/api/search?q=${encodeURIComponent(q)}&limit=${limit}${lang ? `&lang=${lang}` : ''}`),
 
   // ── Admin (authenticated) ─────────────────────────────────────────────────
 
@@ -103,21 +113,21 @@ export const api = {
 
   /** Create a new post. Requires the admin Basic Auth header in sessionStorage. */
   createPost: (payload: PostCreatePayload) =>
-    apiAuthRequest<Post>('POST', '/api/posts', payload),
+    apiAuthRequest<AdminPost>('POST', '/api/posts', payload),
 
   /** List all draft posts (admin-only). */
-  listDrafts: () => apiAuthRequest<Post[]>('GET', `${SECURE_PATH}/drafts`),
+  listDrafts: () => apiAuthRequest<AdminPost[]>('GET', `${SECURE_PATH}/drafts`),
 
   /** List every post, drafts + published, newest first (admin-only). */
-  listAllPosts: () => apiAuthRequest<Post[]>('GET', `${SECURE_PATH}/posts`),
+  listAllPosts: () => apiAuthRequest<AdminPost[]>('GET', `${SECURE_PATH}/posts`),
 
   /** Publish a draft by flipping draft=false. */
   publishDraft: (slug: string) =>
-    apiAuthRequest<Post>('PUT', `/api/posts/${slug}`, { draft: false }),
+    apiAuthRequest<AdminPost>('PUT', `/api/posts/${slug}`, { draft: false }),
 
   /** Update any existing post — admin-only. */
   updatePost: (slug: string, payload: Partial<PostCreatePayload>) =>
-    apiAuthRequest<Post>('PUT', `/api/posts/${slug}`, payload),
+    apiAuthRequest<AdminPost>('PUT', `/api/posts/${slug}`, payload),
 
   /** Upload an image; returns { url } pointing at /uploads/<filename>. */
   uploadImage: async (file: File): Promise<{ url: string }> => {
@@ -138,9 +148,12 @@ export const api = {
   },
 }
 
+/** First day of my career, 1 June 2018 (months are 0-based). About counts my years of experience from it. */
+export const CAREER_START = new Date(2018, 5, 1)
+
 export const SITE = {
   name: 'Joaquín · Blog',
-  tagline: 'Python, backends, and things worth writing down.',
+  // The tagline is translated: see `site.tagline` in i18n/locales.
   portfolio: 'https://joaquin-hm.com',
   author: {
     name: 'Joaquín Hernández Martínez',

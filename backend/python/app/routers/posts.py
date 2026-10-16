@@ -8,7 +8,7 @@ from sqlalchemy.orm import selectinload
 
 from app.database import get_db
 from app.models.post import Category, Post, Tag
-from app.schemas.post import PaginatedPosts, PostCreate, PostOut, PostUpdate
+from app.schemas.post import Lang, PaginatedPosts, PostAdminOut, PostCreate, PostOut, PostUpdate
 from app.security import require_admin
 from app.services.cache import cache_delete_pattern, cache_get, cache_set
 from app.services.mailer import send_love_letter
@@ -66,9 +66,10 @@ async def list_posts(
     tag: str | None = Query(None),
     category: str | None = Query(None),
     include_drafts: bool = Query(False, alias="includeDrafts"),
+    lang: Lang = Query(Lang.EN),
     db: AsyncSession = Depends(get_db),
 ):
-    cache_key = f"posts:list:p{page}:s{page_size}:tag={tag}:cat={category}:drafts={include_drafts}"
+    cache_key = f"posts:list:p{page}:s{page_size}:tag={tag}:cat={category}:drafts={include_drafts}:lang={lang.value}"
     if cached := await cache_get(cache_key):
         return cached
 
@@ -100,7 +101,7 @@ async def list_posts(
     posts = posts_result.scalars().all()
 
     response = PaginatedPosts(
-        items=[PostOut.from_orm_post(p) for p in posts],
+        items=[PostOut.from_orm_post(p, lang.value) for p in posts],
         total=total,
         page=page,
         page_size=page_size,
@@ -110,8 +111,12 @@ async def list_posts(
 
 
 @router.get("/{slug}", response_model=PostOut)
-async def get_post(slug: str, db: AsyncSession = Depends(get_db)):
-    cache_key = f"posts:slug:{slug}"
+async def get_post(
+    slug: str,
+    lang: Lang = Query(Lang.EN),
+    db: AsyncSession = Depends(get_db),
+):
+    cache_key = f"posts:slug:{slug}:{lang.value}"
     if cached := await cache_get(cache_key):
         return cached
 
@@ -124,12 +129,12 @@ async def get_post(slug: str, db: AsyncSession = Depends(get_db)):
     if post is None:
         raise HTTPException(status_code=404, detail="Post not found")
 
-    out = PostOut.from_orm_post(post)
+    out = PostOut.from_orm_post(post, lang.value)
     await cache_set(cache_key, out.model_dump(by_alias=True))
     return out
 
 
-@router.post("", response_model=PostOut, status_code=201)
+@router.post("", response_model=PostAdminOut, status_code=201)
 async def create_post(
     data: PostCreate,
     db: AsyncSession = Depends(get_db),
@@ -151,9 +156,13 @@ async def create_post(
         title=data.title,
         excerpt=data.excerpt,
         body=data.body,
+        title_es=data.title_es,
+        excerpt_es=data.excerpt_es,
+        body_es=data.body_es,
         cover_image=data.cover_image,
         draft=data.draft,
         read_time_minutes=_calc_read_time(data.body),
+        read_time_minutes_es=_calc_read_time(data.body_es),
         published_at=data.published_at or datetime.now(timezone.utc),
     )
 
@@ -186,10 +195,10 @@ async def create_post(
             excerpt=post.excerpt or "",
         )
 
-    return PostOut.from_orm_post(post)
+    return PostAdminOut.from_orm_post_admin(post)
 
 
-@router.put("/{slug}", response_model=PostOut)
+@router.put("/{slug}", response_model=PostAdminOut)
 async def update_post(
     slug: str,
     data: PostUpdate,
@@ -210,6 +219,13 @@ async def update_post(
     if data.body is not None:
         post.body = data.body
         post.read_time_minutes = _calc_read_time(data.body)
+    if data.title_es is not None:
+        post.title_es = data.title_es
+    if data.excerpt_es is not None:
+        post.excerpt_es = data.excerpt_es
+    if data.body_es is not None:
+        post.body_es = data.body_es
+        post.read_time_minutes_es = _calc_read_time(data.body_es)
     if data.cover_image is not None:
         post.cover_image = data.cover_image
     if data.draft is not None:
@@ -222,7 +238,7 @@ async def update_post(
     post.updated_at = datetime.now(timezone.utc)
     await db.commit()
 
-    await cache_delete_pattern(f"posts:slug:{slug}")
+    await cache_delete_pattern(f"posts:slug:{slug}:*")
     await cache_delete_pattern("posts:list:*")
     await cache_delete_pattern("feed:*")
 
@@ -230,7 +246,7 @@ async def update_post(
         select(Post).where(Post.id == post.id).options(*_load_options())
     )
     post = result.scalar_one()
-    return PostOut.from_orm_post(post)
+    return PostAdminOut.from_orm_post_admin(post)
 
 
 @router.delete("/{slug}", status_code=204)
@@ -247,6 +263,6 @@ async def delete_post(
     await db.delete(post)
     await db.commit()
 
-    await cache_delete_pattern(f"posts:slug:{slug}")
+    await cache_delete_pattern(f"posts:slug:{slug}:*")
     await cache_delete_pattern("posts:list:*")
     await cache_delete_pattern("feed:*")

@@ -14,6 +14,40 @@ class CategoryName(str, Enum):
     PERSONAL_LIFE = "Personal Life"
 
 
+class Lang(str, Enum):
+    """Content languages. English is the primary language; Spanish is the translation."""
+
+    EN = "en"
+    ES = "es"
+
+
+def available_langs(post) -> list[str]:
+    """Languages a post is written in: those with both a title and a body. English first."""
+    langs = []
+    if post.title and post.body:
+        langs.append(Lang.EN.value)
+    if post.title_es and post.body_es:
+        langs.append(Lang.ES.value)
+    return langs or [Lang.EN.value]
+
+
+def _content(post, lang: str) -> dict:
+    """The language-specific fields of a post, exactly as stored."""
+    if lang == Lang.ES.value:
+        return {
+            "title": post.title_es or "",
+            "excerpt": post.excerpt_es or "",
+            "body": post.body_es or "",
+            "read_time_minutes": post.read_time_minutes_es or 1,
+        }
+    return {
+        "title": post.title,
+        "excerpt": post.excerpt,
+        "body": post.body,
+        "read_time_minutes": post.read_time_minutes,
+    }
+
+
 class CamelModel(BaseModel):
     """Base model that serialises to camelCase on the wire, matching the frontend types."""
 
@@ -58,6 +92,10 @@ class CategoryWithCount(CategoryOut):
 
 class PostOut(CamelModel):
     slug: str
+    # Language of title / excerpt / body: the one requested, or English when
+    # the post has no translation in that language.
+    lang: str = Lang.EN.value
+    available_langs: list[str] = [Lang.EN.value]
     title: str
     excerpt: str
     body: str
@@ -71,7 +109,7 @@ class PostOut(CamelModel):
     author: Optional[AuthorOut] = None
 
     @classmethod
-    def from_orm_post(cls, post) -> "PostOut":
+    def from_orm_post(cls, post, lang: str = Lang.EN.value) -> "PostOut":
         author_out: Optional[AuthorOut] = None
         if post.author:
             socials: dict[str, str] = {}
@@ -86,14 +124,16 @@ class PostOut(CamelModel):
                 socials=socials or None,
             )
 
+        langs = available_langs(post)
+        shown = lang if lang in langs else langs[0]
+
         return cls(
             slug=post.slug,
-            title=post.title,
-            excerpt=post.excerpt,
-            body=post.body,
+            lang=shown,
+            available_langs=langs,
+            **_content(post, shown),
             published_at=post.published_at,
             updated_at=post.updated_at,
-            read_time_minutes=post.read_time_minutes,
             cover_image=post.cover_image,
             draft=post.draft,
             tags=[t.name for t in (post.tags or [])],
@@ -102,14 +142,38 @@ class PostOut(CamelModel):
         )
 
 
+class PostAdminOut(PostOut):
+    """Admin shape for editing: the English fields as stored, plus the Spanish translation."""
+
+    title_es: str = ""
+    excerpt_es: str = ""
+    body_es: str = ""
+
+    @classmethod
+    def from_orm_post_admin(cls, post) -> "PostAdminOut":
+        data = PostOut.from_orm_post(post).model_dump()
+        data.update(lang=Lang.EN.value, **_content(post, Lang.EN.value))
+        return cls(
+            **data,
+            title_es=post.title_es or "",
+            excerpt_es=post.excerpt_es or "",
+            body_es=post.body_es or "",
+        )
+
+
 # ---------------------------------------------------------------------------
 # Post input
 # ---------------------------------------------------------------------------
 
 class PostCreate(CamelModel):
+    # English, the primary language. The slug is built from this title.
     title: str
     excerpt: str = ""
     body: str = ""
+    # Spanish translation (optional).
+    title_es: str = ""
+    excerpt_es: str = ""
+    body_es: str = ""
     cover_image: Optional[str] = None
     draft: bool = False
     tags: list[str] = []
@@ -125,6 +189,9 @@ class PostUpdate(CamelModel):
     title: Optional[str] = None
     excerpt: Optional[str] = None
     body: Optional[str] = None
+    title_es: Optional[str] = None
+    excerpt_es: Optional[str] = None
+    body_es: Optional[str] = None
     cover_image: Optional[str] = None
     draft: Optional[bool] = None
     tags: Optional[list[str]] = None

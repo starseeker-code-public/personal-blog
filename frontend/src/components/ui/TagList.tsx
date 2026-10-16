@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Tag } from './Tag'
+import { useI18n } from '../../i18n'
 
 interface TagListProps {
   tags: string[]
@@ -16,6 +17,7 @@ interface TagListProps {
  */
 export function TagList({ tags, maxVisible = 5, linkable = false }: TagListProps) {
   const [expanded, setExpanded] = useState(false)
+  const { m } = useI18n()
 
   if (tags.length === 0) return null
 
@@ -41,8 +43,8 @@ export function TagList({ tags, maxVisible = 5, linkable = false }: TagListProps
             setExpanded(true)
           }}
           className="text-xs px-2 py-1 rounded-full bg-[rgba(221,0,0,0.07)] dark:bg-[#2d1f4e] text-[#dd0000] dark:text-[#a78bfa] border border-[rgba(221,0,0,0.42)] dark:border-[#4a3580] hover:bg-[rgba(221,0,0,0.15)] dark:hover:bg-[#3a2a5c] transition-colors whitespace-nowrap"
-          title={`Show ${hiddenCount} more tag${hiddenCount === 1 ? '' : 's'}`}
-          aria-label={`Show ${hiddenCount} more tag${hiddenCount === 1 ? '' : 's'}`}
+          title={m.posts.moreTags(hiddenCount)}
+          aria-label={m.posts.moreTags(hiddenCount)}
         >
           …
         </button>

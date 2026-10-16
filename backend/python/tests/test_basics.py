@@ -89,3 +89,39 @@ def test_post_create_rejects_unauthenticated(client: httpx.Client):
 def test_feed_webhook_rejects_unauthenticated(client: httpx.Client):
     r = client.post("/api/feed/webhook")
     assert r.status_code == 401
+
+
+# ---------------------------------------------------------------------------
+# Languages: English is the default, Spanish is optional per post
+# ---------------------------------------------------------------------------
+
+def test_posts_list_reports_each_posts_language(client: httpx.Client):
+    r = client.get("/api/posts")
+    assert r.status_code == 200
+    for item in r.json()["items"]:
+        assert item["lang"] in item["availableLangs"]
+
+
+def test_posts_list_accepts_spanish(client: httpx.Client):
+    r = client.get("/api/posts", params={"lang": "es"})
+    assert r.status_code == 200
+    for item in r.json()["items"]:
+        # Spanish when translated, otherwise the English original.
+        assert item["lang"] in item["availableLangs"]
+
+
+def test_posts_list_rejects_unsupported_language(client: httpx.Client):
+    r = client.get("/api/posts", params={"lang": "fr"})
+    assert r.status_code == 422
+
+
+def test_search_accepts_spanish(client: httpx.Client):
+    r = client.get("/api/search", params={"q": "python", "lang": "es"})
+    assert r.status_code == 200
+    assert isinstance(r.json(), list)
+
+
+def test_feed_accepts_spanish(client: httpx.Client):
+    r = client.get("/api/feed", params={"page": 1, "lang": "es"})
+    assert r.status_code == 200
+    assert r.json()["page"] == 1
