@@ -7,6 +7,7 @@ import Footer from '../components/layout/Footer'
 import { PostCard, Pagination } from '../components/ui'
 import { IcoSearch } from '../components/icons'
 import { useI18n } from '../i18n'
+import { usePageHead, websiteData } from '../seo'
 
 // Fades "Personal Blog" → "Visit my portfolio" after 5s
 function HeaderBadge() {
@@ -51,6 +52,13 @@ export default function Home() {
   const [page, setPage] = useState(1)
   const [data, setData] = useState<PaginatedResponse<Post> | null>(null)
   const [loading, setLoading] = useState(true)
+
+  usePageHead({
+    title: m.seo.homeTitle,
+    description: m.seo.homeDescription,
+    path: '/',
+    structuredData: websiteData(lang, m.seo.homeDescription),
+  })
 
   useEffect(() => {
     api.listCategories().then(setCategories).catch(() => {})

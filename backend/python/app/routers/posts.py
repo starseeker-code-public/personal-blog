@@ -8,7 +8,15 @@ from sqlalchemy.orm import selectinload
 
 from app.database import get_db
 from app.models.post import Category, Post, Tag
-from app.schemas.post import Lang, PaginatedPosts, PostAdminOut, PostCreate, PostOut, PostUpdate
+from app.schemas.post import (
+    Lang,
+    PaginatedPosts,
+    PostAdminOut,
+    PostCreate,
+    PostOut,
+    PostUpdate,
+    available_langs,
+)
 from app.security import require_admin
 from app.services.cache import cache_delete_pattern, cache_get, cache_set
 from app.services.mailer import send_love_letter
@@ -53,6 +61,31 @@ def _load_options():
         selectinload(Post.category),
         selectinload(Post.author),
     ]
+
+
+def _has_love_tag(post: Post) -> bool:
+    return any(t.name == "love" for t in post.tags)
+
+
+async def _send_pending_love_letter(db: AsyncSession, post: Post) -> None:
+    """Send the love letter a post is waiting on, once the post is live.
+
+    The opt-in is stored on the post, so a draft sends it when it's published.
+    The letter is in Spanish, or in English when the post has no Spanish
+    version. A failed send stays pending and is retried on the next save.
+    """
+    if not post.love_letter_pending or post.draft or not _has_love_tag(post):
+        return
+
+    if Lang.ES.value in available_langs(post):
+        lang, title, excerpt = Lang.ES.value, post.title_es, post.excerpt_es
+    else:
+        lang, title, excerpt = Lang.EN.value, post.title, post.excerpt
+
+    if send_love_letter(lang=lang, title=title, slug=post.slug, excerpt=excerpt or ""):
+        post.love_letter_pending = False
+        post.love_letter_sent_at = datetime.now(timezone.utc)
+        await db.commit()
 
 
 # ---------------------------------------------------------------------------
@@ -172,6 +205,8 @@ async def create_post(
     if data.tags:
         post.tags = [await _get_or_create_tag(db, t) for t in data.tags]
 
+    post.love_letter_pending = data.send_to_loved_one and _has_love_tag(post)
+
     db.add(post)
     await db.commit()
     await db.refresh(post)
@@ -185,16 +220,7 @@ async def create_post(
     await cache_delete_pattern("posts:list:*")
     await cache_delete_pattern("feed:*")
 
-    # Love-letter dispatch — only on publish, only when the composer ticked
-    # the opt-in box, only when the `love` tag is present. Failures here
-    # are logged but never block the publish response.
-    if data.send_to_loved_one and not post.draft and any(t.name == "love" for t in post.tags):
-        send_love_letter(
-            title=post.title,
-            slug=post.slug,
-            excerpt=post.excerpt or "",
-        )
-
+    await _send_pending_love_letter(db, post)
     return PostAdminOut.from_orm_post_admin(post)
 
 
@@ -234,6 +260,11 @@ async def update_post(
         post.category = await _get_or_create_category(db, data.category.value)
     if data.tags is not None:
         post.tags = [await _get_or_create_tag(db, t) for t in data.tags]
+    if data.send_to_loved_one is not None:
+        post.love_letter_pending = data.send_to_loved_one
+    # The letter announces a `love` post; dropping the tag drops the letter.
+    if not _has_love_tag(post):
+        post.love_letter_pending = False
 
     post.updated_at = datetime.now(timezone.utc)
     await db.commit()
@@ -246,6 +277,8 @@ async def update_post(
         select(Post).where(Post.id == post.id).options(*_load_options())
     )
     post = result.scalar_one()
+
+    await _send_pending_love_letter(db, post)
     return PostAdminOut.from_orm_post_admin(post)
 
 

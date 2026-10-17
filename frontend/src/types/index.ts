@@ -31,6 +31,10 @@ export interface AdminPost extends Post {
   titleEs: string
   excerptEs: string
   bodyEs: string
+  /** A love letter is waiting for the post to be published. */
+  sendToLovedOne: boolean
+  /** When the love letter last went out. */
+  loveLetterSentAt?: string
 }
 
 export interface Category {

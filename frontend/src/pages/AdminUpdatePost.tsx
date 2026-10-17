@@ -6,6 +6,7 @@ import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPlus, IcoSearch, IcoArrowLeft, IcoDreams, IcoChart } from '../components/icons'
 import { ContentLangBadges, ContentLangToggle, CONTENT_LANG_LABELS } from '../components/i18n/ContentLangToggle'
+import { LoveLetterToggle } from '../components/admin/LoveLetterToggle'
 import {
   DEFAULT_LANG, EMPTY_CONTENT,
   adminContent, contentStatus, missingTranslationWarning,
@@ -64,6 +65,7 @@ export default function AdminUpdatePost() {
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [tagFilter, setTagFilter] = useState('')
   const [draft, setDraft] = useState(false)
+  const [sendToLovedOne, setSendToLovedOne] = useState(false)
   const [coverImage, setCoverImage] = useState<string>('')
   const [uploading, setUploading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -87,6 +89,8 @@ export default function AdminUpdatePost() {
     setSelectedTags(p.tags ?? [])
     setTagFilter('')
     setDraft(Boolean(p.draft))
+    // Ticked while a letter is still waiting to go out (e.g. on a draft).
+    setSendToLovedOne(Boolean(p.sendToLovedOne))
     setCoverImage(p.coverImage ?? '')
     setError(null)
   }
@@ -171,6 +175,7 @@ export default function AdminUpdatePost() {
         tags: selectedTags,
         draft,
         coverImage,
+        sendToLovedOne: selectedTags.includes('love') && sendToLovedOne,
       })
       logoutToBlog()
     } catch (err) {
@@ -450,6 +455,14 @@ export default function AdminUpdatePost() {
                   Keep as draft (won't appear on the blog)
                 </span>
               </label>
+
+              {/* Love-tag companion toggle — only appears when `love` is selected. */}
+              {selectedTags.includes('love') && (
+                <LoveLetterToggle
+                  checked={sendToLovedOne} onChange={setSendToLovedOne}
+                  spanish={status.es} draft={draft} sentAt={selected.loveLetterSentAt}
+                />
+              )}
 
               {error && <p className="text-[#dd0000] dark:text-amber-400 text-sm">{error}</p>}
 

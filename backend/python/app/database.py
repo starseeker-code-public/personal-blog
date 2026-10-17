@@ -42,6 +42,9 @@ _MIGRATIONS = [
     "ALTER TABLE posts ADD COLUMN IF NOT EXISTS read_time_minutes_es INTEGER NOT NULL DEFAULT 1",
     "ALTER TABLE posts ADD COLUMN IF NOT EXISTS search_vector_es TSVECTOR",
     "CREATE INDEX IF NOT EXISTS ix_posts_search_vector_es ON posts USING gin (search_vector_es)",
+    # Love-letter opt-in, kept until the post is published, and when it was sent.
+    "ALTER TABLE posts ADD COLUMN IF NOT EXISTS love_letter_pending BOOLEAN NOT NULL DEFAULT FALSE",
+    "ALTER TABLE posts ADD COLUMN IF NOT EXISTS love_letter_sent_at TIMESTAMPTZ",
 ]
 
 

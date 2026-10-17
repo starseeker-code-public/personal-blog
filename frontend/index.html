@@ -4,8 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      Default title and share card. The app swaps the data-seo tags for each
+      page's own (src/seo). Crawlers don't run the app, so nginx.conf gives
+      them the page's tags from the backend in place of this block instead,
+      and keeps the block when the backend doesn't answer in time.
+    -->
+    <!--# block name="page_head" -->
     <title>Joaquín · Blog</title>
-    <meta name="description" content="Python, backends, and things worth writing down." />
+    <meta name="description" content="My personal corner of the internet: honest writing about Python and backend engineering, my hobbies, and life in Albacete, Spain." data-seo />
+    <meta property="og:site_name" content="Joaquín · Blog" data-seo />
+    <meta property="og:type" content="website" data-seo />
+    <meta property="og:title" content="Joaquín · Blog — Python, backends, and things worth writing down" data-seo />
+    <meta property="og:description" content="My personal corner of the internet: honest writing about Python and backend engineering, my hobbies, and life in Albacete, Spain." data-seo />
+    <meta property="og:image" content="https://joaquin-blog.uk/og/default.jpg" data-seo />
+    <meta property="og:image:width" content="864" data-seo />
+    <meta property="og:image:height" content="864" data-seo />
+    <meta property="og:image:alt" content="Me in a white shirt, leaning on a stone railing in a park" data-seo />
+    <meta name="twitter:card" content="summary" data-seo />
+    <!--# endblock -->
+    <!--# include virtual="/__seo$request_uri" stub="page_head" -->
     <script>
       (function () {
         var s = localStorage.getItem('theme');

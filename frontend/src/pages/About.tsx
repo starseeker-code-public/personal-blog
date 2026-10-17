@@ -7,6 +7,7 @@ import {
   IcoGithub, IcoLinkedin, IcoDevTo, IcoGlobe,
 } from '../components/icons'
 import { useI18n, type Messages } from '../i18n'
+import { profileData, usePageHead } from '../seo'
 import fiveADayImage from '../../image/five-a-day.png'
 import engineeringImage from '../../image/engineering-rust.svg'
 import meAndMyLoveImage from '../../image/me-and-my-love-web.jpg'
@@ -50,10 +51,18 @@ const FEATURES: { key: keyof AboutText['features']; image: string; position?: st
 ]
 
 export default function About() {
-  const { m, path } = useI18n()
+  const { lang, m, path } = useI18n()
   const a = m.about
   // Spelled out by each locale: "Eight years…" / "Ocho años…".
   const years = differenceInYears(new Date(), CAREER_START)
+
+  usePageHead({
+    title: m.seo.aboutTitle,
+    description: m.seo.aboutDescription,
+    path: '/about',
+    type: 'profile',
+    structuredData: profileData(lang, a.currently.role),
+  })
 
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300">

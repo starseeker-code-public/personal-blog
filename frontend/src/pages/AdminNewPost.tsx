@@ -7,6 +7,7 @@ import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
 import { IcoSun, IcoMoon, IcoPencil, IcoDreams, IcoChart } from '../components/icons'
 import { ContentLangBadges, ContentLangToggle, CONTENT_LANG_LABELS } from '../components/i18n/ContentLangToggle'
+import { LoveLetterToggle } from '../components/admin/LoveLetterToggle'
 import {
   DEFAULT_LANG, EMPTY_CONTENT, MESSAGES,
   adminContent, contentStatus, missingTranslationWarning,
@@ -526,16 +527,10 @@ export default function AdminNewPost() {
 
           {/* Love-tag companion toggle — only appears when `love` is selected. */}
           {selectedTags.includes('love') && (
-            <label className="flex items-center gap-3 cursor-pointer select-none">
-              <input
-                type="checkbox" checked={sendToLovedOne}
-                onChange={e => setSendToLovedOne(e.target.checked)}
-                className="w-4 h-4 accent-[#dd0000] dark:accent-amber-400"
-              />
-              <span className="text-sm text-stone-700 dark:text-[#c9beed]">
-                send email to loved one
-              </span>
-            </label>
+            <LoveLetterToggle
+              checked={sendToLovedOne} onChange={setSendToLovedOne}
+              spanish={status.es} draft={draft}
+            />
           )}
 
           {error && <p className="text-[#dd0000] dark:text-amber-400 text-sm">{error}</p>}

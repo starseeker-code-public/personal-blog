@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { useI18n } from '../i18n'
+import { usePageHead } from '../seo'
 
 export default function NotFound() {
   const { m, path } = useI18n()
+  usePageHead({ title: m.seo.notFoundTitle, description: m.notFound.text, noindex: true })
 
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300">

@@ -76,6 +76,10 @@ services:
         VITE_PATH_ADMIN_DREAMS: ${VITE_PATH_ADMIN_DREAMS}
         VITE_PATH_ADMIN_INFO: ${VITE_PATH_ADMIN_INFO}
     restart: unless-stopped
+    environment:
+      # Where nginx asks for crawlers' <head> (frontend/nginx.conf): the backend
+      # container, since VITE_API_BASE is the address the browser uses.
+      SEO_API_ORIGIN: http://backend:8000
     ports:
       - "3001:80"
     depends_on:

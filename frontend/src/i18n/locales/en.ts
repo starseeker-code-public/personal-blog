@@ -52,6 +52,24 @@ const en = {
     tagline: 'Python, backends, and things worth writing down.',
   },
 
+  /**
+   * Titles, descriptions and share cards (WhatsApp, Instagram, X…). Crawlers
+   * get them from the backend instead, so backend/python/app/services/seo.py
+   * keeps a copy of these: change both.
+   */
+  seo: {
+    homeTitle: 'Joaquín · Blog — Python, backends, and things worth writing down',
+    homeDescription:
+      'My personal corner of the internet: honest writing about Python and backend engineering, my hobbies, and life in Albacete, Spain.',
+    aboutTitle: 'About me',
+    aboutDescription:
+      "Hey, I'm Joaquín: a senior backend engineer at Allot, building cybersecurity software at scale. By night, I point a telescope at the sky.",
+    categoryDescription: (category: string) => `Posts about ${category.toLowerCase()} on Joaquín's personal blog.`,
+    tagDescription: (tag: string) => `Posts tagged #${tag} on Joaquín's personal blog.`,
+    notFoundTitle: 'Page not found',
+    defaultImageAlt: 'Me in a white shirt, leaning on a stone railing in a park',
+  },
+
   common: {
     backToBlog: 'Back to blog',
     allPosts: 'All posts',

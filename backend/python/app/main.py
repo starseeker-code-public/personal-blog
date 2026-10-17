@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.database import create_tables
 from app.redis_client import close_redis, get_redis
-from app.routers import admin, auth, categories, feed, health, posts, search, tags
+from app.routers import admin, auth, categories, feed, health, posts, search, seo, tags
 from app.services.scheduler import setup_scheduler, update_search_vectors
 
 logging.basicConfig(level=logging.INFO)
@@ -76,6 +76,7 @@ app.include_router(categories.router)
 app.include_router(tags.router)
 app.include_router(search.router)
 app.include_router(feed.router)
+app.include_router(seo.router)
 
 # Uploaded images are served from /uploads. Backed by a Docker volume so
 # files survive container rebuilds (see docker-compose.yml).
@@ -96,33 +97,4 @@ async def rss_feed():
     return JSONResponse({"detail": "Feed not yet generated"}, status_code=503)
 
 
-@app.get("/sitemap.xml", include_in_schema=False)
-async def sitemap():
-    """Minimal sitemap — every published post, in English and, when translated, Spanish."""
-    from sqlalchemy import select
-
-    from app.database import AsyncSessionLocal
-    from app.models.post import Post
-
-    async with AsyncSessionLocal() as db:
-        result = await db.execute(
-            select(Post.slug, Post.updated_at, Post.title_es, Post.body_es)
-            .where(Post.draft.is_(False))
-            .order_by(Post.published_at.desc())
-        )
-        rows = result.all()
-
-    def entry(lang: str, row) -> str:
-        lastmod = f"<lastmod>{row.updated_at.date().isoformat()}</lastmod>" if row.updated_at else ""
-        return f"  <url><loc>{settings.site_url}/{lang}/posts/{row.slug}</loc>{lastmod}</url>"
-
-    urls = "\n".join(
-        "\n".join(
-            [entry("en", row)] + ([entry("es", row)] if row.title_es and row.body_es else [])
-        )
-        for row in rows
-    )
-    xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>'
-    from fastapi.responses import Response
-
-    return Response(content=xml, media_type="application/xml")
+# /sitemap.xml lives in routers/seo.py, next to the page heads it shares its rules with.

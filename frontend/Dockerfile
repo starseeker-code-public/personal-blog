@@ -23,6 +23,14 @@ RUN npm run build
 
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# A template: the image's entrypoint fills it in when the container starts.
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+# Where nginx asks for crawlers' <head> (see nginx.conf): the backend the app
+# calls, unless the container is given another address (docker-compose does).
+ARG VITE_API_BASE=http://localhost:8000
+ENV SEO_API_ORIGIN=$VITE_API_BASE
+# Hand nginx the container's DNS servers, and fill in only these two variables.
+ENV NGINX_ENTRYPOINT_LOCAL_RESOLVERS=1
+ENV NGINX_ENVSUBST_FILTER="^(SEO_API_ORIGIN|NGINX_LOCAL_RESOLVERS)"
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

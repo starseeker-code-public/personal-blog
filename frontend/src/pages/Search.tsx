@@ -7,6 +7,7 @@ import Footer from '../components/layout/Footer'
 import { Section, SectionHeading, PostCard } from '../components/ui'
 import { IcoArrowLeft } from '../components/icons'
 import { useI18n } from '../i18n'
+import { usePageHead } from '../seo'
 
 export default function Search() {
   const [searchParams] = useSearchParams()
@@ -15,6 +16,9 @@ export default function Search() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Results pages stay out of search engines, and the query stays out of the title.
+  usePageHead({ title: m.search.title, description: m.seo.homeDescription, noindex: true })
 
   useEffect(() => {
     if (!query.trim()) return

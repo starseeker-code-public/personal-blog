@@ -117,6 +117,19 @@ const es: Messages = {
     tagline: 'Python, backends y cosas que merece la pena escribir.',
   },
 
+  seo: {
+    homeTitle: 'Joaquín · Blog — Python, backends y cosas que merece la pena escribir',
+    homeDescription:
+      'Mi rincón personal de internet: escribo con honestidad sobre Python e ingeniería backend, mis aficiones y la vida en Albacete.',
+    aboutTitle: 'Sobre mí',
+    aboutDescription:
+      'Hola, soy Joaquín: ingeniero backend sénior en Allot, donde construyo software de ciberseguridad a gran escala. Por la noche, apunto un telescopio al cielo.',
+    categoryDescription: category => `Artículos sobre ${category.toLowerCase()} en el blog personal de Joaquín.`,
+    tagDescription: tag => `Artículos con la etiqueta #${tag} en el blog personal de Joaquín.`,
+    notFoundTitle: 'Página no encontrada',
+    defaultImageAlt: 'Yo con camisa blanca, apoyado en una barandilla de piedra en un parque',
+  },
+
   common: {
     backToBlog: 'Volver al blog',
     allPosts: 'Todos los artículos',
@@ -174,7 +187,7 @@ const es: Messages = {
     untranslated: original =>
       `Este artículo aún no está traducido al español, así que estás leyendo la versión original en ${original}.`,
     signOff:
-      'Quedan tantas historias por contar… que tu cielo siga siendo curioso, tu brújula testaruda y tu horizonte, un poco más amplio.',
+      'Quedan tantas historias por contar… que tu cielo siga lleno de sorpresas, tu brújula con caminos por explorar y tu horizonte, un poco más amplio.',
   },
 
   category: {
@@ -224,7 +237,7 @@ const es: Messages = {
         astronomy: 'Astronomía',
         warhammer: 'Warhammer',
         barista: 'Café de barista',
-        tourism: 'Turismo',
+        tourism: 'Mi viaje a Santorini',
         fiveADay: 'Five a Day, proyecto freelance',
       },
     },

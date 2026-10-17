@@ -75,6 +75,7 @@ export interface PostCreatePayload {
   category?: PostCategory
   draft?: boolean
   coverImage?: string
+  // Email the love letter once the post is published. Needs the `love` tag.
   sendToLovedOne?: boolean
 }
 

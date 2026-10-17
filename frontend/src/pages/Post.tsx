@@ -6,7 +6,26 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { TagList, Prose } from '../components/ui'
 import { IcoArrowLeft, IcoGithub, IcoGlobe } from '../components/icons'
-import { useI18n } from '../i18n'
+import { useI18n, type I18n } from '../i18n'
+import { postData, usePageHead, type PageHead } from '../seo'
+
+/** The post's tags for search engines and share cards: its title, excerpt and cover image. */
+function postHead(post: PostType, { m, category, tag }: I18n): PageHead {
+  const cover = post.coverImage ? new URL(resolveImageUrl(post.coverImage)!, window.location.href).href : undefined
+  const section = post.category ? category(post.category) : undefined
+  return {
+    title: post.title,
+    description: post.excerpt.replace(/\s+/g, ' ').trim() || m.seo.homeDescription,
+    path: `/posts/${post.slug}`,
+    langs: post.availableLangs,
+    contentLang: post.lang,
+    image: cover ? { url: cover, alt: post.title } : undefined,
+    type: 'article',
+    noindex: post.draft,
+    article: { publishedTime: post.publishedAt, modifiedTime: post.updatedAt, section },
+    structuredData: postData(post, { image: cover, section, keywords: post.tags.map(tag) }),
+  }
+}
 
 function ReadingProgress() {
   const [progress, setProgress] = useState(0)
@@ -34,7 +53,8 @@ function ReadingProgress() {
 
 export default function Post() {
   const { slug } = useParams<{ slug: string }>()
-  const { lang, m, path, date, category } = useI18n()
+  const i18n = useI18n()
+  const { lang, m, path, date, category } = i18n
   const [post, setPost] = useState<PostType | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -48,6 +68,13 @@ export default function Post() {
       .catch(e => setError(e.message))
       .finally(() => setLoading(false))
   }, [slug, lang])
+
+  // A post that doesn't exist is kept out of search engines; one that failed to load just gets no tags.
+  usePageHead(
+    error?.startsWith('404') ? { title: m.post.notFound, description: m.notFound.text, noindex: true }
+    : !error && post && post.slug === slug ? postHead(post, i18n)
+    : null,
+  )
 
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300">

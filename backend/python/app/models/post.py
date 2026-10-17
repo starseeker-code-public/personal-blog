@@ -88,6 +88,12 @@ class Post(Base):
     read_time_minutes_es: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
     cover_image: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     draft: Mapped[bool] = mapped_column(Boolean, default=False)
+    # Love-letter email: asked for but not sent yet (the post is still a draft,
+    # or the last attempt failed), and when it last went out.
+    love_letter_pending: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    love_letter_sent_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     # Full-text search vectors, one per language — rebuilt periodically by APScheduler
     search_vector = Column(TSVECTOR, nullable=True)
     search_vector_es = Column(TSVECTOR, nullable=True)

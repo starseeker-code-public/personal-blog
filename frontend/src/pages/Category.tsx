@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import type { Category as CategoryType, Post, PaginatedResponse } from '../types'
-import { api } from '../data'
+import { api, POST_CATEGORIES } from '../data'
 import { TAGS_BY_CATEGORY } from '../data/tags'
 import { slugify } from '../utils/slugify'
 import Navbar from '../components/layout/Navbar'
@@ -9,9 +9,13 @@ import Footer from '../components/layout/Footer'
 import { Section, SectionHeading, PostCard, Pagination } from '../components/ui'
 import { IcoArrowLeft } from '../components/icons'
 import { useI18n } from '../i18n'
+import { usePageHead } from '../seo'
 
 // Every known tag by its slug, so a tag page can show the tag's name.
 const TAG_BY_SLUG = new Map(Object.values(TAGS_BY_CATEGORY).flat().map(t => [slugify(t), t]))
+
+// The categories by their slug. A page for any other slug has no posts to show.
+const CATEGORY_BY_SLUG = new Map(POST_CATEGORIES.map(c => [slugify(c), c]))
 
 interface CategoryProps {
   /** `tag` lists the posts with a tag (`/tags/:slug`) instead of a category. */
@@ -53,6 +57,14 @@ export default function Category({ kind = 'category' }: CategoryProps) {
   }, [slug, kind, page, lang])
 
   const tagLabel = slug ? tagName(TAG_BY_SLUG.get(slug) ?? slug.replace(/-/g, ' ')) : ''
+  const known = slug ? CATEGORY_BY_SLUG.get(slug) : undefined
+
+  usePageHead(
+    !slug ? null
+    : kind === 'tag' ? { title: `#${tagLabel}`, description: m.seo.tagDescription(tagLabel), path: `/tags/${slug}` }
+    : known ? { title: categoryName(known), description: m.seo.categoryDescription(categoryName(known)), path: `/categories/${slug}` }
+    : { title: m.seo.notFoundTitle, description: m.notFound.text, noindex: true },
+  )
 
   return (
     <div className="min-h-screen bg-[#efead8] dark:bg-[#0f0d24] font-sans transition-colors duration-300">

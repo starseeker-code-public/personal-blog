@@ -60,6 +60,7 @@ A proof-of-concept personal blog built to explore the FastAPI + React stack. Sty
   - [Features](#features)
     - [Backend Features](#backend-features)
     - [Frontend Features](#frontend-features)
+    - [Search engines and link previews](#search-engines-and-link-previews)
     - [Pages](#pages)
       - [Home](#home)
       - [Post (`/posts/:slug`)](#post-postsslug)
@@ -341,10 +342,12 @@ personal-blog/
 │       │   │   ├── categories.py
 │       │   │   ├── tags.py
 │       │   │   ├── search.py   # Full-text search
+│       │   │   ├── seo.py      # Page <head> for crawlers + sitemap
 │       │   │   └── health.py   # DB + Redis health check
 │       │   │
 │       │   └── services/
 │       │       ├── cache.py    # Redis get/set/delete helpers
+│       │       ├── seo.py      # Titles, share cards, hreflang, sitemap (EN/ES)
 │       │       └── scheduler.py # APScheduler background jobs
 │       │
 │       ├── requirements.txt
@@ -354,6 +357,7 @@ personal-blog/
     ├── src/
     │   ├── types/index.ts      # TypeScript interfaces (Post, Category, Tag, ...)
     │   ├── data/index.ts       # API client + SITE constants
+    │   ├── seo/                # Per-page title, canonical, hreflang, share card, schema.org
     │   ├── utils/slugify.ts
     │   │
     │   ├── components/
@@ -375,8 +379,9 @@ personal-blog/
     │       ├── Search.tsx
     │       └── NotFound.tsx
     │
+    ├── public/                 # robots.txt, og/default.jpg (default share image)
     ├── tailwind.config.js      # Includes @tailwindcss/typography
-    ├── nginx.conf              # SPA fallback for production
+    ├── nginx.conf              # SPA fallback; crawlers get each page's <head> (a template)
     └── Dockerfile              # Multi-stage: Node build → Nginx serve
 ```
 
@@ -407,7 +412,8 @@ personal-blog/
   - Every hour: generates `/feed.xml` (Atom/RSS feed via feedgen)
   - Every hour: warms the Redis cache
 - **RSS feed** — served at `/feed.xml`, regenerated hourly
-- **Sitemap** — served at `/sitemap.xml`, generated on request
+- **Sitemap** — served at `/sitemap.xml`, generated on request: home, About, categories and posts, each in its languages with `hreflang` links
+- **Page heads for crawlers** — `GET /seo/head/{path}` gives a page's title, description, canonical link and share card in the page's language (see [Search engines and link previews](#search-engines-and-link-previews))
 - **Tag and category filtering** — `GET /api/posts?tag=redis&category=backend`
 - **Pagination** — `GET /api/posts?page=2&pageSize=10`
 - **Auto slug generation** — derived from the post title with collision handling
@@ -430,6 +436,17 @@ personal-blog/
 - **Author card** — shown at the bottom of each post when author data is present
 - **RSS link** — in the footer, pointing to `/feed.xml` on the backend
 - **Star rating display** — decorative star component used across post cards
+- **Search engines and share cards** — every page sets its own title, description, canonical and `hreflang` links, Open Graph tags and schema.org data, in its language
+
+### Search engines and link previews
+
+Every public page describes itself in its own language: title, description, canonical link, `hreflang` links between its English and Spanish versions, Open Graph and Twitter card tags, and schema.org data. A post's share card shows its cover image and excerpt; other pages use `frontend/public/og/default.jpg`. Search results and missing pages are `noindex`.
+
+- **In the browser**, `src/seo` sets the tags for each page (`usePageHead`). That's what readers and Google see.
+- **Crawlers that don't run JavaScript** — the ones behind link previews (WhatsApp, Instagram and Facebook, X, LinkedIn, Telegram, Slack, Discord…) — and search engines are recognised by nginx from their user agent. They get the same `index.html` with the page's tags already in its `<head>`: nginx includes them (SSI) from the backend's `GET /seo/head/{path}`. If the backend doesn't answer within 4 seconds, they get `index.html`'s default tags. People always get `index.html` as it is.
+- **`robots.txt`** points to `/sitemap.xml`, which nginx serves from the backend on the site's own domain.
+
+The text lives in `src/i18n/locales/{en,es}.ts` (`seo`), with a copy for crawlers in `backend/python/app/services/seo.py`: change both. Links point to `https://joaquin-blog.uk` (`SITE_URL` in `src/seo/head.ts` and the backend's `SITE_URL` setting).
 
 ### Pages
 
@@ -739,7 +756,8 @@ The webhook invalidates the feed cache (`feed:*`) and the post-list cache (`post
 | `GET` | `/api/search?q=...` | Full-text search (PostgreSQL tsvector) |
 | `GET` | `/health` | DB + Redis health check |
 | `GET` | `/feed.xml` | Atom/RSS feed |
-| `GET` | `/sitemap.xml` | XML sitemap |
+| `GET` | `/sitemap.xml` | XML sitemap, every page in each of its languages with `hreflang` links |
+| `GET` | `/seo/head/{path}` | A public page's `<head>` tags in its language, for crawlers (nginx includes it) |
 | `GET` | `/docs` | Interactive API docs (Swagger UI) |
 | `GET` | `/redoc` | ReDoc API docs |
 
@@ -859,7 +877,7 @@ postgresql+asyncpg://postgres.PROJECT_ID:PASSWORD@aws-0-REGION.pooler.supabase.c
 | `SUPABASE_URL` | `https://PROJECT_ID.supabase.co` |
 | `SUPABASE_SERVICE_KEY` | the `service_role` key from step 1 |
 | `ALLOWED_ORIGINS` | `https://personal-blog-frontend-jjzy.onrender.com` |
-| `SITE_URL` | `https://personal-blog-frontend-jjzy.onrender.com` |
+| `SITE_URL` | `https://joaquin-blog.uk` — the public domain: canonical links, share cards and the sitemap point to it |
 | `LOGIN_USERNAME` | your admin username |
 | `LOGIN_PASSWORD` | your admin password |
 | `SECURE_PATH` | a secret path prefix |
@@ -889,6 +907,8 @@ postgresql+asyncpg://postgres.PROJECT_ID:PASSWORD@aws-0-REGION.pooler.supabase.c
 | `VITE_PATH_ADMIN_UPDATE` | your update path |
 | `VITE_PATH_ADMIN_DREAMS` | your dreams path |
 | `VITE_PATH_ADMIN_INFO` | your info path |
+
+nginx also asks the backend at `VITE_API_BASE` for the `<head>` it gives crawlers (see [Search engines and link previews](#search-engines-and-link-previews)). To use another address, set `SEO_API_ORIGIN` on the service; docker-compose sets it to the backend container.
 
 1. Click **Create Web Service**.
 

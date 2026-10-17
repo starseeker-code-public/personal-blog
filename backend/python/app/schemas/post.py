@@ -148,6 +148,9 @@ class PostAdminOut(PostOut):
     title_es: str = ""
     excerpt_es: str = ""
     body_es: str = ""
+    # Love letter waiting for the post to be published, and when one last went out.
+    send_to_loved_one: bool = False
+    love_letter_sent_at: Optional[datetime] = None
 
     @classmethod
     def from_orm_post_admin(cls, post) -> "PostAdminOut":
@@ -158,6 +161,8 @@ class PostAdminOut(PostOut):
             title_es=post.title_es or "",
             excerpt_es=post.excerpt_es or "",
             body_es=post.body_es or "",
+            send_to_loved_one=bool(post.love_letter_pending),
+            love_letter_sent_at=post.love_letter_sent_at,
         )
 
 
@@ -180,8 +185,8 @@ class PostCreate(CamelModel):
     category: Optional[CategoryName] = None
     author_name: Optional[str] = None
     published_at: Optional[datetime] = None
-    # Opt-in by the composer. The backend fires the love-letter email only
-    # when this is True AND `draft` is False AND the `love` tag is present.
+    # Opt-in by the composer, needs the `love` tag. The love-letter email goes
+    # out once the post is published: now, or later when a draft is published.
     send_to_loved_one: bool = False
 
 
@@ -196,6 +201,9 @@ class PostUpdate(CamelModel):
     draft: Optional[bool] = None
     tags: Optional[list[str]] = None
     category: Optional[CategoryName] = None
+    # Same opt-in as on create. None keeps whatever the post already has, so
+    # publishing a draft with `{draft: false}` still sends a letter it asked for.
+    send_to_loved_one: Optional[bool] = None
 
 
 # ---------------------------------------------------------------------------
