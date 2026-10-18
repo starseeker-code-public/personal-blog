@@ -306,9 +306,17 @@ def _build_text_fallback(*, lang: str, title: str, slug: str, excerpt: str) -> s
     )
 
 
+def _as_sentence(text: str) -> str:
+    """The excerpt as the letter quotes it: closed with a full stop when the
+    post left it without closing punctuation."""
+    text = text.strip()
+    return text if not text or text[-1] in ".!?…»”\"')" else f"{text}."
+
+
 def send_love_letter(*, lang: str, title: str, slug: str, excerpt: str) -> bool:
     """Dispatch the love-letter invitation in `lang` ("en" or "es"), or log it
     when SMTP is unconfigured. Returns False only when the dispatch failed."""
+    excerpt = _as_sentence(excerpt)
     recipient = settings.loved_one_email
     sender = settings.smtp_from or settings.smtp_username or f"blog@{settings.site_url.split('//')[-1].split('/')[0]}"
 
