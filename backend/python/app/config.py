@@ -17,7 +17,8 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     secret_key: str
     allowed_origins: str = "http://localhost:5173,http://localhost:3000"
-    site_name: str = "Joaquín · Blog"
+    # The RSS feed's title. Pages take theirs, per language, from services/seo.py.
+    site_name: str = "Joaquín's Blog"
     site_url: str = "http://localhost:3000"
     cache_ttl: int = 300
     posts_per_page: int = 10

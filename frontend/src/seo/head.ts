@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { SITE } from '../data'
 import { DEFAULT_LANG, MESSAGES, SUPPORTED_LANGS, useI18n, withLang, type Lang } from '../i18n'
 
 /**
@@ -24,7 +23,7 @@ export function pageUrl(lang: Lang, path: string): string {
 
 /** What a page tells search engines and share cards (WhatsApp, Instagram, X…) about itself. */
 export interface PageHead {
-  /** The page's title. The tab adds the site's name after it, except on the home page. */
+  /** The page's title. The tab reads "title – site name", except on the home page. */
   title: string
   description: string
   /**
@@ -67,7 +66,7 @@ function tagsFor(lang: Lang, head: PageHead): Tag[] {
   }
 
   tags.push(
-    meta('og:site_name', SITE.name),
+    meta('og:site_name', MESSAGES[lang].site.name),
     meta('og:type', head.type ?? 'website'),
     meta('og:title', head.title),
     meta('og:description', head.description),
@@ -106,7 +105,8 @@ function tagsFor(lang: Lang, head: PageHead): Tag[] {
  */
 export function setPageHead(lang: Lang, head: PageHead | null): void {
   for (const el of document.head.querySelectorAll('[data-seo]')) el.remove()
-  document.title = !head ? SITE.name : head.path === '/' ? head.title : `${head.title} | ${SITE.name}`
+  const site = MESSAGES[lang].site.name
+  document.title = !head ? site : head.path === '/' ? head.title : `${head.title} – ${site}`
   if (!head) return
 
   for (const [name, attrs] of tagsFor(lang, head)) {
@@ -122,6 +122,14 @@ export function setPageHead(lang: Lang, head: PageHead | null): void {
     script.setAttribute('data-seo', '')
     document.head.append(script)
   }
+}
+
+/** The tab's title alone, for the admin pages: they aren't public, so they need no tags. */
+export function usePageTitle(title: string): void {
+  const { m } = useI18n()
+  useEffect(() => {
+    document.title = `${title} – ${m.site.name}`
+  }, [title, m])
 }
 
 /** Sets the page's title, description, canonical link and share card. `null` until it has its data. */

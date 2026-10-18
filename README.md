@@ -437,7 +437,7 @@ personal-blog/
 - **RSS link** — in the footer, pointing to `/feed.xml` on the backend
 - **Star rating display** — decorative star component used across post cards
 - **Search engines and share cards** — every page sets its own title, description, canonical and `hreflang` links, Open Graph tags and schema.org data, in its language
-- **Favicon** — a faceted North Star in gold on the night sky (`frontend/public/favicon.svg`). `favicon.ico`, `apple-touch-icon.png` and the icons in `manifest.webmanifest` are renders of it: redo them when it changes
+- **Favicon** — a black hole after the Event Horizon Telescope's image of M87*: a glowing ring round a dark shadow, on the night sky (`frontend/public/favicon.svg`). `favicon.ico`, `apple-touch-icon.png` and the icons in `manifest.webmanifest` are renders of it: redo them when it changes
 
 ### Search engines and link previews
 

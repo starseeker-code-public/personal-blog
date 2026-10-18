@@ -26,6 +26,12 @@ def test_spanish_about_head_is_in_spanish(client: httpx.Client):
     assert "Sobre mí" in r.text
 
 
+def test_titles_name_the_site_in_the_pages_language(client: httpx.Client):
+    assert "<title>El blog de Joaquín</title>" in client.get("/seo/head/es").text
+    assert "<title>About me – Joaquín's Blog</title>" in client.get("/seo/head/en/about").text
+    assert 'property="og:site_name" content="El blog de Joaquín"' in client.get("/seo/head/es/about").text
+
+
 def test_unknown_post_head_is_not_indexed(client: httpx.Client):
     r = client.get("/seo/head/es/posts/this-slug-does-not-exist-zzz999")
     assert r.status_code == 200

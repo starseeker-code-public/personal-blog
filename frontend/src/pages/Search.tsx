@@ -17,8 +17,8 @@ export default function Search() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Results pages stay out of search engines, and the query stays out of the title.
-  usePageHead({ title: m.search.title, description: m.seo.homeDescription, noindex: true })
+  // Results pages stay out of search engines.
+  usePageHead({ title: m.seo.searchTitle(query.trim()), description: m.seo.homeDescription, noindex: true })
 
   useEffect(() => {
     if (!query.trim()) return

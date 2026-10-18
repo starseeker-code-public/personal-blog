@@ -4,6 +4,7 @@ import { api, PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_ADMIN_DREAMS, PATH_LOGIN }
 import { readJson, store, storedKeys } from '../utils/browserStore'
 import { isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
+import { usePageTitle } from '../seo'
 import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoDreams, IcoStar } from '../components/icons'
 import { CharCount } from '../components/admin/CharCount'
 import type { Post } from '../types'
@@ -48,6 +49,7 @@ function isWithinDays(dateStr: string, days: number): boolean {
 export default function AdminInfo() {
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
+  usePageTitle('Analytics')
 
   useEffect(() => {
     if (!isAuthenticated()) navigate(PATH_LOGIN || '/', { replace: true })

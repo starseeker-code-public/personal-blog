@@ -61,7 +61,7 @@ export default function Category({ kind = 'category' }: CategoryProps) {
 
   usePageHead(
     !slug ? null
-    : kind === 'tag' ? { title: `#${tagLabel}`, description: m.seo.tagDescription(tagLabel), path: `/tags/${slug}` }
+    : kind === 'tag' ? { title: m.seo.tagTitle(tagLabel), description: m.seo.tagDescription(tagLabel), path: `/tags/${slug}` }
     : known ? { title: categoryName(known), description: m.seo.categoryDescription(categoryName(known)), path: `/categories/${slug}` }
     : { title: m.seo.notFoundTitle, description: m.notFound.text, noindex: true },
   )

@@ -54,7 +54,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
   usePageHead({
-    title: m.seo.homeTitle,
+    title: m.site.name,
     description: m.seo.homeDescription,
     path: '/',
     structuredData: websiteData(lang, m.seo.homeDescription),
@@ -96,7 +96,7 @@ export default function Home() {
         <header className="text-center mb-10">
           <HeaderBadge />
           <h1 className="text-5xl sm:text-6xl text-[#395144] dark:text-[#f0ecfd] mb-3 font-caveat leading-none">
-            {SITE.name}
+            {m.site.name}
           </h1>
           <p className="text-stone-500 dark:text-[#8b7db8] text-sm">{m.site.tagline}</p>
         </header>

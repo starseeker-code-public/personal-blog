@@ -114,18 +114,20 @@ const es: Messages = {
   },
 
   site: {
+    name: 'El blog de Joaquín',
     tagline: 'Python, backends y cosas que merece la pena escribir.',
   },
 
   seo: {
-    homeTitle: 'Joaquín · Blog — Python, backends y cosas que merece la pena escribir',
     homeDescription:
       'Mi rincón personal de internet: escribo con honestidad sobre Python e ingeniería backend, mis aficiones y la vida en Albacete.',
     aboutTitle: 'Sobre mí',
     aboutDescription:
       'Hola, soy Joaquín: ingeniero backend sénior en Allot, donde construyo software de ciberseguridad a gran escala. Por la noche, apunto un telescopio al cielo.',
     categoryDescription: category => `Artículos sobre ${category.toLowerCase()} en el blog personal de Joaquín.`,
+    tagTitle: tag => `Artículos con la etiqueta ${tag}`,
     tagDescription: tag => `Artículos con la etiqueta #${tag} en el blog personal de Joaquín.`,
+    searchTitle: query => (query ? `Búsqueda: ${query}` : 'Búsqueda'),
     notFoundTitle: 'Página no encontrada',
     defaultImageAlt: 'Yo con camisa blanca, apoyado en una barandilla de piedra en un parque',
   },

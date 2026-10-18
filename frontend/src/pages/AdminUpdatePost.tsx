@@ -4,6 +4,7 @@ import { api, POST_CATEGORIES, resolveImageUrl, type PostCategory, PATH_ADMIN_NE
 import { TAGS_BY_CATEGORY } from '../data/tags'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
+import { usePageTitle } from '../seo'
 import { IcoSun, IcoMoon, IcoPlus, IcoSearch, IcoArrowLeft, IcoDreams, IcoChart } from '../components/icons'
 import { ContentLangBadges, ContentLangToggle, CONTENT_LANG_LABELS } from '../components/i18n/ContentLangToggle'
 import { LoveLetterToggle } from '../components/admin/LoveLetterToggle'
@@ -29,6 +30,7 @@ const labelClass = `${labelTextClass} mb-2`
 export default function AdminUpdatePost() {
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
+  usePageTitle('Edit post')
 
   useEffect(() => {
     if (!isAuthenticated()) navigate(PATH_LOGIN || '/', { replace: true })

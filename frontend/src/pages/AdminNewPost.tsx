@@ -5,6 +5,7 @@ import { TAGS_BY_CATEGORY } from '../data/tags'
 import { POST_TEMPLATE_GROUPS, type PostTemplate } from '../templates'
 import { clearAuth, isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
+import { usePageTitle } from '../seo'
 import { IcoSun, IcoMoon, IcoPencil, IcoDreams, IcoChart } from '../components/icons'
 import { ContentLangBadges, ContentLangToggle, CONTENT_LANG_LABELS } from '../components/i18n/ContentLangToggle'
 import { LoveLetterToggle } from '../components/admin/LoveLetterToggle'
@@ -31,6 +32,7 @@ const BODY_PLACEHOLDER: Record<Lang, string> = {
 export default function AdminNewPost() {
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
+  usePageTitle('New post')
 
   useEffect(() => {
     if (!isAuthenticated()) navigate(PATH_LOGIN || '/', { replace: true })

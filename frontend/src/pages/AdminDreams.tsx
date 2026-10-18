@@ -6,6 +6,7 @@ import { PATH_ADMIN_NEW, PATH_ADMIN_UPDATE, PATH_ADMIN_INFO, PATH_LOGIN } from '
 import { readJson, readText, store } from '../utils/browserStore'
 import { isAuthenticated } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
+import { usePageTitle } from '../seo'
 import { IcoSun, IcoMoon, IcoPlus, IcoPencil, IcoStar, IcoChart } from '../components/icons'
 import { CharCount } from '../components/admin/CharCount'
 
@@ -41,6 +42,7 @@ const textarea =
 export default function AdminDreams() {
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
+  usePageTitle('Inner World')
 
   useEffect(() => {
     if (!isAuthenticated()) navigate(PATH_LOGIN || '/', { replace: true })

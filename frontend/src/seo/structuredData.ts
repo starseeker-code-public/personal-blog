@@ -1,5 +1,5 @@
 import { SITE } from '../data'
-import type { Lang } from '../i18n'
+import { MESSAGES, type Lang } from '../i18n'
 import type { Post } from '../types'
 import { DEFAULT_IMAGE, SITE_URL, pageUrl } from './head'
 
@@ -20,7 +20,7 @@ export function websiteData(lang: Lang, description: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: SITE.name,
+    name: MESSAGES[lang].site.name,
     url: `${SITE_URL}/`,
     description,
     inLanguage: lang,

@@ -153,8 +153,7 @@ export const api = {
 export const CAREER_START = new Date(2018, 5, 1)
 
 export const SITE = {
-  name: 'Joaquín · Blog',
-  // The tagline is translated: see `site.tagline` in i18n/locales.
+  // The site's name and tagline are translated: see `site` in i18n/locales.
   portfolio: 'https://joaquin-hm.com',
   author: {
     name: 'Joaquín Hernández Martínez',

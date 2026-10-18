@@ -6,8 +6,9 @@ in the browser. nginx (frontend/nginx.conf) serves them index.html with the
 tags built here instead, in the language of the link.
 
 The browser's side is frontend/src/seo/head.ts, and TEXT copies the strings
-it needs from frontend/src/i18n/locales/{en,es}.ts (`seo`, plus `search.title`,
+it needs from frontend/src/i18n/locales/{en,es}.ts (`site.name`, `seo`,
 `post.notFound`, `notFound.text` and the category names): keep them in step.
+Titles read "Page – site name", except the home page's, which is the name.
 """
 
 from dataclasses import dataclass, field
@@ -33,12 +34,14 @@ DEFAULT_IMAGE_SIZE = (864, 864)
 
 TEXT = {
     "en": {
-        "home_title": "Joaquín · Blog — Python, backends, and things worth writing down",
+        "site_name": "Joaquín's Blog",
         "home_description": "My personal corner of the internet: honest writing about Python and backend engineering, my hobbies, and life in Albacete, Spain.",
         "about_title": "About me",
         "about_description": "Hey, I'm Joaquín: a senior backend engineer at Allot, building cybersecurity software at scale. By night, I point a telescope at the sky.",
         "category_description": "Posts about {category} on Joaquín's personal blog.",
+        "tag_title": "Posts tagged {tag}",
         "tag_description": "Posts tagged #{tag} on Joaquín's personal blog.",
+        # Crawlers' copy never shows the query: see page_head.
         "search_title": "Search",
         "post_not_found": "Post not found",
         "not_found_title": "Page not found",
@@ -47,13 +50,14 @@ TEXT = {
         "categories": {},
     },
     "es": {
-        "home_title": "Joaquín · Blog — Python, backends y cosas que merece la pena escribir",
+        "site_name": "El blog de Joaquín",
         "home_description": "Mi rincón personal de internet: escribo con honestidad sobre Python e ingeniería backend, mis aficiones y la vida en Albacete.",
         "about_title": "Sobre mí",
         "about_description": "Hola, soy Joaquín: ingeniero backend sénior en Allot, donde construyo software de ciberseguridad a gran escala. Por la noche, apunto un telescopio al cielo.",
         "category_description": "Artículos sobre {category} en el blog personal de Joaquín.",
+        "tag_title": "Artículos con la etiqueta {tag}",
         "tag_description": "Artículos con la etiqueta #{tag} en el blog personal de Joaquín.",
-        "search_title": "Buscar",
+        "search_title": "Búsqueda",
         "post_not_found": "Artículo no encontrado",
         "not_found_title": "Página no encontrada",
         "not_found_description": "Esta página no existe. Puede que el artículo se haya movido o borrado.",
@@ -89,7 +93,7 @@ def site_url(path: str) -> str:
 class Head:
     """What a page tells search engines and share cards about itself."""
 
-    # og:title. The <title> adds the site's name, except on the home page.
+    # og:title. The <title> adds " – " and the site's name, except on the home page.
     title: str
     description: str
     # The page's language: the URL's, or English for paths without one.
@@ -137,7 +141,7 @@ async def page_head(db: AsyncSession, path: str, api_url: str) -> Head:
         return Head(title=title, description=text["not_found_description"], lang=lang, noindex=True)
 
     if not parts:
-        return found(text["home_title"], text["home_description"], "/")
+        return found(text["site_name"], text["home_description"], "/")
 
     if parts == ["about"]:
         return found(text["about_title"], text["about_description"], "/about", type="profile")
@@ -161,7 +165,7 @@ async def page_head(db: AsyncSession, path: str, api_url: str) -> Head:
         name = (await db.execute(select(Tag.name).where(Tag.slug == slug))).scalar_one_or_none()
         if name is None:
             return missing()
-        return found(f"#{name}", text["tag_description"].format(tag=name), f"/tags/{slug}")
+        return found(text["tag_title"].format(tag=name), text["tag_description"].format(tag=name), f"/tags/{slug}")
 
     if section == "posts":
         result = await db.execute(
@@ -207,7 +211,8 @@ def render(head: Head) -> str:
         lang_attr = f' hreflang="{hreflang}"' if hreflang else ""
         tags.append(f'<link rel="{rel}"{lang_attr} href="{escape(href)}" data-seo>')
 
-    title = head.title if head.path == "/" else f"{head.title} | {settings.site_name}"
+    site_name = TEXT[head.lang]["site_name"]
+    title = head.title if head.path == "/" else f"{head.title} – {site_name}"
     tags.append(f"<title>{escape(title)}</title>")
     meta("description", head.description, attr="name")
     if head.noindex:
@@ -224,7 +229,7 @@ def render(head: Head) -> str:
                 link("alternate", url(lang), hreflang=lang)
             link("alternate", url(fallback), hreflang="x-default")
 
-    meta("og:site_name", settings.site_name)
+    meta("og:site_name", site_name)
     meta("og:type", head.type)
     meta("og:title", head.title)
     meta("og:description", head.description)

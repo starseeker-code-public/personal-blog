@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { api, PATH_ADMIN_NEW } from '../data'
 import { setAuth } from '../utils/auth'
 import { useTheme } from '../context/ThemeContext'
+import { usePageTitle } from '../seo'
 import { IcoSun, IcoMoon } from '../components/icons'
 
 export default function Login() {
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
+  usePageTitle('Log in')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
